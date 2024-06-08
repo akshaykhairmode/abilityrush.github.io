@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html class="html" dir="ltr" lang="en-US" prefix="og: https://ogp.me/ns#">
+<head>
+	<meta charset="UTF-8">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+
+	<title>How to create a timed rate limiter in Golang – Ability Rush</title>
+
+		<!-- All in One SEO 4.6.4 - aioseo.com -->
+		<meta name="description" content="Hey Peeps, in the last post we saw how we can create a rate limiter. In this post we will see how we can make it time based. i.e n number of requests per second">
+		<meta name="robots" content="max-image-preview:large">
+		<link rel="canonical" href="/how-to-create-a-timed-rate-limiter-in-golang/">
+		<meta name="generator" content="All in One SEO (AIOSEO) 4.6.4">
+		<meta property="og:locale" content="en_US">
+		<meta property="og:site_name" content="Ability Rush – Learn &amp; Improve">
+		<meta property="og:type" content="article">
+		<meta property="og:title" content="How to create a timed rate limiter in Golang – Ability Rush">
+		<meta property="og:description" content="Hey Peeps, in the last post we saw how we can create a rate limiter. In this post we will see how we can make it time based. i.e n number of requests per second">
+		<meta property="og:url" content="/how-to-create-a-timed-rate-limiter-in-golang/">
+		<meta property="article:published_time" content="2022-12-18T18:29:46+00:00">
+		<meta property="article:modified_time" content="2022-12-18T18:29:48+00:00">
+		<meta name="twitter:card" content="summary">
+		<meta name="twitter:title" content="How to create a timed rate limiter in Golang – Ability Rush">
+		<meta name="twitter:description" content="Hey Peeps, in the last post we saw how we can create a rate limiter. In this post we will see how we can make it time based. i.e n number of requests per second">
+		<script data-jetpack-boost="ignore" type="application/ld+json" class="aioseo-schema">{"@context":"https:\/\/schema.org","@graph":[{"@type":"BlogPosting","@id":"\/how-to-create-a-timed-rate-limiter-in-golang\/#blogposting","name":"How to create a timed rate limiter in Golang – Ability Rush","headline":"How to create a timed rate limiter in Golang","author":{"@id":"\/author\/akshaykhairmode\/#author"},"publisher":{"@id":"\/#organization"},"image":{"@type":"ImageObject","url":"\/wp-content\/uploads\/2022\/12\/rate-limiter-time.png","@id":"\/how-to-create-a-timed-rate-limiter-in-golang\/#articleImage","width":665,"height":68},"datePublished":"2022-12-18T23:59:46+05:30","dateModified":"2022-12-18T23:59:48+05:30","inLanguage":"en-US","mainEntityOfPage":{"@id":"\/how-to-create-a-timed-rate-limiter-in-golang\/#webpage"},"isPartOf":{"@id":"\/how-to-create-a-timed-rate-limiter-in-golang\/#webpage"},"articleSection":"Golang, Technology, go, golang, mutex, rate limiter"},{"@type":"BreadcrumbList","@id":"\/how-to-create-a-timed-rate-limiter-in-golang\/#breadcrumblist","itemListElement":[{"@type":"ListItem","@id":"\/#listItem","position":1,"name":"Home","item":"\/","nextItem":"\/how-to-create-a-timed-rate-limiter-in-golang\/#listItem"},{"@type":"ListItem","@id":"\/how-to-create-a-timed-rate-limiter-in-golang\/#listItem","position":2,"name":"How to create a timed rate limiter in Golang","previousItem":"\/#listItem"}]},{"@type":"Organization","@id":"\/#organization","name":"Ability Rush","description":"Learn & Improve","url":"\/","logo":{"@type":"ImageObject","url":"\/wp-content\/uploads\/2021\/10\/cropped-android-chrome-512x512-1.png","@id":"\/how-to-create-a-timed-rate-limiter-in-golang\/#organizationLogo","width":512,"height":512},"image":{"@id":"\/how-to-create-a-timed-rate-limiter-in-golang\/#organizationLogo"}},{"@type":"Person","@id":"\/author\/akshaykhairmode\/#author","url":"\/author\/akshaykhairmode\/","name":"Akshay Khairmode","image":{"@type":"ImageObject","@id":"\/how-to-create-a-timed-rate-limiter-in-golang\/#authorImage","url":"http:\/\/2.gravatar.com\/avatar\/20ffb1dd4c5b351c3a2a7cb6a7f2e342?s=96&d=wavatar&r=g","width":96,"height":96,"caption":"Akshay Khairmode"}},{"@type":"WebPage","@id":"\/how-to-create-a-timed-rate-limiter-in-golang\/#webpage","url":"\/how-to-create-a-timed-rate-limiter-in-golang\/","name":"How to create a timed rate limiter in Golang – Ability Rush","description":"Hey Peeps, in the last post we saw how we can create a rate limiter. In this post we will see how we can make it time based. i.e n number of requests per second","inLanguage":"en-US","isPartOf":{"@id":"\/#website"},"breadcrumb":{"@id":"\/how-to-create-a-timed-rate-limiter-in-golang\/#breadcrumblist"},"author":{"@id":"\/author\/akshaykhairmode\/#author"},"creator":{"@id":"\/author\/akshaykhairmode\/#author"},"datePublished":"2022-12-18T23:59:46+05:30","dateModified":"2022-12-18T23:59:48+05:30"},{"@type":"WebSite","@id":"\/#website","url":"\/","name":"Ability Rush","description":"Learn & Improve","inLanguage":"en-US","publisher":{"@id":"\/#organization"}}]}</script>
+		<!-- All in One SEO -->
+
+<link rel="pingback" href="/xmlrpc.php">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="dns-prefetch" href="//www.googletagmanager.com">
+<link rel="dns-prefetch" href="//c0.wp.com">
+<link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+<link rel="dns-prefetch" href="//fundingchoicesmessages.google.com">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Feed" href="/feed/">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Comments Feed" href="/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; How to create a timed rate limiter in Golang Comments Feed" href="/how-to-create-a-timed-rate-limiter-in-golang/feed/">
+
+<style type="text/css" media="all">.wpautoterms-footer{background-color:#ffffff;text-align:center;}
+.wpautoterms-footer a{color:#000000;font-family:Arial, sans-serif;font-size:14px;}
+.wpautoterms-footer .separator{color:#cccccc;font-family:Arial, sans-serif;font-size:14px;}</style>
+<style id="wp-emoji-styles-inline-css">img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}</style>
+<link rel="stylesheet" id="mediaelement-css" href="https://c0.wp.com/c/6.5.4/wp-includes/js/mediaelement/mediaelementplayer-legacy.min.css" media="all">
+<link rel="stylesheet" id="wp-mediaelement-css" href="https://c0.wp.com/c/6.5.4/wp-includes/js/mediaelement/wp-mediaelement.min.css" media="all">
+<style id="jetpack-sharing-buttons-style-inline-css">.jetpack-sharing-buttons__services-list{display:flex;flex-direction:row;flex-wrap:wrap;gap:0;list-style-type:none;margin:5px;padding:0}.jetpack-sharing-buttons__services-list.has-small-icon-size{font-size:12px}.jetpack-sharing-buttons__services-list.has-normal-icon-size{font-size:16px}.jetpack-sharing-buttons__services-list.has-large-icon-size{font-size:24px}.jetpack-sharing-buttons__services-list.has-huge-icon-size{font-size:36px}@media print{.jetpack-sharing-buttons__services-list{display:none!important}}.editor-styles-wrapper .wp-block-jetpack-sharing-buttons{gap:0;padding-inline-start:0}ul.jetpack-sharing-buttons__services-list.has-background{padding:1.25em 2.375em}</style>
+<style id="classic-theme-styles-inline-css">/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}</style>
+<style id="global-styles-inline-css">body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}</style>
+<link rel="stylesheet" id="wpautoterms_css-css" href="/wp-content/plugins/auto-terms-of-service-and-privacy-policy/css/wpautoterms.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="mpl-publisher-css" href="/wp-content/plugins/mpl-publisher/assets/css/mpl-widget.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="oceanwp-style-css" href="/wp-content/themes/oceanwp/assets/css/style.min.css?ver=1.0" media="all">
+<link rel="stylesheet" id="child-style-css" href="/wp-content/themes/oceanwp-child-theme-master/style.css?ver=3.5.5" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="/wp-content/themes/oceanwp/assets/fonts/fontawesome/css/all.min.css?ver=6.4.2" media="all">
+<link rel="stylesheet" id="simple-line-icons-css" href="/wp-content/themes/oceanwp/assets/css/third/simple-line-icons.min.css?ver=2.4.0" media="all">
+<link rel="stylesheet" id="elementor-icons-css" href="/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.29.0" media="all">
+<link rel="stylesheet" id="elementor-frontend-css" href="/wp-content/plugins/elementor/assets/css/frontend-lite.min.css?ver=3.21.8" media="all">
+<link rel="stylesheet" id="swiper-css" href="/wp-content/plugins/elementor/assets/lib/swiper/v8/css/swiper.min.css?ver=8.4.5" media="all">
+<link rel="stylesheet" id="elementor-post-6-css" href="/wp-content/uploads/elementor/css/post-6.css?ver=1717861485" media="all">
+<link rel="stylesheet" id="elementor-global-css" href="/wp-content/uploads/elementor/css/global.css?ver=1717861485" media="all">
+<link rel="stylesheet" id="elementor-post-1482-css" href="/wp-content/uploads/elementor/css/post-1482.css?ver=1717861501" media="all">
+<link rel="stylesheet" id="oe-widgets-style-css" href="/wp-content/plugins/ocean-extra/assets/css/widgets.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="ow-perfect-scrollbar-css" href="/wp-content/themes/oceanwp/assets/css/third/perfect-scrollbar.css?ver=1.5.0" media="all">
+<link rel="stylesheet" id="omw-styles-css" href="/wp-content/plugins/ocean-modal-window/assets/css/style.min.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="sharedaddy-css" href="https://c0.wp.com/p/jetpack/13.5/modules/sharedaddy/sharing.css" media="all">
+<link rel="stylesheet" id="social-logos-css" href="https://c0.wp.com/p/jetpack/13.5/_inc/social-logos/social-logos.min.css" media="all">
+<link rel="stylesheet" id="google-fonts-1-css" href="https://fonts.googleapis.com/css?family=Merriweather%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto+Slab%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic&#038;display=auto&#038;ver=6.5.4" media="all">
+<link rel="stylesheet" id="elementor-icons-shared-0-css" href="/wp-content/plugins/elementor/assets/lib/font-awesome/css/fontawesome.min.css?ver=5.15.3" media="all">
+<link rel="stylesheet" id="elementor-icons-fa-brands-css" href="/wp-content/plugins/elementor/assets/lib/font-awesome/css/brands.min.css?ver=5.15.3" media="all">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<script data-jetpack-boost="ignore" src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/jquery.min.js" id="jquery-core-js"></script>
+
+
+
+
+
+
+
+<!-- Google tag (gtag.js) snippet added by Site Kit -->
+
+<!-- Google Analytics snippet added by Site Kit -->
+
+
+
+<!-- End Google tag (gtag.js) snippet added by Site Kit -->
+<link rel="https://api.w.org/" href="/wp-json/">
+<link rel="alternate" type="application/json" href="/wp-json/wp/v2/posts/1482">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="/xmlrpc.php?rsd">
+<meta name="generator" content="WordPress 6.5.4">
+<link rel="shortlink" href="/?p=1482">
+<link rel="alternate" type="application/json+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2F%2Fhow-to-create-a-timed-rate-limiter-in-golang%2F">
+<link rel="alternate" type="text/xml+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2F%2Fhow-to-create-a-timed-rate-limiter-in-golang%2F#038;format=xml">
+<meta name="generator" content="Site Kit by Google 1.128.0">		
+		
+	
+
+<!-- Google AdSense meta tags added by Site Kit -->
+<meta name="google-adsense-platform-account" content="ca-host-pub-2644536267352236">
+<meta name="google-adsense-platform-domain" content="sitekit.withgoogle.com">
+<!-- End Google AdSense meta tags added by Site Kit -->
+<meta name="generator" content="Elementor 3.21.8; features: e_optimized_assets_loading, e_optimized_css_loading, additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-auto">
+<style>.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<!-- Google AdSense snippet added by Site Kit -->
+
+
+<!-- End Google AdSense snippet added by Site Kit -->
+<link rel="icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-32x32.png" sizes="32x32">
+<link rel="icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-180x180.png">
+<meta name="msapplication-TileImage" content="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-270x270.png">
+<!-- OceanWP CSS -->
+<style type="text/css">/* General CSS */a:hover,a.light:hover,.theme-heading .text::before,.theme-heading .text::after,#top-bar-content >a:hover,#top-bar-social li.oceanwp-email a:hover,#site-navigation-wrap .dropdown-menu >li >a:hover,#site-header.medium-header #medium-searchform button:hover,.oceanwp-mobile-menu-icon a:hover,.blog-entry.post .blog-entry-header .entry-title a:hover,.blog-entry.post .blog-entry-readmore a:hover,.blog-entry.thumbnail-entry .blog-entry-category a,ul.meta li a:hover,.dropcap,.single nav.post-navigation .nav-links .title,body .related-post-title a:hover,body #wp-calendar caption,body .contact-info-widget.default i,body .contact-info-widget.big-icons i,body .custom-links-widget .oceanwp-custom-links li a:hover,body .custom-links-widget .oceanwp-custom-links li a:hover:before,body .posts-thumbnails-widget li a:hover,body .social-widget li.oceanwp-email a:hover,.comment-author .comment-meta .comment-reply-link,#respond #cancel-comment-reply-link:hover,#footer-widgets .footer-box a:hover,#footer-bottom a:hover,#footer-bottom #footer-bottom-menu a:hover,.sidr a:hover,.sidr-class-dropdown-toggle:hover,.sidr-class-menu-item-has-children.active >a,.sidr-class-menu-item-has-children.active >a >.sidr-class-dropdown-toggle,input[type=checkbox]:checked:before{color:#3370bf}.single nav.post-navigation .nav-links .title .owp-icon use,.blog-entry.post .blog-entry-readmore a:hover .owp-icon use,body .contact-info-widget.default .owp-icon use,body .contact-info-widget.big-icons .owp-icon use{stroke:#3370bf}input[type="button"],input[type="reset"],input[type="submit"],button[type="submit"],.button,#site-navigation-wrap .dropdown-menu >li.btn >a >span,.thumbnail:hover i,.post-quote-content,.omw-modal .omw-close-modal,body .contact-info-widget.big-icons li:hover i,body div.wpforms-container-full .wpforms-form input[type=submit],body div.wpforms-container-full .wpforms-form button[type=submit],body div.wpforms-container-full .wpforms-form .wpforms-page-button{background-color:#3370bf}.thumbnail:hover .link-post-svg-icon{background-color:#3370bf}body .contact-info-widget.big-icons li:hover .owp-icon{background-color:#3370bf}.widget-title{border-color:#3370bf}blockquote{border-color:#3370bf}#searchform-dropdown{border-color:#3370bf}.dropdown-menu .sub-menu{border-color:#3370bf}.blog-entry.large-entry .blog-entry-readmore a:hover{border-color:#3370bf}.oceanwp-newsletter-form-wrap input[type="email"]:focus{border-color:#3370bf}.social-widget li.oceanwp-email a:hover{border-color:#3370bf}#respond #cancel-comment-reply-link:hover{border-color:#3370bf}body .contact-info-widget.big-icons li:hover i{border-color:#3370bf}#footer-widgets .oceanwp-newsletter-form-wrap input[type="email"]:focus{border-color:#3370bf}blockquote,.wp-block-quote{border-left-color:#3370bf}body .contact-info-widget.big-icons li:hover .owp-icon{border-color:#3370bf}input[type="button"]:hover,input[type="reset"]:hover,input[type="submit"]:hover,button[type="submit"]:hover,input[type="button"]:focus,input[type="reset"]:focus,input[type="submit"]:focus,button[type="submit"]:focus,.button:hover,.button:focus,#site-navigation-wrap .dropdown-menu >li.btn >a:hover >span,.post-quote-author,.omw-modal .omw-close-modal:hover,body div.wpforms-container-full .wpforms-form input[type=submit]:hover,body div.wpforms-container-full .wpforms-form button[type=submit]:hover,body div.wpforms-container-full .wpforms-form .wpforms-page-button:hover{background-color:#81d742}a{color:#1e73be}a .owp-icon use{stroke:#1e73be}a:hover{color:#dd3333}a:hover .owp-icon use{stroke:#dd3333}#scroll-top{background-color:#1e73be}/* Header CSS */#site-header.has-header-media .overlay-header-media{background-color:rgba(0,0,0,0.5)}/* Typography CSS */body{color:#000000}</style>
+<style id="wpforms-css-vars-root">:root {
+					--wpforms-field-border-radius: 3px;
+--wpforms-field-border-style: solid;
+--wpforms-field-border-size: 1px;
+--wpforms-field-background-color: #ffffff;
+--wpforms-field-border-color: rgba( 0, 0, 0, 0.25 );
+--wpforms-field-border-color-spare: rgba( 0, 0, 0, 0.25 );
+--wpforms-field-text-color: rgba( 0, 0, 0, 0.7 );
+--wpforms-field-menu-color: #ffffff;
+--wpforms-label-color: rgba( 0, 0, 0, 0.85 );
+--wpforms-label-sublabel-color: rgba( 0, 0, 0, 0.55 );
+--wpforms-label-error-color: #d63637;
+--wpforms-button-border-radius: 3px;
+--wpforms-button-border-style: none;
+--wpforms-button-border-size: 1px;
+--wpforms-button-background-color: #066aab;
+--wpforms-button-border-color: #066aab;
+--wpforms-button-text-color: #ffffff;
+--wpforms-page-break-color: #066aab;
+--wpforms-background-image: none;
+--wpforms-background-position: center center;
+--wpforms-background-repeat: no-repeat;
+--wpforms-background-size: cover;
+--wpforms-background-width: 100px;
+--wpforms-background-height: 100px;
+--wpforms-background-color: rgba( 0, 0, 0, 0 );
+--wpforms-background-url: none;
+--wpforms-container-padding: 0px;
+--wpforms-container-border-style: none;
+--wpforms-container-border-width: 1px;
+--wpforms-container-border-color: #000000;
+--wpforms-container-border-radius: 3px;
+--wpforms-field-size-input-height: 43px;
+--wpforms-field-size-input-spacing: 15px;
+--wpforms-field-size-font-size: 16px;
+--wpforms-field-size-line-height: 19px;
+--wpforms-field-size-padding-h: 14px;
+--wpforms-field-size-checkbox-size: 16px;
+--wpforms-field-size-sublabel-spacing: 5px;
+--wpforms-field-size-icon-size: 1;
+--wpforms-label-size-font-size: 16px;
+--wpforms-label-size-line-height: 19px;
+--wpforms-label-size-sublabel-font-size: 14px;
+--wpforms-label-size-sublabel-line-height: 17px;
+--wpforms-button-size-font-size: 17px;
+--wpforms-button-size-height: 41px;
+--wpforms-button-size-padding-h: 15px;
+--wpforms-button-size-margin-top: 10px;
+--wpforms-container-shadow-size-box-shadow: none;
+
+				}</style>
+</head>
+
+<body class="post-template-default single single-post postid-1482 single-format-standard wp-embed-responsive oceanwp-theme dropdown-mobile top-header-style default-breakpoint has-sidebar content-right-sidebar post-in-category-golang post-in-category-technology page-header-disabled has-breadcrumbs elementor-default elementor-kit-6 elementor-page elementor-page-1482" itemscope="itemscope" itemtype="https://schema.org/Article">
+
+	
+	
+	<div id="outer-wrap" class="site clr">
+
+		<a class="skip-link screen-reader-text" href="#main">Skip to content</a>
+
+		
+		<div id="wrap" class="clr">
+
+			
+			
+<header id="site-header" class="top-header clr" data-height="74" itemscope="itemscope" itemtype="https://schema.org/WPHeader" role="banner">
+
+	
+		
+	<div class="header-bottom clr">
+		<div class="container">
+			
+
+<div id="site-logo" class="clr" itemscope itemtype="https://schema.org/Brand">
+
+	
+	<div id="site-logo-inner" class="clr">
+
+						<a href="/" rel="home" class="site-title site-logo-text">Ability Rush</a>
+				
+	</div>
+<!-- #site-logo-inner -->
+
+	
+				<div id="site-description"><h2>Learn &amp; Improve</h2></div>
+			
+</div>
+<!-- #site-logo -->
+
+		</div>
+	</div>
+	
+<div class="header-top clr">
+
+	
+	<div id="site-header-inner" class="clr container">
+
+		
+		<div class="left clr">
+
+			<div class="inner">
+
+				
+				
+			</div>
+
+		</div>
+
+		<div class="right clr">
+
+			<div class="inner">
+
+				<div id="search-toggle"><a href="/#" class="site-search-toggle search-dropdown-toggle" aria-label="Search website"><i class=" fas fa-search" aria-hidden="true" role="img"></i></a></div>
+<div id="searchform-dropdown" class="header-searchform-wrap clr">
+	
+<form aria-label="Search this website" role="search" method="get" class="searchform" action="/">	
+	<input aria-label="Insert search query" type="search" id="ocean-search-form-1" class="field" autocomplete="off" placeholder="Search" name="s">
+		</form>
+</div>
+<!-- #searchform-dropdown -->
+
+			</div>
+
+		</div>
+
+	</div>
+<!-- #site-header-inner -->
+
+	
+<div id="mobile-dropdown" class="clr">
+
+	<nav class="clr" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement">
+
+		<div class="menu">
+<li class="page_item page-item-1832"><a href="/j2csv/">j2csv</a></li>
+<li class="page_item page-item-3"><a href="/privacy-policy/">Privacy Policy</a></li>
+</div>
+
+<div id="mobile-menu-search" class="clr">
+	<form aria-label="Search this website" method="get" action="/" class="mobile-searchform">
+		<input aria-label="Insert search query" value="" class="field" id="ocean-mobile-search-2" type="search" name="s" autocomplete="off" placeholder="Search">
+		<button aria-label="Submit search" type="submit" class="searchform-submit">
+			<i class=" fas fa-search" aria-hidden="true" role="img"></i>		</button>
+					</form>
+</div>
+<!-- .mobile-menu-search -->
+
+	</nav>
+
+</div>
+
+	
+</div>
+<!-- .header-top -->
+
+
+		
+		
+</header><!-- #site-header -->
+
+
+			
+			<main id="main" class="site-main clr" role="main">
+
+				
+	
+	<div id="content-wrap" class="container clr">
+
+		
+		<div id="primary" class="content-area clr">
+
+			
+			<div id="content" class="site-content clr">
+
+				
+				
+<article id="post-1482">
+
+	
+
+<header class="entry-header clr">
+	<h2 class="single-post-title entry-title" itemprop="headline">How to create a timed rate limiter in Golang</h2>
+<!-- .single-post-title -->
+</header><!-- .entry-header -->
+
+
+<ul class="meta ospm-default clr">
+
+	
+					<li class="meta-author" itemprop="name">
+<span class="screen-reader-text">Post author:</span><i class=" fas fa-user-circle" aria-hidden="true" role="img"></i><a href="/author/akshaykhairmode/" title="Posts by Akshay Khairmode" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">Akshay Khairmode</a>
+</li>
+		
+		
+		
+		
+		
+		
+	
+		
+					<li class="meta-date" itemprop="datePublished">
+<span class="screen-reader-text">Post published:</span><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>December 18, 2022</li>
+		
+		
+		
+		
+		
+	
+		
+		
+		
+					<li class="meta-cat">
+<span class="screen-reader-text">Post category:</span><i class=" far fa-folder-open" aria-hidden="true" role="img"></i><a href="/category/technology/golang/" rel="category tag">Golang</a> <span class="owp-sep">/</span> <a href="/category/technology/" rel="category tag">Technology</a>
+</li>
+		
+		
+		
+	
+		
+		
+		
+		
+		
+					<li class="meta-comments">
+<span class="screen-reader-text">Post comments:</span><i class=" far fa-comments" aria-hidden="true" role="img"></i><a href="/how-to-create-a-timed-rate-limiter-in-golang/#respond" class="comments-link">0 Comments</a>
+</li>
+		
+	
+</ul>
+
+
+
+<div class="entry-content clr" itemprop="text">
+			<div data-elementor-type="wp-post" data-elementor-id="1482" class="elementor elementor-1482">
+						<section class="elementor-section elementor-top-section elementor-element elementor-element-9c75ef0 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="9c75ef0" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-5a4115dd" data-id="5a4115dd" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-961151b elementor-widget elementor-widget-heading" data-id="961151b" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-heading-title{padding:0;margin:0;line-height:1}.elementor-widget-heading .elementor-heading-title[class*=elementor-size-]>a{color:inherit;font-size:inherit;line-height:inherit}.elementor-widget-heading .elementor-heading-title.elementor-size-small{font-size:15px}.elementor-widget-heading .elementor-heading-title.elementor-size-medium{font-size:19px}.elementor-widget-heading .elementor-heading-title.elementor-size-large{font-size:29px}.elementor-widget-heading .elementor-heading-title.elementor-size-xl{font-size:39px}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl{font-size:59px}</style>
+<h2 class="elementor-heading-title elementor-size-default">Introduction</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-5bd3670f elementor-widget elementor-widget-text-editor" data-id="5bd3670f" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#69727d;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#69727d;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}</style>				<p>Hey Peeps, Today we are going to see how we can create a time-based rate limiter.</p>
+<p>We will be using maps, mutexes, and middleware as done in the previous post except there will be minor changes and hence this is going to be a small post.</p>
+<p><strong><em>We already created a rate limiter in our previous <a href="/how-to-create-a-rate-limiter-in-golang/">post</a>, so we are going to modify it and add the time component. It is recommended to check the previous <a href="/how-to-create-a-rate-limiter-in-golang/">post</a> for the same.</em></strong></p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-76788db4 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="76788db4" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-2eade4c4" data-id="2eade4c4" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-6cf78eb7 elementor-widget elementor-widget-heading" data-id="6cf78eb7" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Rate Limiter Methods</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-350a0fa3 elementor-widget elementor-widget-text-editor" data-id="350a0fa3" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>So if you remember in the last post, We had created a limiter object which had <code>incr</code> and <code>decr</code> methods to increase and reduce the count of the number of connections. </p>
+<blockquote>
+<p>func (l *limiter) incr(r *http.Request) error</p>
+<p>func (l *limiter) decr(r *http.Request)</p>
+</blockquote>
+<p><strong>We have now modified the method as below,</strong></p>
+<blockquote>
+<p>func (l *limiter) incr(r *http.Request, now string) error</p>
+<p>func (l *limiter) decr(r *http.Request, now string)</p>
+</blockquote>
+<p><strong>We are now passing the UNIX timestamp of the current time.</strong></p>
+<p>We also created a middleware that actually did the <code>incr</code> , <code>decr</code> operations.</p>
+<blockquote><p>func (l *limiter) Middleware(handler http.HandlerFunc) http.HandlerFunc</p></blockquote>
+<p>While this method is not changed we now get the current time in this method to pass to <code>incr</code> , <code>decr</code>.</p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-7fc09fc1 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="7fc09fc1" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-4b32ae0" data-id="4b32ae0" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-2df279f8 elementor-widget elementor-widget-heading" data-id="2df279f8" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Logic Change for Time Based Limiter</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-45495eaa elementor-widget elementor-widget-text-editor" data-id="45495eaa" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>So earlier our map had the key as the <code>remoteAddr</code> but now the key will be <code>remoteAddr+now</code>. <code>remoteAddr</code> being the IP and <code>now</code> being the current Unix time in seconds.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-b045234 elementor-widget elementor-widget-code-block-for-elementor" data-id="b045234" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (l *limiter) incr(r *http.Request, now string) error {
+	l.mux.Lock()
+	defer l.mux.Unlock() //defering here so we dont forget later
+
+	status := l.getStatus(r)
+	if status == nil { //if the endpoint was not initialized with set rate limit status will be nil
+		return nil
+	}
+
+	if status.Count[r.RemoteAddr+now] &gt;= status.Limit { //Check if the limit is exceeded.
+		return fmt.Errorf(&quot;rate limit reached for %s&quot;, r.RequestURI)
+	}
+
+	status.Count[r.RemoteAddr+now]++ //Increase the count for this IP.
+	return nil
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-a4687a8 elementor-widget elementor-widget-text-editor" data-id="a4687a8" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p><code>decr</code> is similar to <code>incr</code> but we have added one extra logic in <code>decr</code>. This logic is to delete the key once the counter is &lt;= 0. <strong>This is now important as we will have a lot of keys when we have frequent API calls and the map size will keep increasing.</strong></p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-d84bf40 elementor-widget elementor-widget-code-block-for-elementor" data-id="d84bf40" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (l *limiter) decr(r *http.Request, now string) {
+	l.mux.Lock()
+	defer l.mux.Unlock() //defering here so we dont forget later
+
+	status := l.getStatus(r)
+	if status == nil { //if the endpoint was not initialized with set rate limit status will be nil
+		return
+	}
+
+	status.Count[r.RemoteAddr+now]-- //Decrease the count for this IP.
+
+	if status.Count[r.RemoteAddr+now] &lt;= 0 { //Delete the key once counter is 0, this is important now because for each second we will have one key.
+		delete(status.Count, r.RemoteAddr+now)
+	}
+
+}</code></pre>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-da49939 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="da49939" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-b58433d" data-id="b58433d" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-061720d elementor-widget elementor-widget-heading" data-id="061720d" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Output</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-57dee9c elementor-widget elementor-widget-text-editor" data-id="57dee9c" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Now we need to modify our test also to test for per-second logic.</p>
+<p>In line 10 &#8211; We have modified the sleep to 500ms.</p>
+<p>At line 22 &#8211; We have added 10-millisecond sleep to simulate requests over time.</p>
+<p>Our Assertion is now changed, We are expecting the actual handler to be called 50 times and the count maps to be empty.</p>
+<p><em>If you are wondering why we are asserting the actual handler to 50 times, let&#8217;s do the math.</em></p>
+<p>We are<span style="color: #993300;"> calling the handler every 10 ms</span> so we are doing <span style="color: #993300;">100 calls per second</span>. These calls over 5 seconds wait will be <span style="color: #993300;">500</span>.</p>
+<p><span style="color: #993300;">Our limit is set to 5</span> for the endpoint for each <code>remoteAddr</code>, so for the first 100 calls, <span style="color: #993300;">only 5 will reach the actual handler</span>. Similarly over 5 seconds so <span style="color: #993300;">our total will be 25</span>.</p>
+<p>The other 25 will be from the other <code>remoteAddr</code> <span style="color: #993300;">so a total of 50</span>.</p>
+<p><em>The point to note here is if we change the sleep in the actual handler we will get a different count. This is because that sleep is dictating when the <code>decr</code> method gets called.</em></p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-b58958b elementor-widget elementor-widget-code-block-for-elementor" data-id="b58958b" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func TestLimiter(t *testing.T) {
+
+	endpointCalledCount := int64(0)
+
+	l := NewLimiter()          //Create our limiter instance
+	l.SetRateLimit(&quot;/test&quot;, 5) //set rate limit to 5 per second for /test endpoint.
+
+	hf := l.Middleware(func(w http.ResponseWriter, r *http.Request) { //This is our actual handler
+		atomic.AddInt64(&amp;endpointCalledCount, 1) //We will increase the count in the actual handler.
+		time.Sleep(500 * time.Millisecond)       //We are sleeping here so that we get the realistic count increase.
+	})
+
+	r := httptest.NewRequest(&quot;GET&quot;, &quot;/test&quot;, nil)
+	w := httptest.NewRecorder()
+
+	r1 := httptest.NewRequest(&quot;GET&quot;, &quot;/test&quot;, nil)
+	r1.RemoteAddr = &quot;test-addr&quot; //We create a new request here with different IP addr.
+
+	for i := 0; i &lt; 200; i++ { //We start 200 go routines and call the handler with our request. Since we have rate limiting enabled for /test endpoint our actual handler should only be called 5 times.
+		go hf(w, r)
+		go hf(w, r1)                      //We use the same recorder as we want to increase the same count variable.
+		time.Sleep(10 * time.Millisecond) //100 calls per second
+	}
+
+	time.Sleep(5 * time.Second) //We sleep here as we want to wait for all the go routines to finish.
+
+	if endpointCalledCount != 50 {
+		t.Error(&quot;endpointCalledCount does not match&quot;, endpointCalledCount)
+	}
+
+	for _, status := range l.det {
+		if len(status.Count) &gt; 0 {
+			t.Error(&quot;expected count to be 0&quot;)
+		}
+	}
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-bc4c031 elementor-widget elementor-widget-image" data-id="bc4c031" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-widget-image{text-align:center}.elementor-widget-image a{display:inline-block}.elementor-widget-image a img[src$=".svg"]{width:48px}.elementor-widget-image img{vertical-align:middle;display:inline-block}</style>										<img decoding="async" width="665" height="68" src="/wp-content/uploads/2022/12/rate-limiter-time.png" class="attachment-large size-large wp-image-1485" alt="" srcset="/wp-content/uploads/2022/12/rate-limiter-time.png 665w, /wp-content/uploads/2022/12/rate-limiter-time-300x31.png 300w" sizes="(max-width: 665px) 100vw, 665px">													</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-1e2f073 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="1e2f073" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-de35333" data-id="de35333" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-2fb19bd elementor-widget elementor-widget-heading" data-id="2fb19bd" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Conclusion</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-a6303ea elementor-widget elementor-widget-text-editor" data-id="a6303ea" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>To Conclude,</p>
+<p>We have now changed our map key from <code>remoteAddr</code> to <code>remoteAddr+timestamp</code> which allows us to increase the count based on time and IP. </p>
+<p>We are also now deleting the keys once they reach 0.</p>
+<p>Previous Rate Limiting post <a href="/how-to-create-a-rate-limiter-in-golang/">here</a>. The code is also available on <a href="https://github.com/akshaykhairmode/learning-go/tree/main/rate_limiter_time">GitHub</a>.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-360a217 elementor-shape-circle elementor-grid-0 e-grid-align-center elementor-widget elementor-widget-social-icons" data-id="360a217" data-element_type="widget" data-widget_type="social-icons.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-widget-social-icons.elementor-grid-0 .elementor-widget-container,.elementor-widget-social-icons.elementor-grid-mobile-0 .elementor-widget-container,.elementor-widget-social-icons.elementor-grid-tablet-0 .elementor-widget-container{line-height:1;font-size:0}.elementor-widget-social-icons:not(.elementor-grid-0):not(.elementor-grid-tablet-0):not(.elementor-grid-mobile-0) .elementor-grid{display:inline-grid}.elementor-widget-social-icons .elementor-grid{grid-column-gap:var(--grid-column-gap,5px);grid-row-gap:var(--grid-row-gap,5px);grid-template-columns:var(--grid-template-columns);justify-content:var(--justify-content,center);justify-items:var(--justify-content,center)}.elementor-icon.elementor-social-icon{font-size:var(--icon-size,25px);line-height:var(--icon-size,25px);width:calc(var(--icon-size, 25px) + 2 * var(--icon-padding, .5em));height:calc(var(--icon-size, 25px) + 2 * var(--icon-padding, .5em))}.elementor-social-icon{--e-social-icon-icon-color:#fff;display:inline-flex;background-color:#69727d;align-items:center;justify-content:center;text-align:center;cursor:pointer}.elementor-social-icon i{color:var(--e-social-icon-icon-color)}.elementor-social-icon svg{fill:var(--e-social-icon-icon-color)}.elementor-social-icon:last-child{margin:0}.elementor-social-icon:hover{opacity:.9;color:#fff}.elementor-social-icon-android{background-color:#a4c639}.elementor-social-icon-apple{background-color:#999}.elementor-social-icon-behance{background-color:#1769ff}.elementor-social-icon-bitbucket{background-color:#205081}.elementor-social-icon-codepen{background-color:#000}.elementor-social-icon-delicious{background-color:#39f}.elementor-social-icon-deviantart{background-color:#05cc47}.elementor-social-icon-digg{background-color:#005be2}.elementor-social-icon-dribbble{background-color:#ea4c89}.elementor-social-icon-elementor{background-color:#d30c5c}.elementor-social-icon-envelope{background-color:#ea4335}.elementor-social-icon-facebook,.elementor-social-icon-facebook-f{background-color:#3b5998}.elementor-social-icon-flickr{background-color:#0063dc}.elementor-social-icon-foursquare{background-color:#2d5be3}.elementor-social-icon-free-code-camp,.elementor-social-icon-freecodecamp{background-color:#006400}.elementor-social-icon-github{background-color:#333}.elementor-social-icon-gitlab{background-color:#e24329}.elementor-social-icon-globe{background-color:#69727d}.elementor-social-icon-google-plus,.elementor-social-icon-google-plus-g{background-color:#dd4b39}.elementor-social-icon-houzz{background-color:#7ac142}.elementor-social-icon-instagram{background-color:#262626}.elementor-social-icon-jsfiddle{background-color:#487aa2}.elementor-social-icon-link{background-color:#818a91}.elementor-social-icon-linkedin,.elementor-social-icon-linkedin-in{background-color:#0077b5}.elementor-social-icon-medium{background-color:#00ab6b}.elementor-social-icon-meetup{background-color:#ec1c40}.elementor-social-icon-mixcloud{background-color:#273a4b}.elementor-social-icon-odnoklassniki{background-color:#f4731c}.elementor-social-icon-pinterest{background-color:#bd081c}.elementor-social-icon-product-hunt{background-color:#da552f}.elementor-social-icon-reddit{background-color:#ff4500}.elementor-social-icon-rss{background-color:#f26522}.elementor-social-icon-shopping-cart{background-color:#4caf50}.elementor-social-icon-skype{background-color:#00aff0}.elementor-social-icon-slideshare{background-color:#0077b5}.elementor-social-icon-snapchat{background-color:#fffc00}.elementor-social-icon-soundcloud{background-color:#f80}.elementor-social-icon-spotify{background-color:#2ebd59}.elementor-social-icon-stack-overflow{background-color:#fe7a15}.elementor-social-icon-steam{background-color:#00adee}.elementor-social-icon-stumbleupon{background-color:#eb4924}.elementor-social-icon-telegram{background-color:#2ca5e0}.elementor-social-icon-threads{background-color:#000}.elementor-social-icon-thumb-tack{background-color:#1aa1d8}.elementor-social-icon-tripadvisor{background-color:#589442}.elementor-social-icon-tumblr{background-color:#35465c}.elementor-social-icon-twitch{background-color:#6441a5}.elementor-social-icon-twitter{background-color:#1da1f2}.elementor-social-icon-viber{background-color:#665cac}.elementor-social-icon-vimeo{background-color:#1ab7ea}.elementor-social-icon-vk{background-color:#45668e}.elementor-social-icon-weibo{background-color:#dd2430}.elementor-social-icon-weixin{background-color:#31a918}.elementor-social-icon-whatsapp{background-color:#25d366}.elementor-social-icon-wordpress{background-color:#21759b}.elementor-social-icon-x-twitter{background-color:#000}.elementor-social-icon-xing{background-color:#026466}.elementor-social-icon-yelp{background-color:#af0606}.elementor-social-icon-youtube{background-color:#cd201f}.elementor-social-icon-500px{background-color:#0099e5}.elementor-shape-rounded .elementor-icon.elementor-social-icon{border-radius:10%}.elementor-shape-circle .elementor-icon.elementor-social-icon{border-radius:50%}</style>		<div class="elementor-social-icons-wrapper elementor-grid">
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-facebook elementor-repeater-item-284e002" href="https://www.facebook.com/people/AbilityRush/100086656836229/" target="_blank">
+						<span class="elementor-screen-only">Facebook</span>
+						<i class="fab fa-facebook"></i>					</a>
+				</span>
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-twitter elementor-repeater-item-45c4aed" href="https://twitter.com/AbilityRush" target="_blank">
+						<span class="elementor-screen-only">Twitter</span>
+						<i class="fab fa-twitter"></i>					</a>
+				</span>
+					</div>
+				</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				</div>
+		<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-official sd-sharing">
+<h3 class="sd-title">Share this:</h3>
+<div class="sd-content"><ul>
+<li class="share-facebook"><div class="fb-share-button" data-href="/how-to-create-a-timed-rate-limiter-in-golang/" data-layout="button_count"></div></li>
+<li class="share-x"><a href="https://x.com/share" class="twitter-share-button" data-url="/how-to-create-a-timed-rate-limiter-in-golang/" data-text="How to create a timed rate limiter in Golang" data-via="AbilityRush">Post</a></li>
+<li class="share-end">
+</ul></div>
+</div></div>
+</div>
+<!-- .entry -->
+
+
+<div class="post-tags clr">
+	<span class="owp-tag-text">Tags: </span><a href="/tag/go/" rel="tag">go</a><span class="owp-sep">,</span> <a href="/tag/golang/" rel="tag">golang</a><span class="owp-sep">,</span> <a href="/tag/mutex/" rel="tag">mutex</a><span class="owp-sep">,</span> <a href="/tag/rate-limiter/" rel="tag">rate limiter</a>
+</div>
+
+
+
+	<nav class="navigation post-navigation" aria-label="Read more articles">
+		<h2 class="screen-reader-text">Read more articles</h2>
+		<div class="nav-links">
+<div class="nav-previous"><a href="/how-to-create-a-rate-limiter-in-golang/" rel="prev"><span class="title"><i class=" fas fa-long-arrow-alt-left" aria-hidden="true" role="img"></i> Previous Post</span><span class="post-title">How to Create a Rate-Limiter in Golang</span></a></div>
+<div class="nav-next"><a href="/j2csv-how-to-convert-json-to-csv-in-golang/" rel="next"><span class="title"><i class=" fas fa-long-arrow-alt-right" aria-hidden="true" role="img"></i> Next Post</span><span class="post-title">j2csv &#8211; How to convert JSON to CSV in Golang</span></a></div>
+</div>
+	</nav>
+
+	<section id="related-posts" class="clr">
+
+		<h3 class="theme-heading related-posts-title">
+			<span class="text">You Might Also Like</span>
+		</h3>
+
+		<div class="oceanwp-row clr">
+
+			
+			
+				
+				<article class="related-post clr col span_1_of_3 col-1 post-40 post type-post status-publish format-standard hentry category-golang category-technology tag-concurrency tag-download tag-file tag-go entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/download-file-concurrently-in-golang-part-1/" rel="bookmark">Download file concurrently in Golang</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2021-09-05T01:32:03+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>September 5, 2021</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+				
+				<article class="related-post clr col span_1_of_3 col-2 post-1511 post type-post status-publish format-standard hentry category-golang category-technology tag-csv tag-go tag-golang tag-json entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/j2csv-how-to-ignore-comments-while-converting-json-to-csv/" rel="bookmark">j2csv &#8211; How to ignore comments while converting JSON to CSV?</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2022-12-30T03:13:18+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>December 30, 2022</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+				
+				<article class="related-post clr col span_1_of_3 col-3 post-1285 post type-post status-publish format-standard hentry category-golang category-technology tag-aws tag-go tag-golang tag-ngrok tag-sns entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/how-to-create-pub-sub-model-with-aws-sns-http-golang/" rel="bookmark">How to create Pub-Sub model with AWS SNS, HTTP, Golang</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2022-10-01T15:18:52+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>October 1, 2022</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+		</div>
+<!-- .oceanwp-row -->
+
+	</section><!-- .related-posts -->
+
+
+
+
+<section id="comments" class="comments-area clr has-comments">
+
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/how-to-create-a-timed-rate-limiter-in-golang/#respond" style="display:none;">Cancel reply</a></small>
+</h3>
+<form action="/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+<div class="comment-textarea">
+<label for="comment" class="screen-reader-text">Comment</label><textarea name="comment" id="comment" cols="39" rows="4" tabindex="0" class="textarea-comment" placeholder="Your comment here..."></textarea>
+</div>
+<div class="comment-form-author">
+<label for="author" class="screen-reader-text">Enter your name or username to comment</label><input type="text" name="author" id="author" value="" placeholder="Name (required)" size="22" tabindex="0" aria-required="true" class="input-name">
+</div>
+<div class="comment-form-email">
+<label for="email" class="screen-reader-text">Enter your email address to comment</label><input type="text" name="email" id="email" value="" placeholder="Email (required)" size="22" tabindex="0" aria-required="true" class="input-email">
+</div>
+<div class="comment-form-url">
+<label for="url" class="screen-reader-text">Enter your website URL (optional)</label><input type="text" name="url" id="url" value="" placeholder="Website" size="22" tabindex="0" class="input-website">
+</div>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="1482" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="f9c8b26440"></p>
+<p style="display: none !important;" class="akismet-fields-container" data-prefix="ak_"><label>&#916;<textarea name="ak_hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label><input type="hidden" id="ak_js_1" name="ak_js" value="135"></p>
+</form>	</div>
+<!-- #respond -->
+	
+</section><!-- #comments -->
+
+</article>
+
+				
+			</div>
+<!-- #content -->
+
+			
+		</div>
+<!-- #primary -->
+
+		
+
+<aside id="right-sidebar" class="sidebar-container widget-area sidebar-primary" itemscope="itemscope" itemtype="https://schema.org/WPSideBar" role="complementary" aria-label="Primary Sidebar">
+
+	
+	<div id="right-sidebar-inner" class="clr">
+
+		
+		<div id="recent-posts-2" class="sidebar-box widget_recent_entries clr">
+		<h4 class="widget-title">Recent Posts</h4>
+		<ul>
+											<li>
+					<a href="/how-to-accept-input-from-terminal-in-golang/">How to Accept Input from Terminal in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-update-variables-compile-time-in-go/">How to Update Variables Compile Time in Go</a>
+									</li>
+											<li>
+					<a href="/how-to-use-unbuffered-channels-in-golang/">How to use Unbuffered channels in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-use-buffered-channel-in-golang/">How to use Buffered Channel in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-receive-file-uploads-in-the-golang-http-server/">How to receive file uploads in the Golang HTTP server</a>
+									</li>
+					</ul>
+
+		</div>
+<div id="recent-comments-2" class="sidebar-box widget_recent_comments clr">
+<h4 class="widget-title">Recent Comments</h4>
+<ul id="recentcomments">
+<li class="recentcomments">
+<span class="comment-author-link"><a href="/" class="url" rel="ugc">Akshay Khairmode</a></span> on <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1931">Uploading File to AWS S3 in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link">Nihat</span> on <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1856">Uploading File to AWS S3 in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://livrooshomensmentem.com.br/" class="url" rel="ugc external nofollow">homens mentem</a></span> on <a href="/working-with-aws-simple-queue-service-sqs-in-golang/comment-page-1/#comment-43">Working with AWS SQS in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://comfort.kr.ua/kuhni-krivoj-rog/" class="url" rel="ugc external nofollow">Сергей</a></span> on <a href="/writing-mocks-in-golang-with-mockery/comment-page-1/#comment-24">Writing Mocks in Golang with mockery</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://github.com/chakal1337" class="url" rel="ugc external nofollow">JadSaint</a></span> on <a href="/download-file-concurrently-in-golang-part-2/comment-page-1/#comment-14">Download file concurrently in Golang-Part 2(Memory)</a>
+</li>
+</ul>
+</div>
+<div id="archives-2" class="sidebar-box widget_archive clr">
+<h4 class="widget-title">Archives</h4>
+			<ul>
+					<li><a href="/2023/05/">May 2023</a></li>
+	<li><a href="/2023/03/">March 2023</a></li>
+	<li><a href="/2023/02/">February 2023</a></li>
+	<li><a href="/2023/01/">January 2023</a></li>
+	<li><a href="/2022/12/">December 2022</a></li>
+	<li><a href="/2022/10/">October 2022</a></li>
+	<li><a href="/2022/09/">September 2022</a></li>
+	<li><a href="/2022/06/">June 2022</a></li>
+	<li><a href="/2022/05/">May 2022</a></li>
+	<li><a href="/2022/04/">April 2022</a></li>
+	<li><a href="/2022/03/">March 2022</a></li>
+	<li><a href="/2022/02/">February 2022</a></li>
+	<li><a href="/2022/01/">January 2022</a></li>
+	<li><a href="/2021/11/">November 2021</a></li>
+	<li><a href="/2021/10/">October 2021</a></li>
+	<li><a href="/2021/09/">September 2021</a></li>
+			</ul>
+
+			</div>
+<div id="categories-2" class="sidebar-box widget_categories clr">
+<h4 class="widget-title">Categories</h4>
+			<ul>
+					<li class="cat-item cat-item-3">
+<a href="/category/technology/golang/">Golang</a>
+</li>
+	<li class="cat-item cat-item-2">
+<a href="/category/technology/">Technology</a>
+</li>
+			</ul>
+
+			</div>
+<div id="block-13" class="sidebar-box widget_block clr">
+<div class="wp-block-buttons alignfull is-content-justification-center omw-open-modal is-layout-flex wp-block-buttons-is-layout-flex">
+<div class="wp-block-button has-custom-width wp-block-button__width-100 is-style-outline"><a class="wp-block-button__link has-vivid-cyan-blue-color has-text-color" href="#omw-514">Notify Me</a></div>
+</div>
+</div>
+	</div>
+<!-- #sidebar-inner -->
+
+	
+</aside><!-- #right-sidebar -->
+
+
+	</div>
+<!-- #content-wrap -->
+
+	
+
+	</main><!-- #main -->
+
+	
+	
+	
+		
+<footer id="footer" class="site-footer" itemscope="itemscope" itemtype="https://schema.org/WPFooter" role="contentinfo">
+
+	
+	<div id="footer-inner" class="clr">
+
+		
+
+<div id="footer-widgets" class="oceanwp-row clr">
+
+	
+	<div class="footer-widgets-inner container">
+
+					<div class="footer-box span_1_of_4 col col-1">
+							</div>
+<!-- .footer-one-box -->
+
+							<div class="footer-box span_1_of_4 col col-2">
+									</div>
+<!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-3 ">
+									</div>
+<!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-4">
+									</div>
+<!-- .footer-box -->
+				
+			
+	</div>
+<!-- .container -->
+
+	
+</div>
+<!-- #footer-widgets -->
+
+
+
+<div id="footer-bottom" class="clr no-footer-nav">
+
+	
+	<div id="footer-bottom-inner" class="container clr">
+
+		
+		
+			<div id="copyright" class="clr" role="contentinfo">
+				Copyright - OceanWP Theme by OceanWP			</div>
+<!-- #copyright -->
+
+			
+	</div>
+<!-- #footer-bottom-inner -->
+
+	
+</div>
+<!-- #footer-bottom -->
+
+
+	</div>
+<!-- #footer-inner -->
+
+	
+</footer><!-- #footer -->
+
+	
+	
+</div>
+<!-- #wrap -->
+
+
+</div>
+<!-- #outer-wrap -->
+
+
+
+<a aria-label="Scroll to the top of the page" href="#" id="scroll-top" class="scroll-top-right"><i class=" fa fa-angle-double-up" aria-hidden="true" role="img"></i></a>
+
+
+
+
+
+				<div id="omw-514" class="omw-modal">
+
+											<a href="/#mwc-514" class="omw-close-modal" aria-label="Close this modal window ID 514"></a>
+					
+					<div class="omw-modal-inner clr">
+						<p><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSehnVQsuv4by0SLBubMNAldpPAmQRjoFZ4k8kvM2AJ06H93VA/viewform?embedded=true" width="640" height="700" frameborder="0" marginwidth="0" marginheight="0"><span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span><span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span>Loadi<span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span>ng…</iframe></p>
+					</div>
+				</div>
+
+							<div class="omw-modal-overlay"></div>
+
+						<div id="fb-root"></div>
+			
+			
+						
+			<link rel="stylesheet" id="code-block-for-elementor-coy-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-coy.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-dark-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-dark.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-default-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-default.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-funky-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-funky.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-okaidia-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-okaidia.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-solarized-light-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-solarized-light.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-tomorrow-night-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-tomorrow-night.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-twilight-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-twilight.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-toolbar-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-toolbar.css?ver=1.0.3" media="all">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.5.4"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"🏳️‍⚧️","🏳️​⚧️")?!1:!n(e,"🇺🇳","🇺​🇳")&&!n(e,"🏴󠁧󠁢󠁥󠁮󠁧󠁿","🏴​󠁧​󠁢​󠁥​󠁮​󠁧​󠁿");case"emoji":return!n(e,"🐦‍⬛","🐦​⬛")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+</script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/jquery-migrate.min.js" id="jquery-migrate-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/wp-polyfill-inert.min.js" id="wp-polyfill-inert-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/regenerator-runtime.min.js" id="regenerator-runtime-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/wp-polyfill.min.js" id="wp-polyfill-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/dom-ready.min.js" id="wp-dom-ready-js"></script><script src="/wp-content/plugins/auto-terms-of-service-and-privacy-policy/js/base.js?ver=2.5.1" id="wpautoterms_base-js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-DXSQBK2RY1" id="google_gtagjs-js" async></script><script id="google_gtagjs-js-after">window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag("set","linker",{"domains":["localhost"]});
+gtag("js", new Date());
+gtag("set", "developer_id.dZTNiMT", true);
+gtag("config", "G-DXSQBK2RY1");</script><script>( function() {
+				window.onpageshow = function( event ) {
+					// Defined window.wpforms means that a form exists on a page.
+					// If so and back/forward button has been clicked,
+					// force reload a page to prevent the submit button state stuck.
+					if ( typeof window.wpforms !== 'undefined' && event.persisted ) {
+						window.location.reload();
+					}
+				};
+			}() );</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4736925107936916" crossorigin="anonymous"></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4736925107936916&amp;host=ca-host-pub-2644536267352236" crossorigin="anonymous"></script><script>document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );</script><script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&appId=249643311490&version=v2.3'; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script><script>document.body.addEventListener( 'is.post-load', function() {
+				if ( 'undefined' !== typeof FB ) {
+					FB.XFBML.parse();
+				}
+			} );</script><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script><script id="starter-templates-zip-preview-js-extra">var starter_templates_zip_preview = {"AstColorPaletteVarPrefix":"--ast-global-","AstEleColorPaletteVarPrefix":"--ast-global-"};</script><script src="/wp-content/plugins/astra-sites/inc/lib/onboarding/assets/dist/template-preview/main.js?ver=06758d4d807d9d22c6ea" id="starter-templates-zip-preview-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/comment-reply.min.js" id="comment-reply-js" async data-wp-strategy="async"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/imagesloaded.min.js" id="imagesloaded-js"></script><script id="oceanwp-main-js-extra">var oceanwpLocalize = {"nonce":"2984539bf0","isRTL":"","menuSearchStyle":"drop_down","mobileMenuSearchStyle":"disabled","sidrSource":null,"sidrDisplace":"1","sidrSide":"left","sidrDropdownTarget":"link","verticalHeaderTarget":"link","customScrollOffset":"0","customSelects":".woocommerce-ordering .orderby, #dropdown_product_cat, .widget_categories select, .widget_archive select, .single-product .variations_form .variations select","ajax_url":"\/wp-admin\/admin-ajax.php","oe_mc_wpnonce":"0f85b48aaa"};</script><script src="/wp-content/themes/oceanwp/assets/js/theme.min.js?ver=1.0" id="oceanwp-main-js"></script><script src="/wp-content/themes/oceanwp/assets/js/drop-down-mobile-menu.min.js?ver=1.0" id="oceanwp-drop-down-mobile-menu-js"></script><script src="/wp-content/themes/oceanwp/assets/js/drop-down-search.min.js?ver=1.0" id="oceanwp-drop-down-search-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/magnific-popup.min.js?ver=1.0" id="ow-magnific-popup-js"></script><script src="/wp-content/themes/oceanwp/assets/js/ow-lightbox.min.js?ver=1.0" id="oceanwp-lightbox-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/flickity.pkgd.min.js?ver=1.0" id="ow-flickity-js"></script><script src="/wp-content/themes/oceanwp/assets/js/ow-slider.min.js?ver=1.0" id="oceanwp-slider-js"></script><script src="/wp-content/themes/oceanwp/assets/js/scroll-effect.min.js?ver=1.0" id="oceanwp-scroll-effect-js"></script><script src="/wp-content/themes/oceanwp/assets/js/scroll-top.min.js?ver=1.0" id="oceanwp-scroll-top-js"></script><script src="/wp-content/themes/oceanwp/assets/js/select.min.js?ver=1.0" id="oceanwp-select-js"></script><script id="flickr-widget-script-js-extra">var flickrWidgetParams = {"widgets":[]};</script><script src="/wp-content/plugins/ocean-extra/includes/widgets/js/flickr.min.js?ver=6.5.4" id="flickr-widget-script-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/perfect-scrollbar.min.js?ver=1.0" id="ow-perfect-scrollbar-js"></script><script src="/wp-content/plugins/ocean-modal-window/assets/js/modal-window.min.js?ver=2.2.2" id="omw-js-scripts-js"></script><script src="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism.js?ver=1.0.3" id="code-block-for-elementor-prismjs-js"></script><script src="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-toolbar.js?ver=1.0.3" id="code-block-for-elementor-toolbarjs-js"></script><script defer src="/wp-content/plugins/akismet/_inc/akismet-frontend.js?ver=1711132304" id="akismet-frontend-js"></script><script src="/wp-content/plugins/elementor/assets/js/webpack.runtime.min.js?ver=3.21.8" id="elementor-webpack-runtime-js"></script><script src="/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=3.21.8" id="elementor-frontend-modules-js"></script><script src="/wp-content/plugins/elementor/assets/lib/waypoints/waypoints.min.js?ver=4.0.2" id="elementor-waypoints-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/ui/core.min.js" id="jquery-ui-core-js"></script><script id="elementor-frontend-js-before">var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Share on Facebook","shareOnTwitter":"Share on Twitter","pinIt":"Pin it","download":"Download","downloadImage":"Download image","fullscreen":"Fullscreen","zoom":"Zoom","share":"Share","playVideo":"Play Video","previous":"Previous","next":"Next","close":"Close","a11yCarouselWrapperAriaLabel":"Carousel | Horizontal scrolling: Arrow Left & Right","a11yCarouselPrevSlideMessage":"Previous slide","a11yCarouselNextSlideMessage":"Next slide","a11yCarouselFirstSlideMessage":"This is the first slide","a11yCarouselLastSlideMessage":"This is the last slide","a11yCarouselPaginationBulletMessage":"Go to slide"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Mobile Portrait","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobile Landscape","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet Portrait","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet Landscape","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Laptop","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Widescreen","value":2400,"default_value":2400,"direction":"min","is_enabled":false}}},"version":"3.21.8","is_static":false,"experimentalFeatures":{"e_optimized_assets_loading":true,"e_optimized_css_loading":true,"additional_custom_breakpoints":true,"container":true,"e_swiper_latest":true,"container_grid":true,"home_screen":true,"ai-layout":true,"landing-pages":true},"urls":{"assets":"\/wp-content\/plugins\/elementor\/assets\/"},"swiperClass":"swiper","settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description"},"post":{"id":1482,"title":"How%20to%20create%20a%20timed%20rate%20limiter%20in%20Golang%20%E2%80%93%20Ability%20Rush","excerpt":"Hey Peeps, in the last post we saw how we can create a rate limiter. In this post we will see how we can make it time based. i.e n number of requests per second","featuredImage":false}};</script><script src="/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.21.8" id="elementor-frontend-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/underscore.min.js" id="underscore-js"></script><script id="wp-util-js-extra">var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};</script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/wp-util.min.js" id="wp-util-js"></script><script id="wpforms-elementor-js-extra">var wpformsElementorVars = {"captcha_provider":"recaptcha","recaptcha_type":"v2"};</script><script src="/wp-content/plugins/wpforms-lite/assets/js/integrations/elementor/frontend.min.js?ver=1.8.8.3" id="wpforms-elementor-js"></script><script id="sharing-js-js-extra">var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};</script><script src="https://c0.wp.com/p/jetpack/13.5/_inc/build/sharedaddy/sharing.min.js" id="sharing-js-js"></script><script id="sharing-js-js-after">var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-facebook' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-facebook' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+						return false;
+					}
+				} );
+			} )();</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	>
+
+<channel>
+	<title>mockery – Ability Rush</title>
+	<atom:link href="/tag/mockery/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>Learn &#38; Improve</description>
+	<lastBuildDate>Sat, 08 Apr 2023 14:24:30 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.5.4</generator>
+
+<image>
+	<url>/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-32x32.png</url>
+	<title>mockery – Ability Rush</title>
+	<link>/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Golang Mockery &#8211; How to mock inside a loop?</title>
+		<link>/golang-mockery-how-to-mock-inside-a-loop/</link>
+					<comments>/golang-mockery-how-to-mock-inside-a-loop/#respond</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Tue, 07 Jun 2022 18:41:30 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[golang]]></category>
+		<category><![CDATA[mockery]]></category>
+		<guid isPermaLink="false">/?p=1216</guid>
+
+					<description><![CDATA[<p>Introduction Hey folks, Today we are going to see how to mock with mockery when we are dealing with multiple method calls or loops. If you don&#8217;t know what is mocks and how to do them, check our earlier post on mockery. So today we are going to extend our previous post and see how [&#8230;]</p>
+<p>The post <a href="/golang-mockery-how-to-mock-inside-a-loop/">Golang Mockery – How to mock inside a loop?</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/golang-mockery-how-to-mock-inside-a-loop/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">1216</post-id>	</item>
+		<item>
+		<title>Writing Mocks in Golang with mockery</title>
+		<link>/writing-mocks-in-golang-with-mockery/</link>
+					<comments>/writing-mocks-in-golang-with-mockery/#comments</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Sun, 30 Jan 2022 14:38:57 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[interface]]></category>
+		<category><![CDATA[mockery]]></category>
+		<category><![CDATA[unit tests]]></category>
+		<guid isPermaLink="false">/?p=827</guid>
+
+					<description><![CDATA[<p>In this post, We will see how we can use mocks in writing our unit tests so that external dependencies can be mocked and our tests don't need it.</p>
+<p>The post <a href="/writing-mocks-in-golang-with-mockery/">Writing Mocks in Golang with mockery</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/writing-mocks-in-golang-with-mockery/feed/</wfw:commentRss>
+			<slash:comments>1</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">827</post-id>	</item>
+	</channel>
+</rss>

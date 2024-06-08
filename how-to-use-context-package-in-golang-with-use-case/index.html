@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html class="html" dir="ltr" lang="en-US" prefix="og: https://ogp.me/ns#">
+<head>
+	<meta charset="UTF-8">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+
+	<title>How to use Context package in Golang with Use Case – Ability Rush</title>
+
+		<!-- All in One SEO 4.6.4 - aioseo.com -->
+		<meta name="description" content="Hey Peeps, In this post we will see how to use the context package to set deadlines, timeouts to cancel some backend operation and also pass data.">
+		<meta name="robots" content="max-image-preview:large">
+		<link rel="canonical" href="/how-to-use-context-package-in-golang-with-use-case/">
+		<meta name="generator" content="All in One SEO (AIOSEO) 4.6.4">
+		<meta property="og:locale" content="en_US">
+		<meta property="og:site_name" content="Ability Rush – Learn &amp; Improve">
+		<meta property="og:type" content="article">
+		<meta property="og:title" content="How to use Context package in Golang with Use Case – Ability Rush">
+		<meta property="og:description" content="Hey Peeps, In this post we will see how to use the context package to set deadlines, timeouts to cancel some backend operation and also pass data.">
+		<meta property="og:url" content="/how-to-use-context-package-in-golang-with-use-case/">
+		<meta property="article:published_time" content="2022-10-07T19:49:17+00:00">
+		<meta property="article:modified_time" content="2022-10-07T20:21:01+00:00">
+		<meta name="twitter:card" content="summary">
+		<meta name="twitter:title" content="How to use Context package in Golang with Use Case – Ability Rush">
+		<meta name="twitter:description" content="Hey Peeps, In this post we will see how to use the context package to set deadlines, timeouts to cancel some backend operation and also pass data.">
+		<script data-jetpack-boost="ignore" type="application/ld+json" class="aioseo-schema">{"@context":"https:\/\/schema.org","@graph":[{"@type":"BlogPosting","@id":"\/how-to-use-context-package-in-golang-with-use-case\/#blogposting","name":"How to use Context package in Golang with Use Case – Ability Rush","headline":"How to use Context package in Golang with Use Case","author":{"@id":"\/author\/akshaykhairmode\/#author"},"publisher":{"@id":"\/#organization"},"image":{"@type":"ImageObject","url":"\/wp-content\/uploads\/2022\/10\/context_with_deadline.png","@id":"\/how-to-use-context-package-in-golang-with-use-case\/#articleImage","width":798,"height":355},"datePublished":"2022-10-08T01:19:17+05:30","dateModified":"2022-10-08T01:51:01+05:30","inLanguage":"en-US","mainEntityOfPage":{"@id":"\/how-to-use-context-package-in-golang-with-use-case\/#webpage"},"isPartOf":{"@id":"\/how-to-use-context-package-in-golang-with-use-case\/#webpage"},"articleSection":"Golang, Technology, context, deadline, go, golang, timeout"},{"@type":"BreadcrumbList","@id":"\/how-to-use-context-package-in-golang-with-use-case\/#breadcrumblist","itemListElement":[{"@type":"ListItem","@id":"\/#listItem","position":1,"name":"Home","item":"\/","nextItem":"\/how-to-use-context-package-in-golang-with-use-case\/#listItem"},{"@type":"ListItem","@id":"\/how-to-use-context-package-in-golang-with-use-case\/#listItem","position":2,"name":"How to use Context package in Golang with Use Case","previousItem":"\/#listItem"}]},{"@type":"Organization","@id":"\/#organization","name":"Ability Rush","description":"Learn & Improve","url":"\/","logo":{"@type":"ImageObject","url":"\/wp-content\/uploads\/2021\/10\/cropped-android-chrome-512x512-1.png","@id":"\/how-to-use-context-package-in-golang-with-use-case\/#organizationLogo","width":512,"height":512},"image":{"@id":"\/how-to-use-context-package-in-golang-with-use-case\/#organizationLogo"}},{"@type":"Person","@id":"\/author\/akshaykhairmode\/#author","url":"\/author\/akshaykhairmode\/","name":"Akshay Khairmode","image":{"@type":"ImageObject","@id":"\/how-to-use-context-package-in-golang-with-use-case\/#authorImage","url":"http:\/\/2.gravatar.com\/avatar\/20ffb1dd4c5b351c3a2a7cb6a7f2e342?s=96&d=wavatar&r=g","width":96,"height":96,"caption":"Akshay Khairmode"}},{"@type":"WebPage","@id":"\/how-to-use-context-package-in-golang-with-use-case\/#webpage","url":"\/how-to-use-context-package-in-golang-with-use-case\/","name":"How to use Context package in Golang with Use Case – Ability Rush","description":"Hey Peeps, In this post we will see how to use the context package to set deadlines, timeouts to cancel some backend operation and also pass data.","inLanguage":"en-US","isPartOf":{"@id":"\/#website"},"breadcrumb":{"@id":"\/how-to-use-context-package-in-golang-with-use-case\/#breadcrumblist"},"author":{"@id":"\/author\/akshaykhairmode\/#author"},"creator":{"@id":"\/author\/akshaykhairmode\/#author"},"datePublished":"2022-10-08T01:19:17+05:30","dateModified":"2022-10-08T01:51:01+05:30"},{"@type":"WebSite","@id":"\/#website","url":"\/","name":"Ability Rush","description":"Learn & Improve","inLanguage":"en-US","publisher":{"@id":"\/#organization"}}]}</script>
+		<!-- All in One SEO -->
+
+<link rel="pingback" href="/xmlrpc.php">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="dns-prefetch" href="//www.googletagmanager.com">
+<link rel="dns-prefetch" href="//c0.wp.com">
+<link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+<link rel="dns-prefetch" href="//fundingchoicesmessages.google.com">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Feed" href="/feed/">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Comments Feed" href="/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; How to use Context package in Golang with Use Case Comments Feed" href="/how-to-use-context-package-in-golang-with-use-case/feed/">
+
+<style type="text/css" media="all">.wpautoterms-footer{background-color:#ffffff;text-align:center;}
+.wpautoterms-footer a{color:#000000;font-family:Arial, sans-serif;font-size:14px;}
+.wpautoterms-footer .separator{color:#cccccc;font-family:Arial, sans-serif;font-size:14px;}</style>
+<style id="wp-emoji-styles-inline-css">img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}</style>
+<link rel="stylesheet" id="mediaelement-css" href="https://c0.wp.com/c/6.5.4/wp-includes/js/mediaelement/mediaelementplayer-legacy.min.css" media="all">
+<link rel="stylesheet" id="wp-mediaelement-css" href="https://c0.wp.com/c/6.5.4/wp-includes/js/mediaelement/wp-mediaelement.min.css" media="all">
+<style id="jetpack-sharing-buttons-style-inline-css">.jetpack-sharing-buttons__services-list{display:flex;flex-direction:row;flex-wrap:wrap;gap:0;list-style-type:none;margin:5px;padding:0}.jetpack-sharing-buttons__services-list.has-small-icon-size{font-size:12px}.jetpack-sharing-buttons__services-list.has-normal-icon-size{font-size:16px}.jetpack-sharing-buttons__services-list.has-large-icon-size{font-size:24px}.jetpack-sharing-buttons__services-list.has-huge-icon-size{font-size:36px}@media print{.jetpack-sharing-buttons__services-list{display:none!important}}.editor-styles-wrapper .wp-block-jetpack-sharing-buttons{gap:0;padding-inline-start:0}ul.jetpack-sharing-buttons__services-list.has-background{padding:1.25em 2.375em}</style>
+<style id="classic-theme-styles-inline-css">/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}</style>
+<style id="global-styles-inline-css">body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}</style>
+<link rel="stylesheet" id="wpautoterms_css-css" href="/wp-content/plugins/auto-terms-of-service-and-privacy-policy/css/wpautoterms.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="mpl-publisher-css" href="/wp-content/plugins/mpl-publisher/assets/css/mpl-widget.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="oceanwp-style-css" href="/wp-content/themes/oceanwp/assets/css/style.min.css?ver=1.0" media="all">
+<link rel="stylesheet" id="child-style-css" href="/wp-content/themes/oceanwp-child-theme-master/style.css?ver=3.5.5" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="/wp-content/themes/oceanwp/assets/fonts/fontawesome/css/all.min.css?ver=6.4.2" media="all">
+<link rel="stylesheet" id="simple-line-icons-css" href="/wp-content/themes/oceanwp/assets/css/third/simple-line-icons.min.css?ver=2.4.0" media="all">
+<link rel="stylesheet" id="elementor-icons-css" href="/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.29.0" media="all">
+<link rel="stylesheet" id="elementor-frontend-css" href="/wp-content/plugins/elementor/assets/css/frontend-lite.min.css?ver=3.21.8" media="all">
+<link rel="stylesheet" id="swiper-css" href="/wp-content/plugins/elementor/assets/lib/swiper/v8/css/swiper.min.css?ver=8.4.5" media="all">
+<link rel="stylesheet" id="elementor-post-6-css" href="/wp-content/uploads/elementor/css/post-6.css?ver=1717861485" media="all">
+<link rel="stylesheet" id="elementor-global-css" href="/wp-content/uploads/elementor/css/global.css?ver=1717861485" media="all">
+<link rel="stylesheet" id="elementor-post-1335-css" href="/wp-content/uploads/elementor/css/post-1335.css?ver=1717861881" media="all">
+<link rel="stylesheet" id="oe-widgets-style-css" href="/wp-content/plugins/ocean-extra/assets/css/widgets.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="ow-perfect-scrollbar-css" href="/wp-content/themes/oceanwp/assets/css/third/perfect-scrollbar.css?ver=1.5.0" media="all">
+<link rel="stylesheet" id="omw-styles-css" href="/wp-content/plugins/ocean-modal-window/assets/css/style.min.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="sharedaddy-css" href="https://c0.wp.com/p/jetpack/13.5/modules/sharedaddy/sharing.css" media="all">
+<link rel="stylesheet" id="social-logos-css" href="https://c0.wp.com/p/jetpack/13.5/_inc/social-logos/social-logos.min.css" media="all">
+<link rel="stylesheet" id="google-fonts-1-css" href="https://fonts.googleapis.com/css?family=Merriweather%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto+Slab%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic&#038;display=auto&#038;ver=6.5.4" media="all">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<script data-jetpack-boost="ignore" src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/jquery.min.js" id="jquery-core-js"></script>
+
+
+
+
+
+
+
+<!-- Google tag (gtag.js) snippet added by Site Kit -->
+
+<!-- Google Analytics snippet added by Site Kit -->
+
+
+
+<!-- End Google tag (gtag.js) snippet added by Site Kit -->
+<link rel="https://api.w.org/" href="/wp-json/">
+<link rel="alternate" type="application/json" href="/wp-json/wp/v2/posts/1335">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="/xmlrpc.php?rsd">
+<meta name="generator" content="WordPress 6.5.4">
+<link rel="shortlink" href="/?p=1335">
+<link rel="alternate" type="application/json+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2F%2Fhow-to-use-context-package-in-golang-with-use-case%2F">
+<link rel="alternate" type="text/xml+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2F%2Fhow-to-use-context-package-in-golang-with-use-case%2F#038;format=xml">
+<meta name="generator" content="Site Kit by Google 1.128.0">		
+		
+	
+
+<!-- Google AdSense meta tags added by Site Kit -->
+<meta name="google-adsense-platform-account" content="ca-host-pub-2644536267352236">
+<meta name="google-adsense-platform-domain" content="sitekit.withgoogle.com">
+<!-- End Google AdSense meta tags added by Site Kit -->
+<meta name="generator" content="Elementor 3.21.8; features: e_optimized_assets_loading, e_optimized_css_loading, additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-auto">
+<style>.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<!-- Google AdSense snippet added by Site Kit -->
+
+
+<!-- End Google AdSense snippet added by Site Kit -->
+<link rel="icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-32x32.png" sizes="32x32">
+<link rel="icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-180x180.png">
+<meta name="msapplication-TileImage" content="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-270x270.png">
+<!-- OceanWP CSS -->
+<style type="text/css">/* General CSS */a:hover,a.light:hover,.theme-heading .text::before,.theme-heading .text::after,#top-bar-content >a:hover,#top-bar-social li.oceanwp-email a:hover,#site-navigation-wrap .dropdown-menu >li >a:hover,#site-header.medium-header #medium-searchform button:hover,.oceanwp-mobile-menu-icon a:hover,.blog-entry.post .blog-entry-header .entry-title a:hover,.blog-entry.post .blog-entry-readmore a:hover,.blog-entry.thumbnail-entry .blog-entry-category a,ul.meta li a:hover,.dropcap,.single nav.post-navigation .nav-links .title,body .related-post-title a:hover,body #wp-calendar caption,body .contact-info-widget.default i,body .contact-info-widget.big-icons i,body .custom-links-widget .oceanwp-custom-links li a:hover,body .custom-links-widget .oceanwp-custom-links li a:hover:before,body .posts-thumbnails-widget li a:hover,body .social-widget li.oceanwp-email a:hover,.comment-author .comment-meta .comment-reply-link,#respond #cancel-comment-reply-link:hover,#footer-widgets .footer-box a:hover,#footer-bottom a:hover,#footer-bottom #footer-bottom-menu a:hover,.sidr a:hover,.sidr-class-dropdown-toggle:hover,.sidr-class-menu-item-has-children.active >a,.sidr-class-menu-item-has-children.active >a >.sidr-class-dropdown-toggle,input[type=checkbox]:checked:before{color:#3370bf}.single nav.post-navigation .nav-links .title .owp-icon use,.blog-entry.post .blog-entry-readmore a:hover .owp-icon use,body .contact-info-widget.default .owp-icon use,body .contact-info-widget.big-icons .owp-icon use{stroke:#3370bf}input[type="button"],input[type="reset"],input[type="submit"],button[type="submit"],.button,#site-navigation-wrap .dropdown-menu >li.btn >a >span,.thumbnail:hover i,.post-quote-content,.omw-modal .omw-close-modal,body .contact-info-widget.big-icons li:hover i,body div.wpforms-container-full .wpforms-form input[type=submit],body div.wpforms-container-full .wpforms-form button[type=submit],body div.wpforms-container-full .wpforms-form .wpforms-page-button{background-color:#3370bf}.thumbnail:hover .link-post-svg-icon{background-color:#3370bf}body .contact-info-widget.big-icons li:hover .owp-icon{background-color:#3370bf}.widget-title{border-color:#3370bf}blockquote{border-color:#3370bf}#searchform-dropdown{border-color:#3370bf}.dropdown-menu .sub-menu{border-color:#3370bf}.blog-entry.large-entry .blog-entry-readmore a:hover{border-color:#3370bf}.oceanwp-newsletter-form-wrap input[type="email"]:focus{border-color:#3370bf}.social-widget li.oceanwp-email a:hover{border-color:#3370bf}#respond #cancel-comment-reply-link:hover{border-color:#3370bf}body .contact-info-widget.big-icons li:hover i{border-color:#3370bf}#footer-widgets .oceanwp-newsletter-form-wrap input[type="email"]:focus{border-color:#3370bf}blockquote,.wp-block-quote{border-left-color:#3370bf}body .contact-info-widget.big-icons li:hover .owp-icon{border-color:#3370bf}input[type="button"]:hover,input[type="reset"]:hover,input[type="submit"]:hover,button[type="submit"]:hover,input[type="button"]:focus,input[type="reset"]:focus,input[type="submit"]:focus,button[type="submit"]:focus,.button:hover,.button:focus,#site-navigation-wrap .dropdown-menu >li.btn >a:hover >span,.post-quote-author,.omw-modal .omw-close-modal:hover,body div.wpforms-container-full .wpforms-form input[type=submit]:hover,body div.wpforms-container-full .wpforms-form button[type=submit]:hover,body div.wpforms-container-full .wpforms-form .wpforms-page-button:hover{background-color:#81d742}a{color:#1e73be}a .owp-icon use{stroke:#1e73be}a:hover{color:#dd3333}a:hover .owp-icon use{stroke:#dd3333}#scroll-top{background-color:#1e73be}/* Header CSS */#site-header.has-header-media .overlay-header-media{background-color:rgba(0,0,0,0.5)}/* Typography CSS */body{color:#000000}</style>
+<style id="wpforms-css-vars-root">:root {
+					--wpforms-field-border-radius: 3px;
+--wpforms-field-border-style: solid;
+--wpforms-field-border-size: 1px;
+--wpforms-field-background-color: #ffffff;
+--wpforms-field-border-color: rgba( 0, 0, 0, 0.25 );
+--wpforms-field-border-color-spare: rgba( 0, 0, 0, 0.25 );
+--wpforms-field-text-color: rgba( 0, 0, 0, 0.7 );
+--wpforms-field-menu-color: #ffffff;
+--wpforms-label-color: rgba( 0, 0, 0, 0.85 );
+--wpforms-label-sublabel-color: rgba( 0, 0, 0, 0.55 );
+--wpforms-label-error-color: #d63637;
+--wpforms-button-border-radius: 3px;
+--wpforms-button-border-style: none;
+--wpforms-button-border-size: 1px;
+--wpforms-button-background-color: #066aab;
+--wpforms-button-border-color: #066aab;
+--wpforms-button-text-color: #ffffff;
+--wpforms-page-break-color: #066aab;
+--wpforms-background-image: none;
+--wpforms-background-position: center center;
+--wpforms-background-repeat: no-repeat;
+--wpforms-background-size: cover;
+--wpforms-background-width: 100px;
+--wpforms-background-height: 100px;
+--wpforms-background-color: rgba( 0, 0, 0, 0 );
+--wpforms-background-url: none;
+--wpforms-container-padding: 0px;
+--wpforms-container-border-style: none;
+--wpforms-container-border-width: 1px;
+--wpforms-container-border-color: #000000;
+--wpforms-container-border-radius: 3px;
+--wpforms-field-size-input-height: 43px;
+--wpforms-field-size-input-spacing: 15px;
+--wpforms-field-size-font-size: 16px;
+--wpforms-field-size-line-height: 19px;
+--wpforms-field-size-padding-h: 14px;
+--wpforms-field-size-checkbox-size: 16px;
+--wpforms-field-size-sublabel-spacing: 5px;
+--wpforms-field-size-icon-size: 1;
+--wpforms-label-size-font-size: 16px;
+--wpforms-label-size-line-height: 19px;
+--wpforms-label-size-sublabel-font-size: 14px;
+--wpforms-label-size-sublabel-line-height: 17px;
+--wpforms-button-size-font-size: 17px;
+--wpforms-button-size-height: 41px;
+--wpforms-button-size-padding-h: 15px;
+--wpforms-button-size-margin-top: 10px;
+--wpforms-container-shadow-size-box-shadow: none;
+
+				}</style>
+</head>
+
+<body class="post-template-default single single-post postid-1335 single-format-standard wp-embed-responsive oceanwp-theme dropdown-mobile top-header-style default-breakpoint has-sidebar content-right-sidebar post-in-category-golang post-in-category-technology page-header-disabled has-breadcrumbs elementor-default elementor-kit-6 elementor-page elementor-page-1335" itemscope="itemscope" itemtype="https://schema.org/Article">
+
+	
+	
+	<div id="outer-wrap" class="site clr">
+
+		<a class="skip-link screen-reader-text" href="#main">Skip to content</a>
+
+		
+		<div id="wrap" class="clr">
+
+			
+			
+<header id="site-header" class="top-header clr" data-height="74" itemscope="itemscope" itemtype="https://schema.org/WPHeader" role="banner">
+
+	
+		
+	<div class="header-bottom clr">
+		<div class="container">
+			
+
+<div id="site-logo" class="clr" itemscope itemtype="https://schema.org/Brand">
+
+	
+	<div id="site-logo-inner" class="clr">
+
+						<a href="/" rel="home" class="site-title site-logo-text">Ability Rush</a>
+				
+	</div>
+<!-- #site-logo-inner -->
+
+	
+				<div id="site-description"><h2>Learn &amp; Improve</h2></div>
+			
+</div>
+<!-- #site-logo -->
+
+		</div>
+	</div>
+	
+<div class="header-top clr">
+
+	
+	<div id="site-header-inner" class="clr container">
+
+		
+		<div class="left clr">
+
+			<div class="inner">
+
+				
+				
+			</div>
+
+		</div>
+
+		<div class="right clr">
+
+			<div class="inner">
+
+				<div id="search-toggle"><a href="/#" class="site-search-toggle search-dropdown-toggle" aria-label="Search website"><i class=" fas fa-search" aria-hidden="true" role="img"></i></a></div>
+<div id="searchform-dropdown" class="header-searchform-wrap clr">
+	
+<form aria-label="Search this website" role="search" method="get" class="searchform" action="/">	
+	<input aria-label="Insert search query" type="search" id="ocean-search-form-1" class="field" autocomplete="off" placeholder="Search" name="s">
+		</form>
+</div>
+<!-- #searchform-dropdown -->
+
+			</div>
+
+		</div>
+
+	</div>
+<!-- #site-header-inner -->
+
+	
+<div id="mobile-dropdown" class="clr">
+
+	<nav class="clr" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement">
+
+		<div class="menu">
+<li class="page_item page-item-1832"><a href="/j2csv/">j2csv</a></li>
+<li class="page_item page-item-3"><a href="/privacy-policy/">Privacy Policy</a></li>
+</div>
+
+<div id="mobile-menu-search" class="clr">
+	<form aria-label="Search this website" method="get" action="/" class="mobile-searchform">
+		<input aria-label="Insert search query" value="" class="field" id="ocean-mobile-search-2" type="search" name="s" autocomplete="off" placeholder="Search">
+		<button aria-label="Submit search" type="submit" class="searchform-submit">
+			<i class=" fas fa-search" aria-hidden="true" role="img"></i>		</button>
+					</form>
+</div>
+<!-- .mobile-menu-search -->
+
+	</nav>
+
+</div>
+
+	
+</div>
+<!-- .header-top -->
+
+
+		
+		
+</header><!-- #site-header -->
+
+
+			
+			<main id="main" class="site-main clr" role="main">
+
+				
+	
+	<div id="content-wrap" class="container clr">
+
+		
+		<div id="primary" class="content-area clr">
+
+			
+			<div id="content" class="site-content clr">
+
+				
+				
+<article id="post-1335">
+
+	
+
+<header class="entry-header clr">
+	<h2 class="single-post-title entry-title" itemprop="headline">How to use Context package in Golang with Use Case</h2>
+<!-- .single-post-title -->
+</header><!-- .entry-header -->
+
+
+<ul class="meta ospm-default clr">
+
+	
+					<li class="meta-author" itemprop="name">
+<span class="screen-reader-text">Post author:</span><i class=" fas fa-user-circle" aria-hidden="true" role="img"></i><a href="/author/akshaykhairmode/" title="Posts by Akshay Khairmode" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">Akshay Khairmode</a>
+</li>
+		
+		
+		
+		
+		
+		
+	
+		
+					<li class="meta-date" itemprop="datePublished">
+<span class="screen-reader-text">Post published:</span><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>October 8, 2022</li>
+		
+		
+		
+		
+		
+	
+		
+		
+		
+					<li class="meta-cat">
+<span class="screen-reader-text">Post category:</span><i class=" far fa-folder-open" aria-hidden="true" role="img"></i><a href="/category/technology/golang/" rel="category tag">Golang</a> <span class="owp-sep">/</span> <a href="/category/technology/" rel="category tag">Technology</a>
+</li>
+		
+		
+		
+	
+		
+		
+		
+		
+		
+					<li class="meta-comments">
+<span class="screen-reader-text">Post comments:</span><i class=" far fa-comments" aria-hidden="true" role="img"></i><a href="/how-to-use-context-package-in-golang-with-use-case/#respond" class="comments-link">0 Comments</a>
+</li>
+		
+	
+</ul>
+
+
+
+<div class="entry-content clr" itemprop="text">
+			<div data-elementor-type="wp-post" data-elementor-id="1335" class="elementor elementor-1335">
+						<section class="elementor-section elementor-top-section elementor-element elementor-element-72a81eb0 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="72a81eb0" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-1599280a" data-id="1599280a" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-4d3e3f8b elementor-widget elementor-widget-heading" data-id="4d3e3f8b" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-heading-title{padding:0;margin:0;line-height:1}.elementor-widget-heading .elementor-heading-title[class*=elementor-size-]>a{color:inherit;font-size:inherit;line-height:inherit}.elementor-widget-heading .elementor-heading-title.elementor-size-small{font-size:15px}.elementor-widget-heading .elementor-heading-title.elementor-size-medium{font-size:19px}.elementor-widget-heading .elementor-heading-title.elementor-size-large{font-size:29px}.elementor-widget-heading .elementor-heading-title.elementor-size-xl{font-size:39px}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl{font-size:59px}</style>
+<h2 class="elementor-heading-title elementor-size-default">Introduction</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-177a83e9 elementor-widget elementor-widget-text-editor" data-id="177a83e9" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#69727d;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#69727d;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}</style>				<p>Hey folks, today we will see the Context package in Go standard library. We usually use Context package to get deadlines to cancel our processing.</p>
+<p>Context has a collapsing effect, so if multiple calls use context with some deadline, the context ending at the end can help close all the middle children. More information is <a href="https://pkg.go.dev/context">here</a>.</p>
+<p>We are going to see the below ways to use Context along with use cases. This post is on the bigger side, feel free to jump to sections with the below anchors.</p>
+<ol>
+<li><a href="#withdeadline">With Deadline</a></li>
+<li><a href="#withtimeout">With Timeout</a></li>
+<li><a href="#withcancel">With Cancel</a></li>
+<li><a href="#withvalue">With Value</a></li>
+</ol>
+<p>Other real-world use cases we will see are related to file reading,</p>
+<ol>
+<li><a href="#fileread">Stop reading of file if the context is complete/canceled</a></li>
+<li><a href="#http">How the canceling works with an HTTP request.</a></li>
+</ol>
+<p>Creating a context is simple, We will use the below line to create it.</p>
+<div><blockquote><div>ctx := context.Background()</div></blockquote></div>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-15fc663 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="15fc663" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-5b6f0797" data-id="5b6f0797" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-c349002 elementor-widget elementor-widget-menu-anchor" data-id="c349002" data-element_type="widget" data-widget_type="menu-anchor.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+body.elementor-page .elementor-widget-menu-anchor{margin-bottom:0}</style>		<div class="elementor-menu-anchor" id="withdeadline"></div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-14fcd9b8 elementor-widget elementor-widget-heading" data-id="14fcd9b8" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Context with Deadline</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-1c2e7c9d elementor-widget elementor-widget-text-editor" data-id="1c2e7c9d" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Let&#8217;s look at the below code,  We are passing a context to our <code>WithDeadline</code> function. Here we are getting a time which is after 5 seconds and passing it to the <code>context.WithDeadline</code> method.</p>
+<p>We are calling the method <code>ctx.Done()</code> that returns us a channel that we consume, as we already know reading from the channel is a blocking operation but in the case of <code>for select</code> loops it will move to the default case.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-19b8f12 elementor-widget elementor-widget-code-block-for-elementor" data-id="19b8f12" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func WithDeadline(ctx context.Context) {
+
+	log.Println(&quot;WithDeadline&quot;)
+
+	now := time.Now()
+	log.Println(&quot;Start time is&quot;, now)
+
+	after5seconds := now.Add(5 * time.Second)
+	log.Println(&quot;Deadline is&quot;, after5seconds)
+
+	ctx, cancel := context.WithDeadline(ctx, after5seconds)
+	defer cancel() //Release the context
+
+	for {
+		select { //Default would be last priority here.
+		case &lt;-ctx.Done():
+			log.Println(&quot;Exiting function WithDeadline&quot;)
+			return
+		default:
+			time.Sleep(500 * time.Millisecond)
+			log.Printf(&quot;This line will keep printing every 500ms&quot;)
+		}
+	}
+
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-8f769bc elementor-widget elementor-widget-text-editor" data-id="8f769bc" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Our output is as below,</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-dd3cf22 elementor-widget elementor-widget-image" data-id="dd3cf22" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-widget-image{text-align:center}.elementor-widget-image a{display:inline-block}.elementor-widget-image a img[src$=".svg"]{width:48px}.elementor-widget-image img{vertical-align:middle;display:inline-block}</style>										<img fetchpriority="high" decoding="async" width="798" height="355" src="/wp-content/uploads/2022/10/context_with_deadline.png" class="attachment-large size-large wp-image-1351" alt="" srcset="/wp-content/uploads/2022/10/context_with_deadline.png 798w, /wp-content/uploads/2022/10/context_with_deadline-300x133.png 300w, /wp-content/uploads/2022/10/context_with_deadline-768x342.png 768w" sizes="(max-width: 798px) 100vw, 798px">													</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-17af6a8 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="17af6a8" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-c91df7e" data-id="c91df7e" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-5456b36 elementor-widget elementor-widget-menu-anchor" data-id="5456b36" data-element_type="widget" data-widget_type="menu-anchor.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-menu-anchor" id="withtimeout"></div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-cbe0822 elementor-widget elementor-widget-heading" data-id="cbe0822" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Context with Timeout</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-207ee84 elementor-widget elementor-widget-text-editor" data-id="207ee84" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>WithTimeout is similar to our deadline except giving a specific moment in time, we give a relative time, i.e 5 seconds or 10 minutes, etc. Our code and output are below,</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-a94d59f elementor-widget elementor-widget-code-block-for-elementor" data-id="a94d59f" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func WithTimeout(ctx context.Context) {
+
+	log.Println(&quot;WithTimeout&quot;)
+
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second) //Will wait for 5 seconds
+	defer cancel()                                         //Release the context
+
+	for {
+		select {
+		case &lt;-ctx.Done():
+			log.Println(&quot;Exiting function WithTimeout&quot;)
+			return
+		default:
+			time.Sleep(500 * time.Millisecond)
+			log.Printf(&quot;This line will keep printing every 500ms&quot;)
+		}
+	}
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-75e9b2b elementor-widget elementor-widget-image" data-id="75e9b2b" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+													<img decoding="async" width="594" height="318" src="/wp-content/uploads/2022/10/context_with_timeout.png" class="attachment-large size-large wp-image-1352" alt="" srcset="/wp-content/uploads/2022/10/context_with_timeout.png 594w, /wp-content/uploads/2022/10/context_with_timeout-300x161.png 300w" sizes="(max-width: 594px) 100vw, 594px">													</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-2bad6da elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="2bad6da" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-dd3b245" data-id="dd3b245" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-a0e97ee elementor-widget elementor-widget-menu-anchor" data-id="a0e97ee" data-element_type="widget" data-widget_type="menu-anchor.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-menu-anchor" id="withcancel"></div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-c8edbe7 elementor-widget elementor-widget-heading" data-id="c8edbe7" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Context with Cancel</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-c6bee1a elementor-widget elementor-widget-text-editor" data-id="c6bee1a" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>In our earlier code examples, you must be thinking about what is the cancel function that&#8217;s being returned.</p>
+<p>This cancel and our earlier cancels are the same functions that can be called to cancel a context manually. So for our example, we will create a context with cancel and cancel it manually in 2 seconds.</p>
+<p>Our function will return in 2 seconds in this case. Let&#8217;s see the code and the output.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-8db0d9c elementor-widget elementor-widget-code-block-for-elementor" data-id="8db0d9c" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func WithCancel(ctx context.Context) {
+
+	log.Println(&quot;WithCancel&quot;)
+
+	ctx, cancel := context.WithCancel(ctx) //returns a cancel func which can be called separately to send signal to done channel
+	defer cancel()                         //Release the context
+
+	go func() { //in 2 seconds call the cancel function.
+		time.Sleep(2 * time.Second)
+		cancel()
+	}()
+
+	for {
+		select {
+		case &lt;-ctx.Done():
+			log.Println(&quot;Exiting function WithCancel&quot;)
+			return
+		default:
+			time.Sleep(500 * time.Millisecond)
+			log.Printf(&quot;This line will keep printing every 500ms till 2 second passes&quot;)
+		}
+	}
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-30c55f4 elementor-widget elementor-widget-image" data-id="30c55f4" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+													<img decoding="async" width="754" height="208" src="/wp-content/uploads/2022/10/context_with_cancel.png" class="attachment-large size-large wp-image-1353" alt="" srcset="/wp-content/uploads/2022/10/context_with_cancel.png 754w, /wp-content/uploads/2022/10/context_with_cancel-300x83.png 300w" sizes="(max-width: 754px) 100vw, 754px">													</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-dd6a25f elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="dd6a25f" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-bd0c1b0" data-id="bd0c1b0" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-d70211c elementor-widget elementor-widget-menu-anchor" data-id="d70211c" data-element_type="widget" data-widget_type="menu-anchor.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-menu-anchor" id="withvalue"></div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-661d400 elementor-widget elementor-widget-heading" data-id="661d400" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Context with Value</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-96bc1e9 elementor-widget elementor-widget-text-editor" data-id="96bc1e9" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Coming to our last context, <code>WithValue</code> gives us a way to store some key-value pairs inside the context. This key-value pair is passed on ahead and can be modified based on the key type.</p>
+<p>Our key and value are both empty interface types, so we can pass any values there. We should avoid passing string values to keys as they can collide and override.</p>
+<p>I have created a demo package that creates some context based on the different keys to demonstrate how the context Get and Modify operations work. The code is as below, please check the inline comments.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-b69b378 elementor-widget elementor-widget-heading" data-id="b69b378" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">The Demo Package</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-6b7380b elementor-widget elementor-widget-code-block-for-elementor" data-id="6b7380b" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">package demo
+
+import &quot;context&quot;
+
+type myPrivateKey string
+
+type MyExportedKey string
+
+//NOTE :: All our keys will have the same string value that is ID.
+
+//This is a normal string key, can be used anyone by outside the package
+var ctxKey = &quot;ID&quot;
+
+//This key is of type myPrivateKey and the type is only accessible by this package.
+var ctxPrivateKey myPrivateKey = &quot;ID&quot;
+
+//This key is of type MyExportedKey and the type is accessible to whoever imports this package
+var ctxExportedKey MyExportedKey = &quot;ID&quot;
+
+//Some value which I may not want others to change.
+var valueThatShouldNotChange = &quot;SOME_SECRET_STRING&quot;
+
+//returns a context which has ID key but the datatype is not exported.
+func Private() context.Context {
+	ctx := context.Background()
+	dctx := context.WithValue(ctx, &quot;NAME&quot;, &quot;John&quot;) //Default value
+	return context.WithValue(dctx, ctxPrivateKey, valueThatShouldNotChange)
+}
+
+//Returns a context which has ID key but the datatype is string that anyone can create.
+func Public() context.Context {
+	ctx := context.Background()
+	dctx := context.WithValue(ctx, &quot;NAME&quot;, &quot;John&quot;) //Default value
+	return context.WithValue(dctx, ctxKey, valueThatShouldNotChange)
+}
+
+//Returns a context which has ID key but the datatype is exported.
+func PublicWithExportedType() context.Context {
+	ctx := context.Background()
+	dctx := context.WithValue(ctx, &quot;NAME&quot;, &quot;John&quot;) //Default value
+	return context.WithValue(dctx, ctxExportedKey, valueThatShouldNotChange)
+}
+</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-699a25f elementor-widget elementor-widget-text-editor" data-id="699a25f" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Let&#8217;s now write some code that will modify and print the contexts to understand how access and modification work.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-279199b elementor-widget elementor-widget-code-block-for-elementor" data-id="279199b" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func WithValue(ctx context.Context) {
+
+	//Add ID key to passed context. Replaces the old ID if existed.
+	ctx = context.WithValue(ctx, &quot;ID&quot;, &quot;SOME-STRING&quot;)
+
+	//Check comments in demo file.
+	privateCtx := demo.Private()
+	publicCtx := demo.Public()
+	exportedPublicCtx := demo.PublicWithExportedType()
+
+	//Trying modification on different context types.
+	modifiedPrivateCtx := context.WithValue(privateCtx, &quot;ID&quot;, &quot;MY-MODIFIED-STRING&quot;)
+	modifiedPublicCtx := context.WithValue(publicCtx, &quot;ID&quot;, &quot;MY-MODIFIED-STRING&quot;)
+	modifiedExportedCtx := context.WithValue(exportedPublicCtx, demo.MyExportedKey(&quot;ID&quot;), &quot;MY-MODIFIED-STRING&quot;)
+
+	//Maintain to print easily all of them.
+	print := map[context.Context]string{
+		ctx:                 &quot;ctx&quot;,
+		privateCtx:          &quot;privateCtx&quot;,
+		publicCtx:           &quot;publicCtx&quot;,
+		exportedPublicCtx:   &quot;exportedPublicCtx&quot;,
+		modifiedPrivateCtx:  &quot;modifiedPrivateCtx&quot;,
+		modifiedPublicCtx:   &quot;modifiedPublicCtx&quot;,
+		modifiedExportedCtx: &quot;modifiedExportedCtx&quot;,
+	}
+
+	for ctx, what := range print {
+		printContext(ctx, what)
+	}
+}
+
+//Prints the context values
+func printContext(ctx context.Context, which string) {
+	log.Printf(&quot;%s ::: ID is %v, NAME is %v, exported ID is %v&quot;, which, ctx.Value(&quot;ID&quot;), ctx.Value(&quot;NAME&quot;), ctx.Value(demo.MyExportedKey(&quot;ID&quot;)))
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-e0faf75 elementor-widget elementor-widget-image" data-id="e0faf75" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+													<img loading="lazy" decoding="async" width="962" height="211" src="/wp-content/uploads/2022/10/context_with_value.png" class="attachment-large size-large wp-image-1354" alt="" srcset="/wp-content/uploads/2022/10/context_with_value.png 962w, /wp-content/uploads/2022/10/context_with_value-300x66.png 300w, /wp-content/uploads/2022/10/context_with_value-768x168.png 768w" sizes="(max-width: 962px) 100vw, 962px">													</div>
+				</div>
+				<div class="elementor-element elementor-element-2384fcf elementor-widget elementor-widget-text-editor" data-id="2384fcf" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Let us understand the output now. We are trying to get the values of 3 keys here.</p>
+<ul>
+<li>ID (datatype string)</li>
+<li>NAME (datatype string)</li>
+<li>ID (datatype MyExportedKey)</li>
+</ul>
+<p>Coming to each line,</p>
+<blockquote>
+<p><span style="color: #993300;">ctx ::: ID is SOME-STRING, NAME is &lt;nil&gt;, exported ID is &lt;nil&gt;</span> &#8211; <strong>We see ID here is set to SOME-STRING which we set at the start. NAME is nil as we are setting it in demo package context functions. exported ID is nil as we did not try setting it for this context.</strong></p>
+<p><span style="color: #993300;">privateCtx ::: ID is &lt;nil&gt;, NAME is John, exported ID is &lt;nil&gt;</span> &#8211; <strong>This context came from demo package private type. ID is nil as string ID is not present. Name is john as expected. exported ID is nil as we did not set it. Also we dont have a way to access the ID key which was set here. If we want to access that key, we need to create a getter function inside the demo package which can extract it.</strong></p>
+<p><span style="color: #993300;">publicCtx ::: ID is SOME_SECRET_STRING, NAME is John, exported ID is &lt;nil&gt;</span> &#8211; <strong>In case of public we used string to set the key so its also accessible outside of package. Name as expected. exported ID was not set.</strong></p>
+<p><span style="color: #993300;">exportedPublicCtx ::: ID is &lt;nil&gt;, NAME is John, exported ID is SOME_SECRET_STRING</span> &#8211;<strong> Here ID is nil because string ID was not set in demo package. Name is as expected. We have got the exported ID value as we can access the type of that key.</strong></p>
+<p><span style="color: #993300;">modifiedPrivateCtx ::: ID is MY-MODIFIED-STRING, NAME is John, exported ID is &lt;nil&gt;</span> &#8211; <strong>We tried modifying private context. We can see that ID is modified here, but note here that this is the string ID. our actual secret ID is still in the context but not accessible here. Name, Exported ID is as expected.</strong></p>
+<p><span style="color: #993300;">modifiedPublicCtx ::: ID is MY-MODIFIED-STRING, NAME is John, exported ID is &lt;nil&gt;</span> &#8211; <strong>Here the ID is overwritten because the key was string. Name, Exported ID as expected.</strong></p>
+<p><span style="color: #993300;">modifiedExportedCtx ::: ID is &lt;nil&gt;, NAME is John, exported ID is MY-MODIFIED-STRING</span> &#8211; <strong>String ID was not set here. Name is as expected. We can see that we have modified the exported ID here because we have access to the actual data type.</strong></p>
+</blockquote>
+<p>Finally, Whenever we are creating a Context with value we shouldn&#8217;t use built-in data types but custom types. Empty struct types are commonly used. For example, converting our<strong> type myPrivateKey string</strong> to <strong>type myPrivateKey struct{}</strong></p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-3d3ed91 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="3d3ed91" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-07e311c" data-id="07e311c" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-e369042 elementor-widget elementor-widget-menu-anchor" data-id="e369042" data-element_type="widget" data-widget_type="menu-anchor.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-menu-anchor" id="fileread"></div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-2bfd142 elementor-widget elementor-widget-heading" data-id="2bfd142" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Cancel file read operation with Context</h2>		</div>
+				</div>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-6724f26 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="6724f26" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-4971416" data-id="4971416" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-8f369d6 elementor-widget elementor-widget-text-editor" data-id="8f369d6" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Let us first create a file having each alphabet on every line. We will now create a function for reading the file. Our function will do below steps,</p>
+<ol>
+<li>Open File</li>
+<li>Get scanner from bufio package.</li>
+<li>Infinitely check for context done or file reading to complete.</li>
+<li>Sleep for some time after every read operation to simulate a big file.</li>
+<li>return whatever string is created till now</li>
+</ol>
+<p>Below is our code, check the inline comments, and let&#8217;s see the output.</p>						</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-1c6757d" data-id="1c6757d" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-348d76b elementor-widget elementor-widget-image" data-id="348d76b" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+													<img loading="lazy" decoding="async" width="146" height="646" src="/wp-content/uploads/2022/10/context_demo_text.png" class="attachment-large size-large wp-image-1371" alt="" srcset="/wp-content/uploads/2022/10/context_demo_text.png 146w, /wp-content/uploads/2022/10/context_demo_text-68x300.png 68w" sizes="(max-width: 146px) 100vw, 146px">													</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<div class="elementor-element elementor-element-2b12a3a elementor-widget elementor-widget-code-block-for-elementor" data-id="2b12a3a" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func fileReadExample(ctx context.Context) (string, error) {
+
+	f, err := os.Open(&quot;data.txt&quot;)
+	if err != nil {
+		return &quot;&quot;, err
+	}
+
+	s := bufio.NewScanner(f)
+	out := strings.Builder{}
+
+t:
+
+	for {
+
+		select {
+		//If context is done then we wull return from this function with error.
+		//We can choose if we want to return the data read till now or return empty string.
+		case &lt;-ctx.Done():
+			return out.String() + &quot;\n&quot;, fmt.Errorf(&quot;ctx cancelled&quot;)
+		default:
+			//Till my context is done default will be called to scan every line an append to our string builder.
+			if s.Scan() {
+				log.Printf(&quot;Appending %s&quot;, s.Text())
+				out.WriteString(s.Text())
+				time.Sleep(500 * time.Millisecond)
+			} else {
+				//When scan returns false, it means that the file has reached the end
+				//so we break the loop with a label.
+				break t
+			}
+		}
+	}
+
+	return out.String() + &quot;\n&quot;, nil
+}</code></pre>		</div>
+				</div>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-8e05685 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="8e05685" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-a536c33" data-id="a536c33" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-523a661 elementor-widget elementor-widget-text-editor" data-id="523a661" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>To the right is the output with <strong>context timeout as 10 seconds</strong>.</p>
+<p>We can see that it has partially returned the string and canceled as soon as the 10 seconds elapsed.</p>						</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-51c5c69" data-id="51c5c69" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-53e6039 elementor-widget elementor-widget-image" data-id="53e6039" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+													<img loading="lazy" decoding="async" width="503" height="502" src="/wp-content/uploads/2022/10/context_custom_10s.png" class="attachment-large size-large wp-image-1381" alt="" srcset="/wp-content/uploads/2022/10/context_custom_10s.png 503w, /wp-content/uploads/2022/10/context_custom_10s-300x300.png 300w, /wp-content/uploads/2022/10/context_custom_10s-150x150.png 150w" sizes="(max-width: 503px) 100vw, 503px">													</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-18580b5 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="18580b5" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-0ddc089" data-id="0ddc089" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-1d39659 elementor-widget elementor-widget-text-editor" data-id="1d39659" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>This is our output with <strong>20 seconds context timeout</strong>.</p>
+<p>We can see that we have got the full string without any error.</p>						</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-01e2ecd" data-id="01e2ecd" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-41e9050 elementor-widget elementor-widget-image" data-id="41e9050" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+													<img loading="lazy" decoding="async" width="494" height="635" src="/wp-content/uploads/2022/10/context_custom_20s.png" class="attachment-large size-large wp-image-1382" alt="" srcset="/wp-content/uploads/2022/10/context_custom_20s.png 494w, /wp-content/uploads/2022/10/context_custom_20s-233x300.png 233w" sizes="(max-width: 494px) 100vw, 494px">													</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-d51def7 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="d51def7" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-5589fd77" data-id="5589fd77" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-73f76fa elementor-widget elementor-widget-menu-anchor" data-id="73f76fa" data-element_type="widget" data-widget_type="menu-anchor.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-menu-anchor" id="http"></div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-348eaa53 elementor-widget elementor-widget-heading" data-id="348eaa53" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Context cancel with HTTP</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-57161d32 elementor-widget elementor-widget-text-editor" data-id="57161d32" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>For demonstrating cancellation with HTTP, We will create an HTTP server and on the root handler, we will call our <code>fileReadExample</code> function passing the request context and see how it works when the user cancels the request.</p>
+<p>Let&#8217;s see our code, and check the inline comments and our output.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-8051c70 elementor-widget elementor-widget-code-block-for-elementor" data-id="8051c70" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func startHttpServer() {
+	s := http.Server{
+		Addr: &quot;:8000&quot;, //Start server on this port
+		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { //On base path execute below code.
+			data, err := fileReadExample(r.Context()) //Pass the http request context
+			if err != nil {                           //Context cancels or any other erros will come here.
+				log.Println(err)
+				w.WriteHeader(500) //Give 500 status code if 500 error
+				w.Write([]byte(data))
+				return
+			}
+
+			w.WriteHeader(200) //200 status code if success
+			w.Write([]byte(data))
+			log.Println(&quot;Request Complete&quot;)
+		}),
+	}
+
+	log.Println(&quot;Starting server on port 8000&quot;)
+	log.Println(s.ListenAndServe()) //Start the http server</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-b7d2a83 elementor-widget elementor-widget-image" data-id="b7d2a83" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+													<img loading="lazy" decoding="async" width="1024" height="521" src="/wp-content/uploads/2022/10/context_http-1024x521.gif" class="attachment-large size-large wp-image-1383" alt="" srcset="/wp-content/uploads/2022/10/context_http-1024x521.gif 1024w, /wp-content/uploads/2022/10/context_http-300x153.gif 300w, /wp-content/uploads/2022/10/context_http-768x391.gif 768w" sizes="(max-width: 1024px) 100vw, 1024px">													</div>
+				</div>
+				<div class="elementor-element elementor-element-ef2cbca elementor-widget elementor-widget-text-editor" data-id="ef2cbca" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>In our output, we can see that I did 2 requests,</p>
+<ul>
+<li>The first one was canceled by me and our processing stopped the function as seen by the logs on the left.</li>
+<li>The second one was not canceled and completed giving us the output of all the alphabets.</li>
+</ul>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-7b40b26 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="7b40b26" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-ff003c5" data-id="ff003c5" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-94c2762 elementor-widget elementor-widget-heading" data-id="94c2762" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Conclusion</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-886579c elementor-widget elementor-widget-text-editor" data-id="886579c" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>To conclude,</p>
+<p>We saw how we can create different types of Context, with the methods provided by the package. We also saw some file reading use cases which kind of can be said to be a real-world examples.</p>
+<p>The code is also available on <a href="https://github.com/akshaykhairmode/learning-go/tree/main/ctx">GitHub</a>.</p>
+<p>Also, check our post on <a href="/understanding-interfaces-in-golang-with-use-case/">interfaces</a>.</p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				</div>
+		<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-official sd-sharing">
+<h3 class="sd-title">Share this:</h3>
+<div class="sd-content"><ul>
+<li class="share-facebook"><div class="fb-share-button" data-href="/how-to-use-context-package-in-golang-with-use-case/" data-layout="button_count"></div></li>
+<li class="share-x"><a href="https://x.com/share" class="twitter-share-button" data-url="/how-to-use-context-package-in-golang-with-use-case/" data-text="How to use Context package in Golang with Use Case" data-via="AbilityRush">Post</a></li>
+<li class="share-end">
+</ul></div>
+</div></div>
+</div>
+<!-- .entry -->
+
+
+<div class="post-tags clr">
+	<span class="owp-tag-text">Tags: </span><a href="/tag/context/" rel="tag">context</a><span class="owp-sep">,</span> <a href="/tag/deadline/" rel="tag">deadline</a><span class="owp-sep">,</span> <a href="/tag/go/" rel="tag">go</a><span class="owp-sep">,</span> <a href="/tag/golang/" rel="tag">golang</a><span class="owp-sep">,</span> <a href="/tag/timeout/" rel="tag">timeout</a>
+</div>
+
+
+
+	<nav class="navigation post-navigation" aria-label="Read more articles">
+		<h2 class="screen-reader-text">Read more articles</h2>
+		<div class="nav-links">
+<div class="nav-previous"><a href="/how-to-use-dynamo-db-with-golang/" rel="prev"><span class="title"><i class=" fas fa-long-arrow-alt-left" aria-hidden="true" role="img"></i> Previous Post</span><span class="post-title">How to use Dynamo DB with Golang</span></a></div>
+<div class="nav-next"><a href="/how-to-write-read-redis-hash-strings-in-golang/" rel="next"><span class="title"><i class=" fas fa-long-arrow-alt-right" aria-hidden="true" role="img"></i> Next Post</span><span class="post-title">How to write &#038; read Redis hash &#038; strings in Golang</span></a></div>
+</div>
+	</nav>
+
+	<section id="related-posts" class="clr">
+
+		<h3 class="theme-heading related-posts-title">
+			<span class="text">You Might Also Like</span>
+		</h3>
+
+		<div class="oceanwp-row clr">
+
+			
+			
+				
+				<article class="related-post clr col span_1_of_3 col-1 post-1313 post type-post status-publish format-standard hentry category-golang category-technology tag-aws tag-dynamodb tag-go tag-golang entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/how-to-use-dynamo-db-with-golang/" rel="bookmark">How to use Dynamo DB with Golang</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2022-10-05T00:08:33+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>October 5, 2022</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+				
+				<article class="related-post clr col span_1_of_3 col-2 post-379 post type-post status-publish format-standard hentry category-golang category-technology tag-aws tag-go tag-golang tag-lambda entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/working-with-aws-lambda-golang-and-cache/" rel="bookmark">Working with AWS Lambda, Golang and Cache</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2022-04-09T23:00:53+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>April 9, 2022</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+				
+				<article class="related-post clr col span_1_of_3 col-3 post-181 post type-post status-publish format-standard hentry category-golang category-technology tag-golang tag-slice tag-slices entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/understanding-slices-in-golang-with-examples/" rel="bookmark">Understanding Slices in Golang with examples</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2021-10-02T00:46:56+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>October 2, 2021</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+		</div>
+<!-- .oceanwp-row -->
+
+	</section><!-- .related-posts -->
+
+
+
+
+<section id="comments" class="comments-area clr has-comments">
+
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/how-to-use-context-package-in-golang-with-use-case/#respond" style="display:none;">Cancel reply</a></small>
+</h3>
+<form action="/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+<div class="comment-textarea">
+<label for="comment" class="screen-reader-text">Comment</label><textarea name="comment" id="comment" cols="39" rows="4" tabindex="0" class="textarea-comment" placeholder="Your comment here..."></textarea>
+</div>
+<div class="comment-form-author">
+<label for="author" class="screen-reader-text">Enter your name or username to comment</label><input type="text" name="author" id="author" value="" placeholder="Name (required)" size="22" tabindex="0" aria-required="true" class="input-name">
+</div>
+<div class="comment-form-email">
+<label for="email" class="screen-reader-text">Enter your email address to comment</label><input type="text" name="email" id="email" value="" placeholder="Email (required)" size="22" tabindex="0" aria-required="true" class="input-email">
+</div>
+<div class="comment-form-url">
+<label for="url" class="screen-reader-text">Enter your website URL (optional)</label><input type="text" name="url" id="url" value="" placeholder="Website" size="22" tabindex="0" class="input-website">
+</div>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="1335" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="3f50d82563"></p>
+<p style="display: none !important;" class="akismet-fields-container" data-prefix="ak_"><label>&#916;<textarea name="ak_hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label><input type="hidden" id="ak_js_1" name="ak_js" value="30"></p>
+</form>	</div>
+<!-- #respond -->
+	
+</section><!-- #comments -->
+
+</article>
+
+				
+			</div>
+<!-- #content -->
+
+			
+		</div>
+<!-- #primary -->
+
+		
+
+<aside id="right-sidebar" class="sidebar-container widget-area sidebar-primary" itemscope="itemscope" itemtype="https://schema.org/WPSideBar" role="complementary" aria-label="Primary Sidebar">
+
+	
+	<div id="right-sidebar-inner" class="clr">
+
+		
+		<div id="recent-posts-2" class="sidebar-box widget_recent_entries clr">
+		<h4 class="widget-title">Recent Posts</h4>
+		<ul>
+											<li>
+					<a href="/how-to-accept-input-from-terminal-in-golang/">How to Accept Input from Terminal in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-update-variables-compile-time-in-go/">How to Update Variables Compile Time in Go</a>
+									</li>
+											<li>
+					<a href="/how-to-use-unbuffered-channels-in-golang/">How to use Unbuffered channels in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-use-buffered-channel-in-golang/">How to use Buffered Channel in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-receive-file-uploads-in-the-golang-http-server/">How to receive file uploads in the Golang HTTP server</a>
+									</li>
+					</ul>
+
+		</div>
+<div id="recent-comments-2" class="sidebar-box widget_recent_comments clr">
+<h4 class="widget-title">Recent Comments</h4>
+<ul id="recentcomments">
+<li class="recentcomments">
+<span class="comment-author-link"><a href="/" class="url" rel="ugc">Akshay Khairmode</a></span> on <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1931">Uploading File to AWS S3 in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link">Nihat</span> on <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1856">Uploading File to AWS S3 in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://livrooshomensmentem.com.br/" class="url" rel="ugc external nofollow">homens mentem</a></span> on <a href="/working-with-aws-simple-queue-service-sqs-in-golang/comment-page-1/#comment-43">Working with AWS SQS in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://comfort.kr.ua/kuhni-krivoj-rog/" class="url" rel="ugc external nofollow">Сергей</a></span> on <a href="/writing-mocks-in-golang-with-mockery/comment-page-1/#comment-24">Writing Mocks in Golang with mockery</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://github.com/chakal1337" class="url" rel="ugc external nofollow">JadSaint</a></span> on <a href="/download-file-concurrently-in-golang-part-2/comment-page-1/#comment-14">Download file concurrently in Golang-Part 2(Memory)</a>
+</li>
+</ul>
+</div>
+<div id="archives-2" class="sidebar-box widget_archive clr">
+<h4 class="widget-title">Archives</h4>
+			<ul>
+					<li><a href="/2023/05/">May 2023</a></li>
+	<li><a href="/2023/03/">March 2023</a></li>
+	<li><a href="/2023/02/">February 2023</a></li>
+	<li><a href="/2023/01/">January 2023</a></li>
+	<li><a href="/2022/12/">December 2022</a></li>
+	<li><a href="/2022/10/">October 2022</a></li>
+	<li><a href="/2022/09/">September 2022</a></li>
+	<li><a href="/2022/06/">June 2022</a></li>
+	<li><a href="/2022/05/">May 2022</a></li>
+	<li><a href="/2022/04/">April 2022</a></li>
+	<li><a href="/2022/03/">March 2022</a></li>
+	<li><a href="/2022/02/">February 2022</a></li>
+	<li><a href="/2022/01/">January 2022</a></li>
+	<li><a href="/2021/11/">November 2021</a></li>
+	<li><a href="/2021/10/">October 2021</a></li>
+	<li><a href="/2021/09/">September 2021</a></li>
+			</ul>
+
+			</div>
+<div id="categories-2" class="sidebar-box widget_categories clr">
+<h4 class="widget-title">Categories</h4>
+			<ul>
+					<li class="cat-item cat-item-3">
+<a href="/category/technology/golang/">Golang</a>
+</li>
+	<li class="cat-item cat-item-2">
+<a href="/category/technology/">Technology</a>
+</li>
+			</ul>
+
+			</div>
+<div id="block-13" class="sidebar-box widget_block clr">
+<div class="wp-block-buttons alignfull is-content-justification-center omw-open-modal is-layout-flex wp-block-buttons-is-layout-flex">
+<div class="wp-block-button has-custom-width wp-block-button__width-100 is-style-outline"><a class="wp-block-button__link has-vivid-cyan-blue-color has-text-color" href="#omw-514">Notify Me</a></div>
+</div>
+</div>
+	</div>
+<!-- #sidebar-inner -->
+
+	
+</aside><!-- #right-sidebar -->
+
+
+	</div>
+<!-- #content-wrap -->
+
+	
+
+	</main><!-- #main -->
+
+	
+	
+	
+		
+<footer id="footer" class="site-footer" itemscope="itemscope" itemtype="https://schema.org/WPFooter" role="contentinfo">
+
+	
+	<div id="footer-inner" class="clr">
+
+		
+
+<div id="footer-widgets" class="oceanwp-row clr">
+
+	
+	<div class="footer-widgets-inner container">
+
+					<div class="footer-box span_1_of_4 col col-1">
+							</div>
+<!-- .footer-one-box -->
+
+							<div class="footer-box span_1_of_4 col col-2">
+									</div>
+<!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-3 ">
+									</div>
+<!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-4">
+									</div>
+<!-- .footer-box -->
+				
+			
+	</div>
+<!-- .container -->
+
+	
+</div>
+<!-- #footer-widgets -->
+
+
+
+<div id="footer-bottom" class="clr no-footer-nav">
+
+	
+	<div id="footer-bottom-inner" class="container clr">
+
+		
+		
+			<div id="copyright" class="clr" role="contentinfo">
+				Copyright - OceanWP Theme by OceanWP			</div>
+<!-- #copyright -->
+
+			
+	</div>
+<!-- #footer-bottom-inner -->
+
+	
+</div>
+<!-- #footer-bottom -->
+
+
+	</div>
+<!-- #footer-inner -->
+
+	
+</footer><!-- #footer -->
+
+	
+	
+</div>
+<!-- #wrap -->
+
+
+</div>
+<!-- #outer-wrap -->
+
+
+
+<a aria-label="Scroll to the top of the page" href="#" id="scroll-top" class="scroll-top-right"><i class=" fa fa-angle-double-up" aria-hidden="true" role="img"></i></a>
+
+
+
+
+
+				<div id="omw-514" class="omw-modal">
+
+											<a href="/#mwc-514" class="omw-close-modal" aria-label="Close this modal window ID 514"></a>
+					
+					<div class="omw-modal-inner clr">
+						<p><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSehnVQsuv4by0SLBubMNAldpPAmQRjoFZ4k8kvM2AJ06H93VA/viewform?embedded=true" width="640" height="700" frameborder="0" marginwidth="0" marginheight="0"><span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span><span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span>Loadi<span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span>ng…</iframe></p>
+					</div>
+				</div>
+
+							<div class="omw-modal-overlay"></div>
+
+						<div id="fb-root"></div>
+			
+			
+						
+			<link rel="stylesheet" id="code-block-for-elementor-coy-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-coy.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-dark-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-dark.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-default-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-default.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-funky-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-funky.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-okaidia-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-okaidia.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-solarized-light-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-solarized-light.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-tomorrow-night-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-tomorrow-night.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-twilight-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-twilight.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-toolbar-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-toolbar.css?ver=1.0.3" media="all">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.5.4"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"🏳️‍⚧️","🏳️​⚧️")?!1:!n(e,"🇺🇳","🇺​🇳")&&!n(e,"🏴󠁧󠁢󠁥󠁮󠁧󠁿","🏴​󠁧​󠁢​󠁥​󠁮​󠁧​󠁿");case"emoji":return!n(e,"🐦‍⬛","🐦​⬛")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+</script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/jquery-migrate.min.js" id="jquery-migrate-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/wp-polyfill-inert.min.js" id="wp-polyfill-inert-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/regenerator-runtime.min.js" id="regenerator-runtime-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/wp-polyfill.min.js" id="wp-polyfill-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/dom-ready.min.js" id="wp-dom-ready-js"></script><script src="/wp-content/plugins/auto-terms-of-service-and-privacy-policy/js/base.js?ver=2.5.1" id="wpautoterms_base-js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-DXSQBK2RY1" id="google_gtagjs-js" async></script><script id="google_gtagjs-js-after">window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag("set","linker",{"domains":["localhost"]});
+gtag("js", new Date());
+gtag("set", "developer_id.dZTNiMT", true);
+gtag("config", "G-DXSQBK2RY1");</script><script>( function() {
+				window.onpageshow = function( event ) {
+					// Defined window.wpforms means that a form exists on a page.
+					// If so and back/forward button has been clicked,
+					// force reload a page to prevent the submit button state stuck.
+					if ( typeof window.wpforms !== 'undefined' && event.persisted ) {
+						window.location.reload();
+					}
+				};
+			}() );</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4736925107936916" crossorigin="anonymous"></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4736925107936916&amp;host=ca-host-pub-2644536267352236" crossorigin="anonymous"></script><script>document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );</script><script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&appId=249643311490&version=v2.3'; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script><script>document.body.addEventListener( 'is.post-load', function() {
+				if ( 'undefined' !== typeof FB ) {
+					FB.XFBML.parse();
+				}
+			} );</script><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script><script id="starter-templates-zip-preview-js-extra">var starter_templates_zip_preview = {"AstColorPaletteVarPrefix":"--ast-global-","AstEleColorPaletteVarPrefix":"--ast-global-"};</script><script src="/wp-content/plugins/astra-sites/inc/lib/onboarding/assets/dist/template-preview/main.js?ver=06758d4d807d9d22c6ea" id="starter-templates-zip-preview-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/comment-reply.min.js" id="comment-reply-js" async data-wp-strategy="async"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/imagesloaded.min.js" id="imagesloaded-js"></script><script id="oceanwp-main-js-extra">var oceanwpLocalize = {"nonce":"2984539bf0","isRTL":"","menuSearchStyle":"drop_down","mobileMenuSearchStyle":"disabled","sidrSource":null,"sidrDisplace":"1","sidrSide":"left","sidrDropdownTarget":"link","verticalHeaderTarget":"link","customScrollOffset":"0","customSelects":".woocommerce-ordering .orderby, #dropdown_product_cat, .widget_categories select, .widget_archive select, .single-product .variations_form .variations select","ajax_url":"\/wp-admin\/admin-ajax.php","oe_mc_wpnonce":"0f85b48aaa"};</script><script src="/wp-content/themes/oceanwp/assets/js/theme.min.js?ver=1.0" id="oceanwp-main-js"></script><script src="/wp-content/themes/oceanwp/assets/js/drop-down-mobile-menu.min.js?ver=1.0" id="oceanwp-drop-down-mobile-menu-js"></script><script src="/wp-content/themes/oceanwp/assets/js/drop-down-search.min.js?ver=1.0" id="oceanwp-drop-down-search-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/magnific-popup.min.js?ver=1.0" id="ow-magnific-popup-js"></script><script src="/wp-content/themes/oceanwp/assets/js/ow-lightbox.min.js?ver=1.0" id="oceanwp-lightbox-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/flickity.pkgd.min.js?ver=1.0" id="ow-flickity-js"></script><script src="/wp-content/themes/oceanwp/assets/js/ow-slider.min.js?ver=1.0" id="oceanwp-slider-js"></script><script src="/wp-content/themes/oceanwp/assets/js/scroll-effect.min.js?ver=1.0" id="oceanwp-scroll-effect-js"></script><script src="/wp-content/themes/oceanwp/assets/js/scroll-top.min.js?ver=1.0" id="oceanwp-scroll-top-js"></script><script src="/wp-content/themes/oceanwp/assets/js/select.min.js?ver=1.0" id="oceanwp-select-js"></script><script id="flickr-widget-script-js-extra">var flickrWidgetParams = {"widgets":[]};</script><script src="/wp-content/plugins/ocean-extra/includes/widgets/js/flickr.min.js?ver=6.5.4" id="flickr-widget-script-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/perfect-scrollbar.min.js?ver=1.0" id="ow-perfect-scrollbar-js"></script><script src="/wp-content/plugins/ocean-modal-window/assets/js/modal-window.min.js?ver=2.2.2" id="omw-js-scripts-js"></script><script src="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism.js?ver=1.0.3" id="code-block-for-elementor-prismjs-js"></script><script src="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-toolbar.js?ver=1.0.3" id="code-block-for-elementor-toolbarjs-js"></script><script defer src="/wp-content/plugins/akismet/_inc/akismet-frontend.js?ver=1711132304" id="akismet-frontend-js"></script><script src="/wp-content/plugins/elementor/assets/js/webpack.runtime.min.js?ver=3.21.8" id="elementor-webpack-runtime-js"></script><script src="/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=3.21.8" id="elementor-frontend-modules-js"></script><script src="/wp-content/plugins/elementor/assets/lib/waypoints/waypoints.min.js?ver=4.0.2" id="elementor-waypoints-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/ui/core.min.js" id="jquery-ui-core-js"></script><script id="elementor-frontend-js-before">var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Share on Facebook","shareOnTwitter":"Share on Twitter","pinIt":"Pin it","download":"Download","downloadImage":"Download image","fullscreen":"Fullscreen","zoom":"Zoom","share":"Share","playVideo":"Play Video","previous":"Previous","next":"Next","close":"Close","a11yCarouselWrapperAriaLabel":"Carousel | Horizontal scrolling: Arrow Left & Right","a11yCarouselPrevSlideMessage":"Previous slide","a11yCarouselNextSlideMessage":"Next slide","a11yCarouselFirstSlideMessage":"This is the first slide","a11yCarouselLastSlideMessage":"This is the last slide","a11yCarouselPaginationBulletMessage":"Go to slide"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Mobile Portrait","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobile Landscape","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet Portrait","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet Landscape","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Laptop","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Widescreen","value":2400,"default_value":2400,"direction":"min","is_enabled":false}}},"version":"3.21.8","is_static":false,"experimentalFeatures":{"e_optimized_assets_loading":true,"e_optimized_css_loading":true,"additional_custom_breakpoints":true,"container":true,"e_swiper_latest":true,"container_grid":true,"home_screen":true,"ai-layout":true,"landing-pages":true},"urls":{"assets":"\/wp-content\/plugins\/elementor\/assets\/"},"swiperClass":"swiper","settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description"},"post":{"id":1335,"title":"How%20to%20use%20Context%20package%20in%20Golang%20with%20Use%20Case%20%E2%80%93%20Ability%20Rush","excerpt":"Hey Peeps, In this post we will see how to use the context package to set deadlines, timeouts to cancel some backend operation and also pass data.","featuredImage":false}};</script><script src="/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.21.8" id="elementor-frontend-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/underscore.min.js" id="underscore-js"></script><script id="wp-util-js-extra">var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};</script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/wp-util.min.js" id="wp-util-js"></script><script id="wpforms-elementor-js-extra">var wpformsElementorVars = {"captcha_provider":"recaptcha","recaptcha_type":"v2"};</script><script src="/wp-content/plugins/wpforms-lite/assets/js/integrations/elementor/frontend.min.js?ver=1.8.8.3" id="wpforms-elementor-js"></script><script id="sharing-js-js-extra">var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};</script><script src="https://c0.wp.com/p/jetpack/13.5/_inc/build/sharedaddy/sharing.min.js" id="sharing-js-js"></script><script id="sharing-js-js-after">var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-facebook' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-facebook' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+						return false;
+					}
+				} );
+			} )();</script>
+</body>
+</html>

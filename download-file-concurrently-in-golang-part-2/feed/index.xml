@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	
+	>
+<channel>
+	<title>
+	Comments on: Download file concurrently in Golang-Part 2(Memory)	</title>
+	<atom:link href="/download-file-concurrently-in-golang-part-2/feed/" rel="self" type="application/rss+xml" />
+	<link>/download-file-concurrently-in-golang-part-2/</link>
+	<description>Learn &#38; Improve</description>
+	<lastBuildDate>Tue, 20 Dec 2022 17:26:36 +0000</lastBuildDate>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.5.4</generator>
+	<item>
+		<title>
+		By: JadSaint		</title>
+		<link>/download-file-concurrently-in-golang-part-2/comment-page-1/#comment-14</link>
+
+		<dc:creator><![CDATA[JadSaint]]></dc:creator>
+		<pubDate>Tue, 25 Jan 2022 21:45:39 +0000</pubDate>
+		<guid isPermaLink="false">/?p=88#comment-14</guid>
+
+					<description><![CDATA[fantastic insight grateful the disclosing &lt;a href=&quot;https://github.com/chakal1337&quot; rel=&quot;nofollow ugc&quot;&gt;<img src="https://s.w.org/images/core/emoji/15.0.3/72x72/2764.png" alt="❤" class="wp-smiley" style="height: 1em; max-height: 1em;" />&lt;/a&gt;]]></description>
+			<content:encoded><![CDATA[<p>fantastic insight grateful the disclosing <a href="https://github.com/chakal1337" rel="nofollow ugc">❤️</a></p>
+]]></content:encoded>
+		
+			</item>
+	</channel>
+</rss>

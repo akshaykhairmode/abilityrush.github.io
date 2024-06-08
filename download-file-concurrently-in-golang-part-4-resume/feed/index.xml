@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	
+	>
+<channel>
+	<title>
+	Comments on: Download file concurrently in Golang &#8211; Part 4(Resume)	</title>
+	<atom:link href="/download-file-concurrently-in-golang-part-4-resume/feed/" rel="self" type="application/rss+xml" />
+	<link>/download-file-concurrently-in-golang-part-4-resume/</link>
+	<description>Learn &#38; Improve</description>
+	<lastBuildDate>Tue, 20 Dec 2022 18:27:23 +0000</lastBuildDate>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.5.4</generator>
+	<item>
+		<title>
+		By: Sugeng		</title>
+		<link>/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-5</link>
+
+		<dc:creator><![CDATA[Sugeng]]></dc:creator>
+		<pubDate>Thu, 07 Oct 2021 02:22:26 +0000</pubDate>
+		<guid isPermaLink="false">/?p=177#comment-5</guid>
+
+					<description><![CDATA[In reply to &lt;a href=&quot;/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-4&quot;&gt;Akshay Khairmode&lt;/a&gt;.
+
+Hi Akshay,
+
+Mainly I just want to learn it, I&#039;ll try to code it myself, but it&#039;s good to have some references. Of course, I will reference this article if I publish my code :)]]></description>
+			<content:encoded><![CDATA[<p>In reply to <a href="/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-4">Akshay Khairmode</a>.</p>
+<p>Hi Akshay,</p>
+<p>Mainly I just want to learn it, I&#8217;ll try to code it myself, but it&#8217;s good to have some references. Of course, I will reference this article if I publish my code 🙂</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		By: Akshay Khairmode		</title>
+		<link>/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-4</link>
+
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Wed, 06 Oct 2021 17:18:43 +0000</pubDate>
+		<guid isPermaLink="false">/?p=177#comment-4</guid>
+
+					<description><![CDATA[In reply to &lt;a href=&quot;/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-3&quot;&gt;Sugeng&lt;/a&gt;.
+
+Hi Sugeng,
+
+Thanks for the feedback. Let me know if anything can be improved.
+
+If your project is academic I would suggest you code it yourself so you learn better, If you are working on some production applications then please use the code at your own risk. 
+
+If it&#039;s for a personal project feel free to use it.  Anyways a credit would be appreciated.]]></description>
+			<content:encoded><![CDATA[<p>In reply to <a href="/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-3">Sugeng</a>.</p>
+<p>Hi Sugeng,</p>
+<p>Thanks for the feedback. Let me know if anything can be improved.</p>
+<p>If your project is academic I would suggest you code it yourself so you learn better, If you are working on some production applications then please use the code at your own risk. </p>
+<p>If it&#8217;s for a personal project feel free to use it.  Anyways a credit would be appreciated.</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		By: Sugeng		</title>
+		<link>/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-3</link>
+
+		<dc:creator><![CDATA[Sugeng]]></dc:creator>
+		<pubDate>Wed, 06 Oct 2021 09:23:58 +0000</pubDate>
+		<guid isPermaLink="false">/?p=177#comment-3</guid>
+
+					<description><![CDATA[I really enjoy this tutorial series, really help me understand golang. Can I use your code for my project?]]></description>
+			<content:encoded><![CDATA[<p>I really enjoy this tutorial series, really help me understand golang. Can I use your code for my project?</p>
+]]></content:encoded>
+		
+			</item>
+	</channel>
+</rss>

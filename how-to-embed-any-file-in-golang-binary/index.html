@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html class="html" dir="ltr" lang="en-US" prefix="og: https://ogp.me/ns#">
+<head>
+	<meta charset="UTF-8">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+
+	<title>How to embed any file in Golang binary – Ability Rush</title>
+
+		<!-- All in One SEO 4.6.4 - aioseo.com -->
+		<meta name="description" content="In this post we look how we can embed any type of file inside our go binary and distribute the binary without separate files.">
+		<meta name="robots" content="max-image-preview:large">
+		<link rel="canonical" href="/how-to-embed-any-file-in-golang-binary/">
+		<meta name="generator" content="All in One SEO (AIOSEO) 4.6.4">
+		<meta property="og:locale" content="en_US">
+		<meta property="og:site_name" content="Ability Rush – Learn &amp; Improve">
+		<meta property="og:type" content="article">
+		<meta property="og:title" content="How to embed any file in Golang binary – Ability Rush">
+		<meta property="og:description" content="In this post we look how we can embed any type of file inside our go binary and distribute the binary without separate files.">
+		<meta property="og:url" content="/how-to-embed-any-file-in-golang-binary/">
+		<meta property="article:published_time" content="2021-10-18T08:17:56+00:00">
+		<meta property="article:modified_time" content="2023-04-08T14:21:01+00:00">
+		<meta name="twitter:card" content="summary">
+		<meta name="twitter:title" content="How to embed any file in Golang binary – Ability Rush">
+		<meta name="twitter:description" content="In this post we look how we can embed any type of file inside our go binary and distribute the binary without separate files.">
+		<script data-jetpack-boost="ignore" type="application/ld+json" class="aioseo-schema">{"@context":"https:\/\/schema.org","@graph":[{"@type":"BlogPosting","@id":"\/how-to-embed-any-file-in-golang-binary\/#blogposting","name":"How to embed any file in Golang binary – Ability Rush","headline":"How to embed any file in Golang binary","author":{"@id":"\/author\/akshaykhairmode\/#author"},"publisher":{"@id":"\/#organization"},"image":{"@type":"ImageObject","url":"data:image\/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWAAAAClCAYAAABiMyf\/AAAa20lEQVR4Ae2d+3PUxpbH88cwY2NjPA44Nhi\/IcY2NsY4xsaGMDxCYoh5ZTCvKnwhuQRSqZtgAksS4Capm7uEze4m7C6pcqqS1G6q\/F+drZZ0pJZGPaOZaU1rZr4\/TGncUj90zrc\/OnMkq19LpdKED2wADUAD0ED1NfAajF59o8PmsDk0AA0IDQDA+AWAX0DQADRgSAMAsCHDIwJCBAQNQAMAMACM6AcagAYMaQAANmR4RD+IfqABaAAABoAR\/UAD0IAhDbzW1dVL+MAG0AA0AA1UXwMAMC5AuABDA9CAIQ0AwIYMj2ij+tEGbA6bJ00DADAAjOgHGoAGDGkAADZk+KRdiTEeRIfQQPU1AAADwIh+oAFowJAGAGBDhke0Uf1oAzaHzZOmgboF8MSP9+mDfzuh\/8revY9mf12jpa8P6m8bFwPYFBpoKA0AwKUKHgBuqAmStIgJ44kvit\/RM0C739pPE+8t0NSFYzR59gjtWZimnsGh2DRfOoBHRml3JGjtpoGB+IxVTIiIgM3ZvphvsB++SZoGdvYN0NjxWQu8Ar7yRwC5d8+eWCBcGoC736H7L\/+PXn19tTCEuw\/TrX\/+Sn++uEejkWCtX5AAsH6bJm3SYDzwsQ4NdO\/ooz1z+2n\/+bd94JUhPJp9i3bsGtAO4dIALGB66K\/0w29\/qiHcfZiufPuK\/nz1Ha281R9pwN1nl+nsxgPKOR85d2vvu0czH5+Tjlmlsa5e2vHxdbdObsMuY4cwgP3H3KOZM34jFupbtBXcv\/R1FjlgQxdV9i22AK9ODezsG6R978wr4WulI94\/Qv2jI5F4VsrYSgdwIQiXDV8JjE6OlSHsAvDXSzQg+nb2W7AOlHEdYQABYHGMXDb85A7lNry+XLgzlBV9Z+8Mu4bndnETDhAoZaLh2OTqpWdoN00sLRYE8P5zb9PA5JjLAV3+LA\/AFoT\/Qv\/4VU5H7KUPnpYW+TIogzCzo1Y7os2DpBv5eiAV7ch1uN0cA5ojtsANNAHTQn1zFO0zdqAN3z7uB1vtQoWdkwuwWvfNzv4h2nf6cGEALx+hvrGkRMAMmEMM4Rt0RcD3f57RxZG+6JNPjmalFISdiigGYH\/KIQzAcvTLInGhWrRv+3EzOfq12gCAo\/uXdYItbJZgDVg54PkDBQEsUhQiVcEc0bUtPwJmgzoQLhm+or4DszzIcdtuDrZwtCuMUS6AlX2rxgYAaxehLjGjHUTJ5WqgZ3CYxhV54P3LR2hgYjQW3VcOYAmW5Zy8G5Eq2lGnIMqIgLsX6cTGA2LoFuzbAW1eFO20EUxdlHPuqANgQAPJ0YB43nfk6AztP3\/UjYbHT83bN9+64xmncQDbkasHRSFIAd3jzn+aVQJgkcqQQSmAKz8tUazvsP12G\/52MYniESfsCrvWuwaMA1gYmEFn537F42hedFsJgEX0ysCU88qyUwv1HTa27J0DeAxN8WtFtiu+A57QQHENJALAcFRxR8FGsBE0UH8aAIARzcVycwGwqD9YwKf6fQoAA8AAMDQADRjSAABsyPCIJvRHE7ApbFprGgCAAWBEP9AANGBIAwCwIcPX2pUa40V0CQ3o1wAADAAj+oEGoAFDGngtlUpTuZ+5ubmy65bbJ+qV7y\/YDraDBpKlAQC4ggsQxJwsMcMf8EetaQAABoDxKwYagAYMaQAANmT4WrtSY7yILqEB\/RoAgAFgRD\/QADRgSAMAsCHDI5rQH03AprBprWkAAAaAEf1AA9CAIQ3UDICHfrhPufUl6jBkqFq7smK8iAahgeRrAAAG0BH9QAPQQCpNTZs3U+ebu2jwyD7a8840DWcnqXtyiFoybbHZp2YAjKt58q\/m8BF8VKsaaN7SQr1vvWmBV8BX\/gggt3VmYoFwbABu79pO7VEii\/ZMtOOitIVjYhFJrU4qjBsXhCgaSDc1UddYP+0+dcAHXhnCu2bepObWFu3zKx4A912gb9Z\/p+9XDxaGa0eWPv3pN1pfO130xEQO+IPns\/Zx6Z00ub5Gpx\/OWFteymjhZjul0hN0RFri3iqTwGzlkgvs73z0IXF7uY07NL56it4T22Ot7hibsifpPakNd1xOP8X6iCIKHAN4QAPV0cDmtlbqnx9VwleAeCg7Se07trkM0OWbeACcSlPmxGf03\/9bAMKZQ3Tnx9\/o9xd3aa69qeiJhQHYAqQDRg+cHiztsmvU54BRgHPx4bDbV\/NqjvLb8I73YO61acPX+zvlXAwYwlaf0s1C0UfwIqDLeWinOhMUdq5vO7e+3k6DRycKAnj3ySnq6O9y2aFLE7EBWAxQCeES4SvaCgPwaQmmDMuwMiUAnWhZjpyDxwaBK8bh6yOVJhvkNrh945Qib10OQzv1DQP4t\/r+3bx1Cw0sjBUE8PDx\/bR1Zw1FwCykzIl79J+\/S5FwZpJu\/2v0yJfb8YHNTUF40SwD2AdQGbBSFCynD0S6QdSxQStFv77jnYjX6ddLUYgVnPlj17XbEWVSlAwQa48cWBfYVh9Y9WZzKwc8PlAQwCJFIVIVus891giYB+tC+NYpG77ff0iTEdIOXF9sdQBYtOEDowToUgDsg7wCrnZUDBDLPsR3wDKpGhCPmvUfDo+CRfSb6e3UDl9hi6oAWHRkQ\/hP+r0M+Ir6FQNYgq0rAqmMI9cgXIN5Yt84FPD12uebhVKkXqwO9scidNcnsC\/sq9CAgPDOA7tp96kpNxrumxu1b76l47l4Vg3AlU4AH\/jKSUGE1LEjYjsFIcZn\/y2lIRxAy1EzR7YyqAW8+ebe0PMr7k0\/vkEXzBlXagvUj2cywK6wa7U10DgAFv\/pEnh8bOHmtPXImgxThrKd271G\/VYdfz6XIRzM\/wrn+es\/yLthV20Hoz9ABRpIrgZqBsCmRGRD2w9gU2NBv8mdSPANfFOOBgBgRT6IjRl8rpfLscWEgwaggUo1AABLAB764SPff7xxqkFOUVRqcNTHpIUGoAHWAAAsAdj7bzp+tte7QccGwxaTBxqABnRpAACWAKzLqGgHExQagAaiaAAABoDxXCg0AA0Y0gAAbMjwUa6OOAZRFDRQ3xoAgAFgRD\/QADRgSAMAsCHDI7Kp78gG\/oV\/o2gAAAaAEf1AA9CAIQ0AwIYMH+XqiGMQRUED9a0BABgARvQDDUADhjQAABsyPCKb+o5s4F\/4N4oGqg\/gpmmaGlqlk8U+gzna2wwnRnEijoFOoIHa1EDVAbxp8zW6ffkPelb084ouZZqN\/TQSr5XkhTYh7toUN\/wGvyVdA8YAfLt3szG4RnEKAIzJG0UnOAY6qUQDRgG8qfsurc5\/G+0zcrqqwAaAMbEqmVioW3v6Eeu+LX5xkQ7ePuVjjapch4+NAjg1uFYgzbCNOreOUodYi6lpkS5NXPcZRcfJF2oDAK69CVTIn9gHfxbTgAq0qvJi7UXZn1gAD0\/+ZOeJT3xCvaUA2F3HzX6lpMjjhsE0+OrJYL43WCe4nFFufYk6nCcoeNWMseyUtcQRL1WUtxZcxLGx43gM\/F5iu13\/6hz2Pl46Sf0aTf\/53qHx1VP03oa\/Le4XW8CqETWgAq2qXIeNEgvgmUPrNoDPPKbxqAB2ACeDj8EjA1aALbchL75pr14sQ5Xhx0YOW2yT2\/Tg7LVpg1ECXMSxcX9ia4\/zge9moH0+XrsunKULgn2MN5bg3yn3QuC1I\/eL7wBwI2pABVpVuQ4bJQbAnYN36d32Di\/N0NRPe3ddoN3iUbSIALZAI4GIDSTDlKPV8WOtXl\/ugp0ekOQ63I68lftiAPtWzgiswiwfL7dTqB8LwMHzCbSbB3oRlTuAtcYjf5eeeVbZQR4bvgPEjaQBFWhV5TpsU3UAp5zngKe2NhHngJu71mgt9wc9O\/cdvd3S5IJxczpjf48IYAEsOfplA8mQs4AVhJoFLTsKZojKdeR2OL1gbZ12QmEWAGWUsXE\/vA0bg9gnl9sA9qJdq64EXXtsgf0hFxzuE1tAt1E1oAKtqlyHnaoPYCkKswC84zrdPi89F+xAeFPbNbq9\/IpWe8YiR8BRIFcOgDnC5ZSDMLwc0QLAgJaOyYg2zOpIBdqO\/i468ugiTd866QaHunxlFMCbhp7QVzJ8+Z8zTv9In3B57iVd2n480lMQAsByHtcykhOJMjxDYRkSEcpRpgxbNrxcFtpmSARcbGzcNm\/lMXCZL72QSlO0CDh\/bTu7npdycduXL5D4rn3Cwc5mIVvI\/m1vdNDhz5dpYe08ZXq2u74fWByn7NMVGjk765YVaqeUfYYB\/G2E\/4j7g56d\/5nWpm8UPXmOVOU0hAXKDf+NLAvUITfhGNLCgDL8gpDjfhioUQDMdQqNzR6rly6wx\/nAl1YJjj04Nsv5UgqCz8V\/03HCeVoDAC5lsuDY5MJTl2\/GLs7RsadXaP6zczSyNEP7Li\/Q0cc5C8oiEtbVD7djFMCpzJni74Tgd0Z0HYx08gw6ztUK4Mkw5RNnuMnH8T6xDdbxHb++RIOPPnSj7SgAFm0WG1sYgMVFwde3fOGIEAHzOQXb6M+exGNoiPAjzSnWUCNsm1tbaHR51ko5ZJ9dpeyTFZq9t0SdI72x2MosgKs0AYIwTZKQCo2t0L5KzyH0olElf1Q6dtSv\/0i0UXxc\/wAO\/BxPlGOLjC1OAMs57ETZBBeBWCIt+DiZF626ArCI6t59LiXKnRthnKs1KcJyxqYLwEM\/fETyc8923jj\/xpxJ+6DvZAICfonXL3UFYH5CgPO68rO6xoXkRLuljE0XgPlGpNw3P+9s3C6IeBHxNrAG6gvADexIgDTeSAX2hX3j0AAADGgjAoMGoAFDGgCADRk+jqsp2kSUBg3UlgYAYAAY0Q80AA0Y0gAAbMjwiFRqK1KBv+CvODQAAAPAiH6gAWjAkAYAYEOGj+NqijYRpUEDtaUBABgARvQDDUADhjQAABsyPCKV2opU4C\/4Kw4NAMAAMKIfaAAaMKSB6gPYWZLoJL9mUrUdzNFesR6cIcOgX9geGoAG4tZA1QG8afM1us0rXxTcvqJLmebaBnBgNY64nYn2AQxooLY0YAzAt3s31zZco0TmAHD9+ziKDnBMTehAtSacqlzHxc4ogDd136XV+W+jfUZO14QTdTgFbdRWFAN\/1Ye\/VKBVlevwu1EA87L04SeyjTq3jlJHOh15VeTwdupDHDg3+BEaiFcDKtCqynX4I7EAHp78yV6w88Qn1Nu0GGlVZG+ZnV6aXF8jfv+tvNhmyl2teMY9xn03bt47e\/MXrbT7eOC2ffqh3Y682KbrGLevYTt6l\/72v6PXW4iT64p3AfP4xYKaA6s58i2siZ+1+EUEDWjVgAq0qnKeq5VsEwvgmUPrNoDPPKbxkgAs4CiB04GqC2EHgr5jpAUzZZAGV45g+LrAdhbvFKCU67kOkYBrlbl9+4+3YetB2Pp7fYk6nAnG\/QLA8UZArt8ANq1gqxW7qkCrKtdxXokBcOfgXXq3vcNzfFM\/7d11gXaLR9FKBLAMSGEk39LtDgRdIDuTTbX6hFwuf3eNH4SsPHmD+xR980oeYtxeFN\/q2SJ4DnIf+O6zk+sX2AV2KVEDKtCqynVoreoATjnPAU9tbSLOATd3rdFa7g96du47erulyRXO5nTG\/l4SgKXo13GAD2pBKIpjnLIguF14W9HoTitlkXdMWHvs+OC+4N8hx1kXCyn6ZSf7LiJcD1tXK2wnbPEroVwNqEDb0d9lLVM\/feukdr1VH8AyNAbX6NKO63T7\/B92ukE8F+xAeFPbNbq9\/IpWe8ZKjIAB4HIFiHqAVyNroO2NDjr8+TItrJ2nTM92F7YDi+OUfbpCI2elBX9ljlXw3SiANw09oa9k+PI\/Zpz+kT7h8txLurT9eIk34fw\/331LsCui0ND0gpPjtdIVTr1g6oLTB6XkgIPHyhG6HenmX0Tsm3ZenriRJwrOHReKuDQwdnGOjj29QvOfnaORpRnad3mBjj7OWVAWkbDufg0D+Fsv8mX4hm3P\/0xr0zeKnnzYzSouc6GnAHDecW7e1YOhDUf\/cu4C3PJNOB8og305f4vj3VQGl3HaIfi3dIMQN+EAHt0AQHt+TTW3ttDo8qyVcsg+u0rZJys0e2+JOkd6i\/KnHFsaBXAqc4aKvhOC3xXRdbCoAdxIcvUUvbchPyrmPAYmfioEoSj9fGAIy49\/9Un7hYEZwnzMws0BKzfMgI8CYH50jdvIMXy5L4Ywn8P6Em3DY2hF\/V\/OBEAdP4Bgj+rawyyAGTiati6Aj\/lTELGKqgDQGfbBaJdhXcq4cBOuuhOjFN\/gWPimXA0AwBXCvyD0nWeQdQBYlaMu1\/GoB2hAA+Y1AACXAGARhfqi1+A\/eQTa8t38E\/sKRctc1zrmKsmpDzut4eWiMXHMTxz4AD7QoQEAmMEXYZufI35AeU9FSP8dl3fTLAqAffU5jw346hA72gA0k6aBugJw0oyL8WDCQwPQQCENAMARIt9CBsQ+TDBoABooVwMAMACMx7ugAWjAkAYAYEOGL\/eKiXqItqCB+tEAAAwAI\/qBBqABQxoAgA0ZHlFM\/UQx8CV8Wa4GAGAAGNEPNAANGNIAAGzI8OVeMVEP0RY0UD8aAIABYEQ\/0AA0YEgDALAhwyOKqZ8oBr6EL8vVQEMD2H7DGP7Nt1zxoB7AAw1UpgEAWF5BGdEwfopCA9BAFTUQH4Bbx+n197+ivff\/nSbuv6A9F5apJc1Xiwy1TFyjnut\/p7H739PQhVXauq2K7\/CtooERIbDPsYUWkq0B1aKcqnId\/owHwIPXaM\/aL3TwK\/9n6u5fqKVpP+246y+3jvvyBXX1b8HVFxcHaAAaMKIBFWhV5YkAcPrNHO0487H72TZylHb9zQbsxM0V2rJtiJr33qThu99Q37sXqOvGzxaYpz59RB0Dw9S8\/S3qWn1plU1\/dIOaFeLjF5LzGmxiOR\/r3bzOKx55eR\/f+3pTabLfpcuvdXTqOH0EV5ngPvx1Ci+EGXxFJS835BtHYIxirO5L2hXnq8O5aCPZERf8kyz\/qECrKtfhv4oj4K2jR4k\/7Xv3UfP0F3Tgq19o+vO\/0dZ0mloXPqWBlfvO5+809qWA839Q93Czd5Xrv0WjIlr+8l8oowASg5fBZcPTBqu\/TLqplp6gxefeUtIMS\/\/xHmC5DxeeDjjD3vkrjB9sT5TltzFBRzb87w3mem4\/inPW4WC0kaxJDn8k1x8q0KrKdfiyYgCLQaR3HafX5y7Q61MHqG3puR3N3jhHqebj1P8wLN0QAO3IHZqwoH2PtihgxNGpe9JhcHTKlGAL7A+LgIMLZAaPcfuXl6yXxxzoI29VDOdYVbncPr4nd7LCN\/XnGxVoVeU6NKAFwL6BOBHwwS9fUPdwB6VSGWqZ\/4ImBWAfvqRJKwL+hfYuHbIj4O1HaNc9G9LjZ50yGWjOdxWAfbANwM8al7NsEKco3NSFu8KxPwIORrtKADt9cTTt2iAwBjFu3xid87GjYK9vt37IuWNf\/U12+DR5PlWBVlWuw4f6ASxusjlA9d+Ee0n9B\/upbfm5laLw7\/uFpu5+JD0lke+ccgDMuVwXkgE4BuGa10cIpF2jA8BeCgkXDdiiDjSgAm1HfxcdeXSRpm+d1O5n\/QAWjmidoTeu\/8OOdr98Sfs+XqOOHhENC7B2U\/vJhzT6yI56D3zxPQ2ceJua3UfU8uEr6uXBMQBTq225TP7O4giU6QBwMGJOORE3R72qVIOq3AU8jxlb7aKHjcPnWKPbpe2NDjr8+TItrJ2nTM92V3cDi+OUfbpCI2e9+0m6bBUPgGOARskADoE2R8QMx5IBHICrXd\/\/RIMYp5zmYCDLoOabcG5kHoO9dAkE7QBWjaSBsYtzdOzpFZr\/7ByNLM3QvssLdPRxzoKyiIR126KuAczw4\/xv8BGxSgEsnMEQ5j4Wbg7Q5PqaP++bl4eWntQAfLWLWvckQXuNcxFqbm2h0eVZK+WQfXaVsk9WaPbeEnWO9Mai05oBcM1MgkCao2bGjQtBLBMM\/m8ceJfjawBYM3js9AIi3HLEiDqAVaNpAACuAMAi\/cD5ZEs4TqpBzvc2mqBwvoAoNBBdAwBwBQDmm2mc\/xVbwDe6+DBRYatG1wAAXAGAG108OH8AFBqoTAMAMACMm0\/QADRgSAMAsCHDI3KoLHKA\/WC\/etAAAAwAI\/qBBqABQxoAgA0Zvh6u3jgHRKHQQGUaAIABYEQ\/0AA0YEgDALAhwyNyqCxygP1gv3rQAAAMACP6gQagAUMaAIANGb4ert44B0Sh0EBlGgCAAWBEP9AANGBIAwCwIcMjcqgscoD9YL960ECsAD7412\/o55f\/Vfjz82N6P9WEKzAuBNAANNBwGgCAIfqGE309RE44B\/2\/AFRrwqnKdfggVgDrGCC3EVy9gsvL3epur9xxoJ7+iQSbwqblaEAFWlV5OX0E68QK4NAUxHcf04Eyok7dwNTdXtCw+BsQgAZqSwMq0KrKdfi3JgDMC1167929Rn0OxIPv5A2+jzdYVyyEGSzLbXjt6TAq2qitiQd\/wV9CAyrQqsp16CZWAOsYILcRFrHmLf\/jrMfGEA4u\/S7a4JWIw9rjvrDFhIQGGk8DKtCqynVoJFYAh6Yggk9FRHwKIgyYIpL1LQnkrlJsR7RiP8M4aKyw9oLH4O\/Gm4TweeP6XAVaVbkOrdQugJ1o10tLPCDvuw1gLz2Rv0gmANy4E03HxEEb9acfFWg7+rusZeqnb53U\/sRQrADWKdI8YDoA5pRCob7sugLQHojz2ivjxmChPrGv\/iYofFrfPm17o4MOf75MC2vnKdOz3YXtwOI4ZZ+u0MjZWbdMlxZiBXDBFMQXl0o6mTBgFkox5BnIATanLMLay6sDKJfkI9ivvgHVCP4duzhHx55eofnPztHI0gztu7xARx\/nLCiLSFi3DWoGwHk33Nx87wP3xpowjjhu8eGwZaih51fcpyVSAQCHtafbuGgPQIIGaksDza0tNLo8a6Ucss+uUvbJCs3eW6LOkV7t8BXaiBXAusXnPT7mPTbmpRc4B+zt846393H0y+Py9nt1eB+2tTVx4C\/4qxY1UFMArkUDY8wAAzQADag0AAAjzxvLTyuV4FAOGEEDngYAYAAYAIYGoAFDGgCADRkeUYAXBcAWsEWjagAABoAR\/UAD0IAhDQDAhgzfqFd8nDeiXWjA0wAADAAj+oEGoAFDGvh\/wufPE\/nSUt4AAAAASUVORK5CYII=","@id":"\/how-to-embed-any-file-in-golang-binary\/#articleImage"},"datePublished":"2021-10-18T13:47:56+05:30","dateModified":"2023-04-08T19:51:01+05:30","inLanguage":"en-US","mainEntityOfPage":{"@id":"\/how-to-embed-any-file-in-golang-binary\/#webpage"},"isPartOf":{"@id":"\/how-to-embed-any-file-in-golang-binary\/#webpage"},"articleSection":"Golang, Technology, binary, embed, go, golang"},{"@type":"BreadcrumbList","@id":"\/how-to-embed-any-file-in-golang-binary\/#breadcrumblist","itemListElement":[{"@type":"ListItem","@id":"\/#listItem","position":1,"name":"Home","item":"\/","nextItem":"\/how-to-embed-any-file-in-golang-binary\/#listItem"},{"@type":"ListItem","@id":"\/how-to-embed-any-file-in-golang-binary\/#listItem","position":2,"name":"How to embed any file in Golang binary","previousItem":"\/#listItem"}]},{"@type":"Organization","@id":"\/#organization","name":"Ability Rush","description":"Learn & Improve","url":"\/","logo":{"@type":"ImageObject","url":"\/wp-content\/uploads\/2021\/10\/cropped-android-chrome-512x512-1.png","@id":"\/how-to-embed-any-file-in-golang-binary\/#organizationLogo","width":512,"height":512},"image":{"@id":"\/how-to-embed-any-file-in-golang-binary\/#organizationLogo"}},{"@type":"Person","@id":"\/author\/akshaykhairmode\/#author","url":"\/author\/akshaykhairmode\/","name":"Akshay Khairmode","image":{"@type":"ImageObject","@id":"\/how-to-embed-any-file-in-golang-binary\/#authorImage","url":"http:\/\/2.gravatar.com\/avatar\/20ffb1dd4c5b351c3a2a7cb6a7f2e342?s=96&d=wavatar&r=g","width":96,"height":96,"caption":"Akshay Khairmode"}},{"@type":"WebPage","@id":"\/how-to-embed-any-file-in-golang-binary\/#webpage","url":"\/how-to-embed-any-file-in-golang-binary\/","name":"How to embed any file in Golang binary – Ability Rush","description":"In this post we look how we can embed any type of file inside our go binary and distribute the binary without separate files.","inLanguage":"en-US","isPartOf":{"@id":"\/#website"},"breadcrumb":{"@id":"\/how-to-embed-any-file-in-golang-binary\/#breadcrumblist"},"author":{"@id":"\/author\/akshaykhairmode\/#author"},"creator":{"@id":"\/author\/akshaykhairmode\/#author"},"datePublished":"2021-10-18T13:47:56+05:30","dateModified":"2023-04-08T19:51:01+05:30"},{"@type":"WebSite","@id":"\/#website","url":"\/","name":"Ability Rush","description":"Learn & Improve","inLanguage":"en-US","publisher":{"@id":"\/#organization"}}]}</script>
+		<!-- All in One SEO -->
+
+<link rel="pingback" href="/xmlrpc.php">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="dns-prefetch" href="//www.googletagmanager.com">
+<link rel="dns-prefetch" href="//c0.wp.com">
+<link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+<link rel="dns-prefetch" href="//fundingchoicesmessages.google.com">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Feed" href="/feed/">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Comments Feed" href="/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; How to embed any file in Golang binary Comments Feed" href="/how-to-embed-any-file-in-golang-binary/feed/">
+
+<style type="text/css" media="all">.wpautoterms-footer{background-color:#ffffff;text-align:center;}
+.wpautoterms-footer a{color:#000000;font-family:Arial, sans-serif;font-size:14px;}
+.wpautoterms-footer .separator{color:#cccccc;font-family:Arial, sans-serif;font-size:14px;}</style>
+<style id="wp-emoji-styles-inline-css">img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}</style>
+<link rel="stylesheet" id="mediaelement-css" href="https://c0.wp.com/c/6.5.4/wp-includes/js/mediaelement/mediaelementplayer-legacy.min.css" media="all">
+<link rel="stylesheet" id="wp-mediaelement-css" href="https://c0.wp.com/c/6.5.4/wp-includes/js/mediaelement/wp-mediaelement.min.css" media="all">
+<style id="jetpack-sharing-buttons-style-inline-css">.jetpack-sharing-buttons__services-list{display:flex;flex-direction:row;flex-wrap:wrap;gap:0;list-style-type:none;margin:5px;padding:0}.jetpack-sharing-buttons__services-list.has-small-icon-size{font-size:12px}.jetpack-sharing-buttons__services-list.has-normal-icon-size{font-size:16px}.jetpack-sharing-buttons__services-list.has-large-icon-size{font-size:24px}.jetpack-sharing-buttons__services-list.has-huge-icon-size{font-size:36px}@media print{.jetpack-sharing-buttons__services-list{display:none!important}}.editor-styles-wrapper .wp-block-jetpack-sharing-buttons{gap:0;padding-inline-start:0}ul.jetpack-sharing-buttons__services-list.has-background{padding:1.25em 2.375em}</style>
+<style id="classic-theme-styles-inline-css">/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}</style>
+<style id="global-styles-inline-css">body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}</style>
+<link rel="stylesheet" id="wpautoterms_css-css" href="/wp-content/plugins/auto-terms-of-service-and-privacy-policy/css/wpautoterms.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="mpl-publisher-css" href="/wp-content/plugins/mpl-publisher/assets/css/mpl-widget.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="oceanwp-style-css" href="/wp-content/themes/oceanwp/assets/css/style.min.css?ver=1.0" media="all">
+<link rel="stylesheet" id="child-style-css" href="/wp-content/themes/oceanwp-child-theme-master/style.css?ver=3.5.5" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="/wp-content/themes/oceanwp/assets/fonts/fontawesome/css/all.min.css?ver=6.4.2" media="all">
+<link rel="stylesheet" id="simple-line-icons-css" href="/wp-content/themes/oceanwp/assets/css/third/simple-line-icons.min.css?ver=2.4.0" media="all">
+<link rel="stylesheet" id="elementor-icons-css" href="/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.29.0" media="all">
+<link rel="stylesheet" id="elementor-frontend-css" href="/wp-content/plugins/elementor/assets/css/frontend-lite.min.css?ver=3.21.8" media="all">
+<link rel="stylesheet" id="swiper-css" href="/wp-content/plugins/elementor/assets/lib/swiper/v8/css/swiper.min.css?ver=8.4.5" media="all">
+<link rel="stylesheet" id="elementor-post-6-css" href="/wp-content/uploads/elementor/css/post-6.css?ver=1717861485" media="all">
+<link rel="stylesheet" id="elementor-global-css" href="/wp-content/uploads/elementor/css/global.css?ver=1717861485" media="all">
+<link rel="stylesheet" id="oe-widgets-style-css" href="/wp-content/plugins/ocean-extra/assets/css/widgets.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="ow-perfect-scrollbar-css" href="/wp-content/themes/oceanwp/assets/css/third/perfect-scrollbar.css?ver=1.5.0" media="all">
+<link rel="stylesheet" id="omw-styles-css" href="/wp-content/plugins/ocean-modal-window/assets/css/style.min.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="sharedaddy-css" href="https://c0.wp.com/p/jetpack/13.5/modules/sharedaddy/sharing.css" media="all">
+<link rel="stylesheet" id="social-logos-css" href="https://c0.wp.com/p/jetpack/13.5/_inc/social-logos/social-logos.min.css" media="all">
+<link rel="stylesheet" id="google-fonts-1-css" href="https://fonts.googleapis.com/css?family=Merriweather%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto+Slab%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic&#038;display=auto&#038;ver=6.5.4" media="all">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<script data-jetpack-boost="ignore" src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/jquery.min.js" id="jquery-core-js"></script>
+
+
+
+
+
+
+
+<!-- Google tag (gtag.js) snippet added by Site Kit -->
+
+<!-- Google Analytics snippet added by Site Kit -->
+
+
+
+<!-- End Google tag (gtag.js) snippet added by Site Kit -->
+<link rel="https://api.w.org/" href="/wp-json/">
+<link rel="alternate" type="application/json" href="/wp-json/wp/v2/posts/430">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="/xmlrpc.php?rsd">
+<meta name="generator" content="WordPress 6.5.4">
+<link rel="shortlink" href="/?p=430">
+<link rel="alternate" type="application/json+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2F%2Fhow-to-embed-any-file-in-golang-binary%2F">
+<link rel="alternate" type="text/xml+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2F%2Fhow-to-embed-any-file-in-golang-binary%2F#038;format=xml">
+<meta name="generator" content="Site Kit by Google 1.128.0">		
+		
+	
+
+<!-- Google AdSense meta tags added by Site Kit -->
+<meta name="google-adsense-platform-account" content="ca-host-pub-2644536267352236">
+<meta name="google-adsense-platform-domain" content="sitekit.withgoogle.com">
+<!-- End Google AdSense meta tags added by Site Kit -->
+<meta name="generator" content="Elementor 3.21.8; features: e_optimized_assets_loading, e_optimized_css_loading, additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-auto">
+<style>.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<!-- Google AdSense snippet added by Site Kit -->
+
+
+<!-- End Google AdSense snippet added by Site Kit -->
+<link rel="icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-32x32.png" sizes="32x32">
+<link rel="icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-180x180.png">
+<meta name="msapplication-TileImage" content="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-270x270.png">
+<!-- OceanWP CSS -->
+<style type="text/css">/* General CSS */a:hover,a.light:hover,.theme-heading .text::before,.theme-heading .text::after,#top-bar-content >a:hover,#top-bar-social li.oceanwp-email a:hover,#site-navigation-wrap .dropdown-menu >li >a:hover,#site-header.medium-header #medium-searchform button:hover,.oceanwp-mobile-menu-icon a:hover,.blog-entry.post .blog-entry-header .entry-title a:hover,.blog-entry.post .blog-entry-readmore a:hover,.blog-entry.thumbnail-entry .blog-entry-category a,ul.meta li a:hover,.dropcap,.single nav.post-navigation .nav-links .title,body .related-post-title a:hover,body #wp-calendar caption,body .contact-info-widget.default i,body .contact-info-widget.big-icons i,body .custom-links-widget .oceanwp-custom-links li a:hover,body .custom-links-widget .oceanwp-custom-links li a:hover:before,body .posts-thumbnails-widget li a:hover,body .social-widget li.oceanwp-email a:hover,.comment-author .comment-meta .comment-reply-link,#respond #cancel-comment-reply-link:hover,#footer-widgets .footer-box a:hover,#footer-bottom a:hover,#footer-bottom #footer-bottom-menu a:hover,.sidr a:hover,.sidr-class-dropdown-toggle:hover,.sidr-class-menu-item-has-children.active >a,.sidr-class-menu-item-has-children.active >a >.sidr-class-dropdown-toggle,input[type=checkbox]:checked:before{color:#3370bf}.single nav.post-navigation .nav-links .title .owp-icon use,.blog-entry.post .blog-entry-readmore a:hover .owp-icon use,body .contact-info-widget.default .owp-icon use,body .contact-info-widget.big-icons .owp-icon use{stroke:#3370bf}input[type="button"],input[type="reset"],input[type="submit"],button[type="submit"],.button,#site-navigation-wrap .dropdown-menu >li.btn >a >span,.thumbnail:hover i,.post-quote-content,.omw-modal .omw-close-modal,body .contact-info-widget.big-icons li:hover i,body div.wpforms-container-full .wpforms-form input[type=submit],body div.wpforms-container-full .wpforms-form button[type=submit],body div.wpforms-container-full .wpforms-form .wpforms-page-button{background-color:#3370bf}.thumbnail:hover .link-post-svg-icon{background-color:#3370bf}body .contact-info-widget.big-icons li:hover .owp-icon{background-color:#3370bf}.widget-title{border-color:#3370bf}blockquote{border-color:#3370bf}#searchform-dropdown{border-color:#3370bf}.dropdown-menu .sub-menu{border-color:#3370bf}.blog-entry.large-entry .blog-entry-readmore a:hover{border-color:#3370bf}.oceanwp-newsletter-form-wrap input[type="email"]:focus{border-color:#3370bf}.social-widget li.oceanwp-email a:hover{border-color:#3370bf}#respond #cancel-comment-reply-link:hover{border-color:#3370bf}body .contact-info-widget.big-icons li:hover i{border-color:#3370bf}#footer-widgets .oceanwp-newsletter-form-wrap input[type="email"]:focus{border-color:#3370bf}blockquote,.wp-block-quote{border-left-color:#3370bf}body .contact-info-widget.big-icons li:hover .owp-icon{border-color:#3370bf}input[type="button"]:hover,input[type="reset"]:hover,input[type="submit"]:hover,button[type="submit"]:hover,input[type="button"]:focus,input[type="reset"]:focus,input[type="submit"]:focus,button[type="submit"]:focus,.button:hover,.button:focus,#site-navigation-wrap .dropdown-menu >li.btn >a:hover >span,.post-quote-author,.omw-modal .omw-close-modal:hover,body div.wpforms-container-full .wpforms-form input[type=submit]:hover,body div.wpforms-container-full .wpforms-form button[type=submit]:hover,body div.wpforms-container-full .wpforms-form .wpforms-page-button:hover{background-color:#81d742}a{color:#1e73be}a .owp-icon use{stroke:#1e73be}a:hover{color:#dd3333}a:hover .owp-icon use{stroke:#dd3333}#scroll-top{background-color:#1e73be}/* Header CSS */#site-header.has-header-media .overlay-header-media{background-color:rgba(0,0,0,0.5)}/* Typography CSS */body{color:#000000}</style>
+<style id="wpforms-css-vars-root">:root {
+					--wpforms-field-border-radius: 3px;
+--wpforms-field-border-style: solid;
+--wpforms-field-border-size: 1px;
+--wpforms-field-background-color: #ffffff;
+--wpforms-field-border-color: rgba( 0, 0, 0, 0.25 );
+--wpforms-field-border-color-spare: rgba( 0, 0, 0, 0.25 );
+--wpforms-field-text-color: rgba( 0, 0, 0, 0.7 );
+--wpforms-field-menu-color: #ffffff;
+--wpforms-label-color: rgba( 0, 0, 0, 0.85 );
+--wpforms-label-sublabel-color: rgba( 0, 0, 0, 0.55 );
+--wpforms-label-error-color: #d63637;
+--wpforms-button-border-radius: 3px;
+--wpforms-button-border-style: none;
+--wpforms-button-border-size: 1px;
+--wpforms-button-background-color: #066aab;
+--wpforms-button-border-color: #066aab;
+--wpforms-button-text-color: #ffffff;
+--wpforms-page-break-color: #066aab;
+--wpforms-background-image: none;
+--wpforms-background-position: center center;
+--wpforms-background-repeat: no-repeat;
+--wpforms-background-size: cover;
+--wpforms-background-width: 100px;
+--wpforms-background-height: 100px;
+--wpforms-background-color: rgba( 0, 0, 0, 0 );
+--wpforms-background-url: none;
+--wpforms-container-padding: 0px;
+--wpforms-container-border-style: none;
+--wpforms-container-border-width: 1px;
+--wpforms-container-border-color: #000000;
+--wpforms-container-border-radius: 3px;
+--wpforms-field-size-input-height: 43px;
+--wpforms-field-size-input-spacing: 15px;
+--wpforms-field-size-font-size: 16px;
+--wpforms-field-size-line-height: 19px;
+--wpforms-field-size-padding-h: 14px;
+--wpforms-field-size-checkbox-size: 16px;
+--wpforms-field-size-sublabel-spacing: 5px;
+--wpforms-field-size-icon-size: 1;
+--wpforms-label-size-font-size: 16px;
+--wpforms-label-size-line-height: 19px;
+--wpforms-label-size-sublabel-font-size: 14px;
+--wpforms-label-size-sublabel-line-height: 17px;
+--wpforms-button-size-font-size: 17px;
+--wpforms-button-size-height: 41px;
+--wpforms-button-size-padding-h: 15px;
+--wpforms-button-size-margin-top: 10px;
+--wpforms-container-shadow-size-box-shadow: none;
+
+				}</style>
+</head>
+
+<body class="post-template-default single single-post postid-430 single-format-standard wp-embed-responsive oceanwp-theme dropdown-mobile top-header-style default-breakpoint has-sidebar content-right-sidebar post-in-category-golang post-in-category-technology page-header-disabled has-breadcrumbs elementor-default elementor-kit-6 elementor-page elementor-page-430" itemscope="itemscope" itemtype="https://schema.org/Article">
+
+	
+	
+	<div id="outer-wrap" class="site clr">
+
+		<a class="skip-link screen-reader-text" href="#main">Skip to content</a>
+
+		
+		<div id="wrap" class="clr">
+
+			
+			
+<header id="site-header" class="top-header clr" data-height="74" itemscope="itemscope" itemtype="https://schema.org/WPHeader" role="banner">
+
+	
+		
+	<div class="header-bottom clr">
+		<div class="container">
+			
+
+<div id="site-logo" class="clr" itemscope itemtype="https://schema.org/Brand">
+
+	
+	<div id="site-logo-inner" class="clr">
+
+						<a href="/" rel="home" class="site-title site-logo-text">Ability Rush</a>
+				
+	</div>
+<!-- #site-logo-inner -->
+
+	
+				<div id="site-description"><h2>Learn &amp; Improve</h2></div>
+			
+</div>
+<!-- #site-logo -->
+
+		</div>
+	</div>
+	
+<div class="header-top clr">
+
+	
+	<div id="site-header-inner" class="clr container">
+
+		
+		<div class="left clr">
+
+			<div class="inner">
+
+				
+				
+			</div>
+
+		</div>
+
+		<div class="right clr">
+
+			<div class="inner">
+
+				<div id="search-toggle"><a href="/#" class="site-search-toggle search-dropdown-toggle" aria-label="Search website"><i class=" fas fa-search" aria-hidden="true" role="img"></i></a></div>
+<div id="searchform-dropdown" class="header-searchform-wrap clr">
+	
+<form aria-label="Search this website" role="search" method="get" class="searchform" action="/">	
+	<input aria-label="Insert search query" type="search" id="ocean-search-form-1" class="field" autocomplete="off" placeholder="Search" name="s">
+		</form>
+</div>
+<!-- #searchform-dropdown -->
+
+			</div>
+
+		</div>
+
+	</div>
+<!-- #site-header-inner -->
+
+	
+<div id="mobile-dropdown" class="clr">
+
+	<nav class="clr" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement">
+
+		<div class="menu">
+<li class="page_item page-item-1832"><a href="/j2csv/">j2csv</a></li>
+<li class="page_item page-item-3"><a href="/privacy-policy/">Privacy Policy</a></li>
+</div>
+
+<div id="mobile-menu-search" class="clr">
+	<form aria-label="Search this website" method="get" action="/" class="mobile-searchform">
+		<input aria-label="Insert search query" value="" class="field" id="ocean-mobile-search-2" type="search" name="s" autocomplete="off" placeholder="Search">
+		<button aria-label="Submit search" type="submit" class="searchform-submit">
+			<i class=" fas fa-search" aria-hidden="true" role="img"></i>		</button>
+					</form>
+</div>
+<!-- .mobile-menu-search -->
+
+	</nav>
+
+</div>
+
+	
+</div>
+<!-- .header-top -->
+
+
+		
+		
+</header><!-- #site-header -->
+
+
+			
+			<main id="main" class="site-main clr" role="main">
+
+				
+	
+	<div id="content-wrap" class="container clr">
+
+		
+		<div id="primary" class="content-area clr">
+
+			
+			<div id="content" class="site-content clr">
+
+				
+				
+<article id="post-430">
+
+	
+
+<header class="entry-header clr">
+	<h2 class="single-post-title entry-title" itemprop="headline">How to embed any file in Golang binary</h2>
+<!-- .single-post-title -->
+</header><!-- .entry-header -->
+
+
+<ul class="meta ospm-default clr">
+
+	
+					<li class="meta-author" itemprop="name">
+<span class="screen-reader-text">Post author:</span><i class=" fas fa-user-circle" aria-hidden="true" role="img"></i><a href="/author/akshaykhairmode/" title="Posts by Akshay Khairmode" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">Akshay Khairmode</a>
+</li>
+		
+		
+		
+		
+		
+		
+	
+		
+					<li class="meta-date" itemprop="datePublished">
+<span class="screen-reader-text">Post published:</span><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>October 18, 2021</li>
+		
+		
+		
+		
+		
+	
+		
+		
+		
+					<li class="meta-cat">
+<span class="screen-reader-text">Post category:</span><i class=" far fa-folder-open" aria-hidden="true" role="img"></i><a href="/category/technology/golang/" rel="category tag">Golang</a> <span class="owp-sep">/</span> <a href="/category/technology/" rel="category tag">Technology</a>
+</li>
+		
+		
+		
+	
+		
+		
+		
+		
+		
+					<li class="meta-comments">
+<span class="screen-reader-text">Post comments:</span><i class=" far fa-comments" aria-hidden="true" role="img"></i><a href="/how-to-embed-any-file-in-golang-binary/#respond" class="comments-link">0 Comments</a>
+</li>
+		
+	
+</ul>
+
+
+
+<div class="entry-content clr" itemprop="text">
+			<div data-elementor-type="wp-post" data-elementor-id="430" class="elementor elementor-430">
+						<section class="elementor-section elementor-top-section elementor-element elementor-element-2aebfd3 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="2aebfd3" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-88b7899" data-id="88b7899" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-add7421 elementor-widget elementor-widget-heading" data-id="add7421" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-heading-title{padding:0;margin:0;line-height:1}.elementor-widget-heading .elementor-heading-title[class*=elementor-size-]>a{color:inherit;font-size:inherit;line-height:inherit}.elementor-widget-heading .elementor-heading-title.elementor-size-small{font-size:15px}.elementor-widget-heading .elementor-heading-title.elementor-size-medium{font-size:19px}.elementor-widget-heading .elementor-heading-title.elementor-size-large{font-size:29px}.elementor-widget-heading .elementor-heading-title.elementor-size-xl{font-size:39px}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl{font-size:59px}</style>
+<h2 class="elementor-heading-title elementor-size-default">Introduction</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-c4b945c elementor-widget elementor-widget-text-editor" data-id="c4b945c" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#69727d;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#69727d;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}</style>				<p>Hi friends, today we are going to see <a href="https://pkg.go.dev/embed">go embed</a> feature which was released with <span style="color: #ff0000;">go 1.16</span>. Embed is used to compile static files to the binary so that we don&#8217;t need to read file every file from the disk even if the file does not exist later on.</p>
+<p>The files can be anything like a <strong>JSON</strong> file having some schema, some <strong>YAML</strong> file that has config for the application, or some <strong>images</strong> that are required for serving on the web.</p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-ac95fe9 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="ac95fe9" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-8b35d78" data-id="8b35d78" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-3437f42 elementor-widget elementor-widget-heading" data-id="3437f42" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Syntax for embed</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-d927dec elementor-widget elementor-widget-text-editor" data-id="d927dec" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>To use embed we need to add a comment for embed and compiler checks it and embeds the file,</p>
+<blockquote><p>//go:embed test<br>var s []byte</p></blockquote>
+<p>In the above example, compiler will find a file named <strong>test</strong> and add its data to variable <strong>s</strong></p>
+<p>Let&#8217;s see another example for the nested image file.</p>
+<blockquote><p>//go:embed images/golang.png<br>var embededImage []byte</p></blockquote>
+<p>This will add the <strong>golang.png</strong> file data to <strong>embededImage</strong> variable.</p>
+<p>If we want to add a folder then we can use the below syntax,</p>
+<blockquote><p>//go:embed images/*<br>var imageList embed.FS</p></blockquote>
+<p>embed.FS provides us Open, ReadDir, and ReadFile methods.</p>
+<p>More on this <a href="https://pkg.go.dev/embed#pkg-overview">here</a>.</p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-9c905ee elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="9c905ee" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-9ea3bdb" data-id="9ea3bdb" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-414f767 elementor-widget elementor-widget-heading" data-id="414f767" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Example for embed</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-77ecc96 elementor-widget elementor-widget-text-editor" data-id="77ecc96" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>let&#8217;s create a web server with <a href="https://pkg.go.dev/net/http"><strong>net/http</strong></a> package. The endpoints will be as below,</p>
+<ol>
+<li>/ &#8211; <span style="color: #33cccc;"><em>The root path.</em></span>
+</li>
+<li>/image &#8211; <span style="color: #33cccc;"><em>Reading file on the fly.</em></span>
+</li>
+<li>/image_embeded &#8211; <span style="color: #33cccc;"><em>Reading embedded file</em></span>
+</li>
+<li>/get_image &#8211; <span style="color: #33cccc;"><em>Reading embedded file with embed.FS</em></span>
+</li>
+</ol>
+<p>Our folder structure is like below, there are 2 images inside images folder and test file outside which has some text.</p>
+<p><img decoding="async" src="data:image/png;base64,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" alt=""></p>
+<p>We define our global variables for embedding, </p>
+<blockquote>
+<p>//go:embed test<br>var s []byte</p>
+<p>//go:embed images/golang.png<br>var embededImage []byte</p>
+<p>//go:embed images/*<br>var imageList embed.FS</p>
+</blockquote>
+<p>Now we create handlers like below, First for root,</p>
+<blockquote><p>http.HandleFunc(&#8220;/&#8221;, func(rw http.ResponseWriter, r *http.Request) {<br>        rw.Write(s)<br>    })</p></blockquote>
+<p>next for <strong>/image</strong>,</p>
+<blockquote>
+<p>http.HandleFunc(&#8220;/image&#8221;, func(rw http.ResponseWriter, r *http.Request) {</p>
+<p>        imageData, err := ioutil.ReadFile(&#8220;images/golang.png&#8221;)<br>        if err != nil {<br>            rw.Write([]byte(&#8220;Some error occured &#8211; &#8221; + err.Error()))<br>            return<br>        }</p>
+<p>        rw.Header().Write(bytes.NewBufferString(&#8220;Content-Type: image/png&#8221;))<br>        rw.Header().Write(bytes.NewBufferString(&#8220;Content-Length: &#8221; + strconv.Itoa(len(imageData))))<br>        rw.Write(imageData)<br>    })</p>
+</blockquote>
+<p>then for <strong>/image_embeded,</strong></p>
+<blockquote><p>http.HandleFunc(&#8220;/image_embeded&#8221;, func(rw http.ResponseWriter, r *http.Request) {<br>        rw.Header().Write(bytes.NewBufferString(&#8220;Content-Type: image/png&#8221;))<br>        rw.Header().Write(bytes.NewBufferString(&#8220;Content-Length: &#8221; + strconv.Itoa(len(embededImage))))<br>        rw.Write(embededImage)<br>    })</p></blockquote>
+<p>and finally for <strong>/get_image,</strong></p>
+<blockquote>
+<p>http.HandleFunc(&#8220;/get_image&#8221;, func(rw http.ResponseWriter, r *http.Request) {</p>
+<p>        fname := r.URL.Query().Get(&#8220;name&#8221;)</p>
+<p>        data, err := imageList.ReadFile(&#8220;images/&#8221; + fname)<br>        if err != nil {<br>            rw.Write([]byte(&#8220;Error occured : &#8221; + err.Error()))<br>            return<br>        }</p>
+<p>        rw.Header().Write(bytes.NewBufferString(&#8220;Content-Type: image/png&#8221;))<br>        rw.Header().Write(bytes.NewBufferString(&#8220;Content-Length: &#8221; + strconv.Itoa(len(data))))<br>        rw.Write(data)<br>    })</p>
+</blockquote>
+<p>We will listen on 7000 port,</p>
+<blockquote><p>http.ListenAndServe(&#8220;:7000&#8221;, nil)</p></blockquote>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-f54ce66 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="f54ce66" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-191ca3f" data-id="191ca3f" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-817868d elementor-widget elementor-widget-heading" data-id="817868d" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Output for embed</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-caf606a elementor-widget elementor-widget-text-editor" data-id="caf606a" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Let&#8217;s run our code and see what&#8217;s the output,</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-7e535aa elementor-widget elementor-widget-image" data-id="7e535aa" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-widget-image{text-align:center}.elementor-widget-image a{display:inline-block}.elementor-widget-image a img[src$=".svg"]{width:48px}.elementor-widget-image img{vertical-align:middle;display:inline-block}</style>										<img fetchpriority="high" decoding="async" width="704" height="218" src="/wp-content/uploads/2021/10/embed-1.png" class="attachment-large size-large wp-image-466" alt="embed-1" srcset="/wp-content/uploads/2021/10/embed-1.png 704w, /wp-content/uploads/2021/10/embed-1-300x93.png 300w" sizes="(max-width: 704px) 100vw, 704px">													</div>
+				</div>
+				<div class="elementor-element elementor-element-98c5610 elementor-widget elementor-widget-text-editor" data-id="98c5610" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>If we go to the root path we see what&#8217;s in the test file. On our <b>/image endpoint</b> we see our image. Remember our image is being read on the fly.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-e6d3f3c elementor-widget elementor-widget-image" data-id="e6d3f3c" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+													<img decoding="async" width="1024" height="777" src="/wp-content/uploads/2021/10/embed-2-1024x777.png" class="attachment-large size-large wp-image-467" alt="embed-2" srcset="/wp-content/uploads/2021/10/embed-2-1024x777.png 1024w, /wp-content/uploads/2021/10/embed-2-300x228.png 300w, /wp-content/uploads/2021/10/embed-2-768x583.png 768w, /wp-content/uploads/2021/10/embed-2.png 1290w" sizes="(max-width: 1024px) 100vw, 1024px">													</div>
+				</div>
+				<div class="elementor-element elementor-element-c5cdf7c elementor-widget elementor-widget-text-editor" data-id="c5cdf7c" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Let&#8217;s rename our image file to <b>golang1.png</b> and check what refreshing the same endpoint gives,</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-d45ea32 elementor-widget elementor-widget-image" data-id="d45ea32" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+													<img decoding="async" width="591" height="106" src="/wp-content/uploads/2021/10/embed-3.png" class="attachment-large size-large wp-image-468" alt="" srcset="/wp-content/uploads/2021/10/embed-3.png 591w, /wp-content/uploads/2021/10/embed-3-300x54.png 300w" sizes="(max-width: 591px) 100vw, 591px">													</div>
+				</div>
+				<div class="elementor-element elementor-element-7d6b3ed elementor-widget elementor-widget-text-editor" data-id="7d6b3ed" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>We see that file is not found, since we renamed our file and our application is still running, the embedded files will still work. Let&#8217;s check our <b>/image_embeded</b> endpoint,</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-37ab873 elementor-widget elementor-widget-image" data-id="37ab873" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+													<img loading="lazy" decoding="async" width="1024" height="734" src="/wp-content/uploads/2021/10/embed-4-1024x734.png" class="attachment-large size-large wp-image-469" alt="embed-4" srcset="/wp-content/uploads/2021/10/embed-4-1024x734.png 1024w, /wp-content/uploads/2021/10/embed-4-300x215.png 300w, /wp-content/uploads/2021/10/embed-4-768x550.png 768w, /wp-content/uploads/2021/10/embed-4.png 1280w" sizes="(max-width: 1024px) 100vw, 1024px">													</div>
+				</div>
+				<div class="elementor-element elementor-element-13c922b elementor-widget elementor-widget-text-editor" data-id="13c922b" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>It&#8217;s working as expected. Now let&#8217;s try to use our <b>/get_image</b> endpoint and get <b>prog.jpg</b> file.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-bf4d4d3 elementor-widget elementor-widget-image" data-id="bf4d4d3" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+													<img loading="lazy" decoding="async" width="1024" height="633" src="/wp-content/uploads/2021/10/embed-5-1024x633.png" class="attachment-large size-large wp-image-470" alt="embed-5" srcset="/wp-content/uploads/2021/10/embed-5-1024x633.png 1024w, /wp-content/uploads/2021/10/embed-5-300x185.png 300w, /wp-content/uploads/2021/10/embed-5-768x475.png 768w, /wp-content/uploads/2021/10/embed-5.png 1252w" sizes="(max-width: 1024px) 100vw, 1024px">													</div>
+				</div>
+				<div class="elementor-element elementor-element-e094ae9 elementor-widget elementor-widget-text-editor" data-id="e094ae9" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p><span style="font-size: 14px; color: var( --e-global-color-text );">We get our file in case of embed.FS too.</span></p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-7edff62 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="7edff62" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-6dfcf9a" data-id="6dfcf9a" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-d49c898 elementor-widget elementor-widget-heading" data-id="d49c898" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Conclusion</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-a91a8c2 elementor-widget elementor-widget-text-editor" data-id="a91a8c2" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>To conclude, embed is used to compile static files inside the go binary. Once embedded we can distribute the binary without any static files. </p>
+<p>Code is also available on <a href="https://github.com/akshaykhairmode/learning-go/tree/main/embed">Github</a>.</p>
+<p>Also, check out our <a href="/understanding-slices-in-golang-with-examples/">slices</a> explained post.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-0b15985 elementor-widget elementor-widget-shortcode" data-id="0b15985" data-element_type="widget" data-widget_type="shortcode.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-shortcode">[eac_elementor_tmpl id="1665"]</div>
+				</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				</div>
+		<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-official sd-sharing">
+<h3 class="sd-title">Share this:</h3>
+<div class="sd-content"><ul>
+<li class="share-facebook"><div class="fb-share-button" data-href="/how-to-embed-any-file-in-golang-binary/" data-layout="button_count"></div></li>
+<li class="share-x"><a href="https://x.com/share" class="twitter-share-button" data-url="/how-to-embed-any-file-in-golang-binary/" data-text="How to embed any file in Golang binary" data-via="AbilityRush">Post</a></li>
+<li class="share-end">
+</ul></div>
+</div></div>
+</div>
+<!-- .entry -->
+
+
+<div class="post-tags clr">
+	<span class="owp-tag-text">Tags: </span><a href="/tag/binary/" rel="tag">binary</a><span class="owp-sep">,</span> <a href="/tag/embed/" rel="tag">embed</a><span class="owp-sep">,</span> <a href="/tag/go/" rel="tag">go</a><span class="owp-sep">,</span> <a href="/tag/golang/" rel="tag">golang</a>
+</div>
+
+
+
+	<nav class="navigation post-navigation" aria-label="Read more articles">
+		<h2 class="screen-reader-text">Read more articles</h2>
+		<div class="nav-links">
+<div class="nav-previous"><a href="/understanding-stringer-tool-in-golang/" rel="prev"><span class="title"><i class=" fas fa-long-arrow-alt-left" aria-hidden="true" role="img"></i> Previous Post</span><span class="post-title">Understanding Stringer Tool in Golang</span></a></div>
+<div class="nav-next"><a href="/all-about-structs-in-golang/" rel="next"><span class="title"><i class=" fas fa-long-arrow-alt-right" aria-hidden="true" role="img"></i> Next Post</span><span class="post-title">All about structs in Golang</span></a></div>
+</div>
+	</nav>
+
+	<section id="related-posts" class="clr">
+
+		<h3 class="theme-heading related-posts-title">
+			<span class="text">You Might Also Like</span>
+		</h3>
+
+		<div class="oceanwp-row clr">
+
+			
+			
+				
+				<article class="related-post clr col span_1_of_3 col-1 post-1198 post type-post status-publish format-standard hentry category-golang category-technology tag-cheatsheet tag-date tag-go tag-golang entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/golang-date-formatting-cheat-sheet-yyyy-mm-dd/" rel="bookmark">Golang date formatting cheat sheet (YYYY-MM-DD)</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2022-06-03T00:31:53+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>June 3, 2022</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+				
+				<article class="related-post clr col span_1_of_3 col-2 post-1160 post type-post status-publish format-standard hentry category-golang category-technology tag-generics tag-go tag-golang tag-interface entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/understanding-generics-in-golang-1-18/" rel="bookmark">Understanding Generics in Golang 1.18</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2022-04-24T21:43:28+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>April 24, 2022</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+				
+				<article class="related-post clr col span_1_of_3 col-3 post-1596 post type-post status-publish format-standard hentry category-golang category-technology tag-curl tag-file tag-go tag-golang tag-post tag-upload entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/how-to-receive-file-uploads-in-the-golang-http-server/" rel="bookmark">How to receive file uploads in the Golang HTTP server</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2023-01-22T20:29:50+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>January 22, 2023</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+		</div>
+<!-- .oceanwp-row -->
+
+	</section><!-- .related-posts -->
+
+
+
+
+<section id="comments" class="comments-area clr has-comments">
+
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/how-to-embed-any-file-in-golang-binary/#respond" style="display:none;">Cancel reply</a></small>
+</h3>
+<form action="/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+<div class="comment-textarea">
+<label for="comment" class="screen-reader-text">Comment</label><textarea name="comment" id="comment" cols="39" rows="4" tabindex="0" class="textarea-comment" placeholder="Your comment here..."></textarea>
+</div>
+<div class="comment-form-author">
+<label for="author" class="screen-reader-text">Enter your name or username to comment</label><input type="text" name="author" id="author" value="" placeholder="Name (required)" size="22" tabindex="0" aria-required="true" class="input-name">
+</div>
+<div class="comment-form-email">
+<label for="email" class="screen-reader-text">Enter your email address to comment</label><input type="text" name="email" id="email" value="" placeholder="Email (required)" size="22" tabindex="0" aria-required="true" class="input-email">
+</div>
+<div class="comment-form-url">
+<label for="url" class="screen-reader-text">Enter your website URL (optional)</label><input type="text" name="url" id="url" value="" placeholder="Website" size="22" tabindex="0" class="input-website">
+</div>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="430" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="bbeb7215a1"></p>
+<p style="display: none !important;" class="akismet-fields-container" data-prefix="ak_"><label>&#916;<textarea name="ak_hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label><input type="hidden" id="ak_js_1" name="ak_js" value="114"></p>
+</form>	</div>
+<!-- #respond -->
+	
+</section><!-- #comments -->
+
+</article>
+
+				
+			</div>
+<!-- #content -->
+
+			
+		</div>
+<!-- #primary -->
+
+		
+
+<aside id="right-sidebar" class="sidebar-container widget-area sidebar-primary" itemscope="itemscope" itemtype="https://schema.org/WPSideBar" role="complementary" aria-label="Primary Sidebar">
+
+	
+	<div id="right-sidebar-inner" class="clr">
+
+		
+		<div id="recent-posts-2" class="sidebar-box widget_recent_entries clr">
+		<h4 class="widget-title">Recent Posts</h4>
+		<ul>
+											<li>
+					<a href="/how-to-accept-input-from-terminal-in-golang/">How to Accept Input from Terminal in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-update-variables-compile-time-in-go/">How to Update Variables Compile Time in Go</a>
+									</li>
+											<li>
+					<a href="/how-to-use-unbuffered-channels-in-golang/">How to use Unbuffered channels in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-use-buffered-channel-in-golang/">How to use Buffered Channel in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-receive-file-uploads-in-the-golang-http-server/">How to receive file uploads in the Golang HTTP server</a>
+									</li>
+					</ul>
+
+		</div>
+<div id="recent-comments-2" class="sidebar-box widget_recent_comments clr">
+<h4 class="widget-title">Recent Comments</h4>
+<ul id="recentcomments">
+<li class="recentcomments">
+<span class="comment-author-link"><a href="/" class="url" rel="ugc">Akshay Khairmode</a></span> on <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1931">Uploading File to AWS S3 in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link">Nihat</span> on <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1856">Uploading File to AWS S3 in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://livrooshomensmentem.com.br/" class="url" rel="ugc external nofollow">homens mentem</a></span> on <a href="/working-with-aws-simple-queue-service-sqs-in-golang/comment-page-1/#comment-43">Working with AWS SQS in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://comfort.kr.ua/kuhni-krivoj-rog/" class="url" rel="ugc external nofollow">Сергей</a></span> on <a href="/writing-mocks-in-golang-with-mockery/comment-page-1/#comment-24">Writing Mocks in Golang with mockery</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://github.com/chakal1337" class="url" rel="ugc external nofollow">JadSaint</a></span> on <a href="/download-file-concurrently-in-golang-part-2/comment-page-1/#comment-14">Download file concurrently in Golang-Part 2(Memory)</a>
+</li>
+</ul>
+</div>
+<div id="archives-2" class="sidebar-box widget_archive clr">
+<h4 class="widget-title">Archives</h4>
+			<ul>
+					<li><a href="/2023/05/">May 2023</a></li>
+	<li><a href="/2023/03/">March 2023</a></li>
+	<li><a href="/2023/02/">February 2023</a></li>
+	<li><a href="/2023/01/">January 2023</a></li>
+	<li><a href="/2022/12/">December 2022</a></li>
+	<li><a href="/2022/10/">October 2022</a></li>
+	<li><a href="/2022/09/">September 2022</a></li>
+	<li><a href="/2022/06/">June 2022</a></li>
+	<li><a href="/2022/05/">May 2022</a></li>
+	<li><a href="/2022/04/">April 2022</a></li>
+	<li><a href="/2022/03/">March 2022</a></li>
+	<li><a href="/2022/02/">February 2022</a></li>
+	<li><a href="/2022/01/">January 2022</a></li>
+	<li><a href="/2021/11/">November 2021</a></li>
+	<li><a href="/2021/10/">October 2021</a></li>
+	<li><a href="/2021/09/">September 2021</a></li>
+			</ul>
+
+			</div>
+<div id="categories-2" class="sidebar-box widget_categories clr">
+<h4 class="widget-title">Categories</h4>
+			<ul>
+					<li class="cat-item cat-item-3">
+<a href="/category/technology/golang/">Golang</a>
+</li>
+	<li class="cat-item cat-item-2">
+<a href="/category/technology/">Technology</a>
+</li>
+			</ul>
+
+			</div>
+<div id="block-13" class="sidebar-box widget_block clr">
+<div class="wp-block-buttons alignfull is-content-justification-center omw-open-modal is-layout-flex wp-block-buttons-is-layout-flex">
+<div class="wp-block-button has-custom-width wp-block-button__width-100 is-style-outline"><a class="wp-block-button__link has-vivid-cyan-blue-color has-text-color" href="#omw-514">Notify Me</a></div>
+</div>
+</div>
+	</div>
+<!-- #sidebar-inner -->
+
+	
+</aside><!-- #right-sidebar -->
+
+
+	</div>
+<!-- #content-wrap -->
+
+	
+
+	</main><!-- #main -->
+
+	
+	
+	
+		
+<footer id="footer" class="site-footer" itemscope="itemscope" itemtype="https://schema.org/WPFooter" role="contentinfo">
+
+	
+	<div id="footer-inner" class="clr">
+
+		
+
+<div id="footer-widgets" class="oceanwp-row clr">
+
+	
+	<div class="footer-widgets-inner container">
+
+					<div class="footer-box span_1_of_4 col col-1">
+							</div>
+<!-- .footer-one-box -->
+
+							<div class="footer-box span_1_of_4 col col-2">
+									</div>
+<!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-3 ">
+									</div>
+<!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-4">
+									</div>
+<!-- .footer-box -->
+				
+			
+	</div>
+<!-- .container -->
+
+	
+</div>
+<!-- #footer-widgets -->
+
+
+
+<div id="footer-bottom" class="clr no-footer-nav">
+
+	
+	<div id="footer-bottom-inner" class="container clr">
+
+		
+		
+			<div id="copyright" class="clr" role="contentinfo">
+				Copyright - OceanWP Theme by OceanWP			</div>
+<!-- #copyright -->
+
+			
+	</div>
+<!-- #footer-bottom-inner -->
+
+	
+</div>
+<!-- #footer-bottom -->
+
+
+	</div>
+<!-- #footer-inner -->
+
+	
+</footer><!-- #footer -->
+
+	
+	
+</div>
+<!-- #wrap -->
+
+
+</div>
+<!-- #outer-wrap -->
+
+
+
+<a aria-label="Scroll to the top of the page" href="#" id="scroll-top" class="scroll-top-right"><i class=" fa fa-angle-double-up" aria-hidden="true" role="img"></i></a>
+
+
+
+
+
+				<div id="omw-514" class="omw-modal">
+
+											<a href="/#mwc-514" class="omw-close-modal" aria-label="Close this modal window ID 514"></a>
+					
+					<div class="omw-modal-inner clr">
+						<p><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSehnVQsuv4by0SLBubMNAldpPAmQRjoFZ4k8kvM2AJ06H93VA/viewform?embedded=true" width="640" height="700" frameborder="0" marginwidth="0" marginheight="0"><span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span><span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span>Loadi<span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span>ng…</iframe></p>
+					</div>
+				</div>
+
+							<div class="omw-modal-overlay"></div>
+
+						<div id="fb-root"></div>
+			
+			
+						
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.5.4"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"🏳️‍⚧️","🏳️​⚧️")?!1:!n(e,"🇺🇳","🇺​🇳")&&!n(e,"🏴󠁧󠁢󠁥󠁮󠁧󠁿","🏴​󠁧​󠁢​󠁥​󠁮​󠁧​󠁿");case"emoji":return!n(e,"🐦‍⬛","🐦​⬛")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+</script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/jquery-migrate.min.js" id="jquery-migrate-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/wp-polyfill-inert.min.js" id="wp-polyfill-inert-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/regenerator-runtime.min.js" id="regenerator-runtime-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/wp-polyfill.min.js" id="wp-polyfill-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/dom-ready.min.js" id="wp-dom-ready-js"></script><script src="/wp-content/plugins/auto-terms-of-service-and-privacy-policy/js/base.js?ver=2.5.1" id="wpautoterms_base-js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-DXSQBK2RY1" id="google_gtagjs-js" async></script><script id="google_gtagjs-js-after">window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag("set","linker",{"domains":["localhost"]});
+gtag("js", new Date());
+gtag("set", "developer_id.dZTNiMT", true);
+gtag("config", "G-DXSQBK2RY1");</script><script>( function() {
+				window.onpageshow = function( event ) {
+					// Defined window.wpforms means that a form exists on a page.
+					// If so and back/forward button has been clicked,
+					// force reload a page to prevent the submit button state stuck.
+					if ( typeof window.wpforms !== 'undefined' && event.persisted ) {
+						window.location.reload();
+					}
+				};
+			}() );</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4736925107936916" crossorigin="anonymous"></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4736925107936916&amp;host=ca-host-pub-2644536267352236" crossorigin="anonymous"></script><script>document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );</script><script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&appId=249643311490&version=v2.3'; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script><script>document.body.addEventListener( 'is.post-load', function() {
+				if ( 'undefined' !== typeof FB ) {
+					FB.XFBML.parse();
+				}
+			} );</script><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script><script id="starter-templates-zip-preview-js-extra">var starter_templates_zip_preview = {"AstColorPaletteVarPrefix":"--ast-global-","AstEleColorPaletteVarPrefix":"--ast-global-"};</script><script src="/wp-content/plugins/astra-sites/inc/lib/onboarding/assets/dist/template-preview/main.js?ver=06758d4d807d9d22c6ea" id="starter-templates-zip-preview-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/comment-reply.min.js" id="comment-reply-js" async data-wp-strategy="async"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/imagesloaded.min.js" id="imagesloaded-js"></script><script id="oceanwp-main-js-extra">var oceanwpLocalize = {"nonce":"2984539bf0","isRTL":"","menuSearchStyle":"drop_down","mobileMenuSearchStyle":"disabled","sidrSource":null,"sidrDisplace":"1","sidrSide":"left","sidrDropdownTarget":"link","verticalHeaderTarget":"link","customScrollOffset":"0","customSelects":".woocommerce-ordering .orderby, #dropdown_product_cat, .widget_categories select, .widget_archive select, .single-product .variations_form .variations select","ajax_url":"\/wp-admin\/admin-ajax.php","oe_mc_wpnonce":"0f85b48aaa"};</script><script src="/wp-content/themes/oceanwp/assets/js/theme.min.js?ver=1.0" id="oceanwp-main-js"></script><script src="/wp-content/themes/oceanwp/assets/js/drop-down-mobile-menu.min.js?ver=1.0" id="oceanwp-drop-down-mobile-menu-js"></script><script src="/wp-content/themes/oceanwp/assets/js/drop-down-search.min.js?ver=1.0" id="oceanwp-drop-down-search-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/magnific-popup.min.js?ver=1.0" id="ow-magnific-popup-js"></script><script src="/wp-content/themes/oceanwp/assets/js/ow-lightbox.min.js?ver=1.0" id="oceanwp-lightbox-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/flickity.pkgd.min.js?ver=1.0" id="ow-flickity-js"></script><script src="/wp-content/themes/oceanwp/assets/js/ow-slider.min.js?ver=1.0" id="oceanwp-slider-js"></script><script src="/wp-content/themes/oceanwp/assets/js/scroll-effect.min.js?ver=1.0" id="oceanwp-scroll-effect-js"></script><script src="/wp-content/themes/oceanwp/assets/js/scroll-top.min.js?ver=1.0" id="oceanwp-scroll-top-js"></script><script src="/wp-content/themes/oceanwp/assets/js/select.min.js?ver=1.0" id="oceanwp-select-js"></script><script id="flickr-widget-script-js-extra">var flickrWidgetParams = {"widgets":[]};</script><script src="/wp-content/plugins/ocean-extra/includes/widgets/js/flickr.min.js?ver=6.5.4" id="flickr-widget-script-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/perfect-scrollbar.min.js?ver=1.0" id="ow-perfect-scrollbar-js"></script><script src="/wp-content/plugins/ocean-modal-window/assets/js/modal-window.min.js?ver=2.2.2" id="omw-js-scripts-js"></script><script defer src="/wp-content/plugins/akismet/_inc/akismet-frontend.js?ver=1711132304" id="akismet-frontend-js"></script><script src="/wp-content/plugins/elementor/assets/js/webpack.runtime.min.js?ver=3.21.8" id="elementor-webpack-runtime-js"></script><script src="/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=3.21.8" id="elementor-frontend-modules-js"></script><script src="/wp-content/plugins/elementor/assets/lib/waypoints/waypoints.min.js?ver=4.0.2" id="elementor-waypoints-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/ui/core.min.js" id="jquery-ui-core-js"></script><script id="elementor-frontend-js-before">var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Share on Facebook","shareOnTwitter":"Share on Twitter","pinIt":"Pin it","download":"Download","downloadImage":"Download image","fullscreen":"Fullscreen","zoom":"Zoom","share":"Share","playVideo":"Play Video","previous":"Previous","next":"Next","close":"Close","a11yCarouselWrapperAriaLabel":"Carousel | Horizontal scrolling: Arrow Left & Right","a11yCarouselPrevSlideMessage":"Previous slide","a11yCarouselNextSlideMessage":"Next slide","a11yCarouselFirstSlideMessage":"This is the first slide","a11yCarouselLastSlideMessage":"This is the last slide","a11yCarouselPaginationBulletMessage":"Go to slide"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Mobile Portrait","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobile Landscape","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet Portrait","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet Landscape","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Laptop","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Widescreen","value":2400,"default_value":2400,"direction":"min","is_enabled":false}}},"version":"3.21.8","is_static":false,"experimentalFeatures":{"e_optimized_assets_loading":true,"e_optimized_css_loading":true,"additional_custom_breakpoints":true,"container":true,"e_swiper_latest":true,"container_grid":true,"home_screen":true,"ai-layout":true,"landing-pages":true},"urls":{"assets":"\/wp-content\/plugins\/elementor\/assets\/"},"swiperClass":"swiper","settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description"},"post":{"id":430,"title":"How%20to%20embed%20any%20file%20in%20Golang%20binary%20%E2%80%93%20Ability%20Rush","excerpt":"In this post we look how we can embed any type of file inside our go binary and distribute the binary without separate files.","featuredImage":false}};</script><script src="/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.21.8" id="elementor-frontend-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/underscore.min.js" id="underscore-js"></script><script id="wp-util-js-extra">var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};</script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/wp-util.min.js" id="wp-util-js"></script><script id="wpforms-elementor-js-extra">var wpformsElementorVars = {"captcha_provider":"recaptcha","recaptcha_type":"v2"};</script><script src="/wp-content/plugins/wpforms-lite/assets/js/integrations/elementor/frontend.min.js?ver=1.8.8.3" id="wpforms-elementor-js"></script><script id="sharing-js-js-extra">var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};</script><script src="https://c0.wp.com/p/jetpack/13.5/_inc/build/sharedaddy/sharing.min.js" id="sharing-js-js"></script><script id="sharing-js-js-after">var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-facebook' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-facebook' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+						return false;
+					}
+				} );
+			} )();</script>
+</body>
+</html>

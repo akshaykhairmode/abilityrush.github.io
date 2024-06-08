@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	>
+
+<channel>
+	<title>net/http – Ability Rush</title>
+	<atom:link href="/tag/net-http/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>Learn &#38; Improve</description>
+	<lastBuildDate>Thu, 04 Nov 2021 08:02:04 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.5.4</generator>
+
+<image>
+	<url>/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-32x32.png</url>
+	<title>net/http – Ability Rush</title>
+	<link>/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Writing middleware in Golang</title>
+		<link>/writing-middleware-in-golang/</link>
+					<comments>/writing-middleware-in-golang/#respond</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Mon, 25 Oct 2021 13:54:39 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[golang]]></category>
+		<category><![CDATA[http]]></category>
+		<category><![CDATA[middleware]]></category>
+		<category><![CDATA[net/http]]></category>
+		<guid isPermaLink="false">/?p=448</guid>
+
+					<description><![CDATA[<p>Today we learn what is a middleware and how do we use them in golang. We will also see how we can use multiple middlewares in a single endpoint.</p>
+<p>The post <a href="/writing-middleware-in-golang/">Writing middleware in Golang</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/writing-middleware-in-golang/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">448</post-id>	</item>
+		<item>
+		<title>HTTP server using custom Handler in Golang</title>
+		<link>/http-server-using-custom-handler-in-golang/</link>
+					<comments>/http-server-using-custom-handler-in-golang/#respond</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Sun, 24 Oct 2021 09:57:58 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[golang]]></category>
+		<category><![CDATA[http]]></category>
+		<category><![CDATA[http.handler]]></category>
+		<category><![CDATA[mutex]]></category>
+		<category><![CDATA[net/http]]></category>
+		<guid isPermaLink="false">/?p=551</guid>
+
+					<description><![CDATA[<p>We will see how we can define our custom http.Handler to use in our HTTP server created from net/http package. We will also create few api endpoints.</p>
+<p>The post <a href="/http-server-using-custom-handler-in-golang/">HTTP server using custom Handler in Golang</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/http-server-using-custom-handler-in-golang/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">551</post-id>	</item>
+		<item>
+		<title>Creating a Simple HTTP server in Golang</title>
+		<link>/creating-a-simple-http-server-in-golang/</link>
+					<comments>/creating-a-simple-http-server-in-golang/#respond</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Sat, 23 Oct 2021 13:37:39 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[golang]]></category>
+		<category><![CDATA[http]]></category>
+		<category><![CDATA[net/http]]></category>
+		<guid isPermaLink="false">/?p=523</guid>
+
+					<description><![CDATA[<p>We see how easy it is to create HTTP web server in golang with net/http standard library and attach handlers for the endpoints.</p>
+<p>The post <a href="/creating-a-simple-http-server-in-golang/">Creating a Simple HTTP server in Golang</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/creating-a-simple-http-server-in-golang/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">523</post-id>	</item>
+	</channel>
+</rss>

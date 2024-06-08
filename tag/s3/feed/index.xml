@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	>
+
+<channel>
+	<title>s3 – Ability Rush</title>
+	<atom:link href="/tag/s3/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>Learn &#38; Improve</description>
+	<lastBuildDate>Sat, 08 Apr 2023 14:22:43 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.5.4</generator>
+
+<image>
+	<url>/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-32x32.png</url>
+	<title>s3 – Ability Rush</title>
+	<link>/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Uploading File to AWS S3 in Golang</title>
+		<link>/uploading-file-to-aws-s3-in-golang/</link>
+					<comments>/uploading-file-to-aws-s3-in-golang/#comments</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Mon, 30 May 2022 16:29:08 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[aws]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[golang]]></category>
+		<category><![CDATA[s3]]></category>
+		<guid isPermaLink="false">/?p=1170</guid>
+
+					<description><![CDATA[<p>Introduction Hi Folks, Today we are going to see how we can upload files to S3 with Golang. For this the prerequisites are, AWS Free tier account. IAM ID and Secret with S3 access. S3 is a cloud storage solution provided by AWS to store files. More info here. S3 Setup We will use the [&#8230;]</p>
+<p>The post <a href="/uploading-file-to-aws-s3-in-golang/">Uploading File to AWS S3 in Golang</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/uploading-file-to-aws-s3-in-golang/feed/</wfw:commentRss>
+			<slash:comments>2</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">1170</post-id>	</item>
+	</channel>
+</rss>

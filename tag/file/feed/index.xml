@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	>
+
+<channel>
+	<title>file – Ability Rush</title>
+	<atom:link href="/tag/file/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>Learn &#38; Improve</description>
+	<lastBuildDate>Sat, 08 Apr 2023 14:28:20 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.5.4</generator>
+
+<image>
+	<url>/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-32x32.png</url>
+	<title>file – Ability Rush</title>
+	<link>/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>How to receive file uploads in the Golang HTTP server</title>
+		<link>/how-to-receive-file-uploads-in-the-golang-http-server/</link>
+					<comments>/how-to-receive-file-uploads-in-the-golang-http-server/#respond</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Sun, 22 Jan 2023 14:59:50 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[curl]]></category>
+		<category><![CDATA[file]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[golang]]></category>
+		<category><![CDATA[post]]></category>
+		<category><![CDATA[upload]]></category>
+		<guid isPermaLink="false">/?p=1596</guid>
+
+					<description><![CDATA[<p>Hey folks, In this post we will see how we can receive file uploads from HTTP clients and save the files. We will use curl to upload the files to the server.</p>
+<p>The post <a href="/how-to-receive-file-uploads-in-the-golang-http-server/">How to receive file uploads in the Golang HTTP server</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/how-to-receive-file-uploads-in-the-golang-http-server/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">1596</post-id>	</item>
+		<item>
+		<title>How to serve files in an HTTP server in Golang</title>
+		<link>/how-to-serve-files-in-an-http-server-in-golang/</link>
+					<comments>/how-to-serve-files-in-an-http-server-in-golang/#respond</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Fri, 20 Jan 2023 17:14:17 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[download]]></category>
+		<category><![CDATA[file]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[golang]]></category>
+		<category><![CDATA[serve]]></category>
+		<guid isPermaLink="false">/?p=1575</guid>
+
+					<description><![CDATA[<p>Hey friends, In this post we will see how we can serve a file on our HTTP server which HTTP clients can download easily.</p>
+<p>The post <a href="/how-to-serve-files-in-an-http-server-in-golang/">How to serve files in an HTTP server in Golang</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/how-to-serve-files-in-an-http-server-in-golang/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">1575</post-id>	</item>
+		<item>
+		<title>Download file concurrently in Golang</title>
+		<link>/download-file-concurrently-in-golang-part-1/</link>
+					<comments>/download-file-concurrently-in-golang-part-1/#respond</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Sat, 04 Sep 2021 20:02:03 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[concurrency]]></category>
+		<category><![CDATA[download]]></category>
+		<category><![CDATA[file]]></category>
+		<category><![CDATA[go]]></category>
+		<guid isPermaLink="false">/?p=40</guid>
+
+					<description><![CDATA[<p>How to download a file over HTTP with multiple connections in Golang. We are making a small tool which will download the file given the number of connections.</p>
+<p>The post <a href="/download-file-concurrently-in-golang-part-1/">Download file concurrently in Golang</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/download-file-concurrently-in-golang-part-1/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">40</post-id>	</item>
+	</channel>
+</rss>

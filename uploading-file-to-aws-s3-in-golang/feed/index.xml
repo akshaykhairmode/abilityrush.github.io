@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	
+	>
+<channel>
+	<title>
+	Comments on: Uploading File to AWS S3 in Golang	</title>
+	<atom:link href="/uploading-file-to-aws-s3-in-golang/feed/" rel="self" type="application/rss+xml" />
+	<link>/uploading-file-to-aws-s3-in-golang/</link>
+	<description>Learn &#38; Improve</description>
+	<lastBuildDate>Sat, 08 Apr 2023 14:22:43 +0000</lastBuildDate>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.5.4</generator>
+	<item>
+		<title>
+		By: Akshay Khairmode		</title>
+		<link>/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1931</link>
+
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Fri, 26 Aug 2022 18:03:06 +0000</pubDate>
+		<guid isPermaLink="false">/?p=1170#comment-1931</guid>
+
+					<description><![CDATA[In reply to &lt;a href=&quot;/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1856&quot;&gt;Nihat&lt;/a&gt;.
+
+S3 does not have real folders but follows a key-value approach. If your need to nest it, you can use the path as &lt;code&gt;parentfolder/childfolder/anotherchild/test.txt&lt;/code&gt; in the key]]></description>
+			<content:encoded><![CDATA[<p>In reply to <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1856">Nihat</a>.</p>
+<p>S3 does not have real folders but follows a key-value approach. If your need to nest it, you can use the path as <code>parentfolder/childfolder/anotherchild/test.txt</code> in the key</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		By: Nihat		</title>
+		<link>/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1856</link>
+
+		<dc:creator><![CDATA[Nihat]]></dc:creator>
+		<pubDate>Mon, 22 Aug 2022 14:42:48 +0000</pubDate>
+		<guid isPermaLink="false">/?p=1170#comment-1856</guid>
+
+					<description><![CDATA[Hi
+How can i upload a files inside to folder s3 with go?]]></description>
+			<content:encoded><![CDATA[<p>Hi<br />
+How can i upload a files inside to folder s3 with go?</p>
+]]></content:encoded>
+		
+			</item>
+	</channel>
+</rss>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	
+	>
+<channel>
+	<title>
+	Comments on: Working with AWS SQS in Golang	</title>
+	<atom:link href="/working-with-aws-simple-queue-service-sqs-in-golang/feed/" rel="self" type="application/rss+xml" />
+	<link>/working-with-aws-simple-queue-service-sqs-in-golang/</link>
+	<description>Learn &#38; Improve</description>
+	<lastBuildDate>Sat, 08 Apr 2023 14:21:54 +0000</lastBuildDate>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.5.4</generator>
+	<item>
+		<title>
+		By: homens mentem		</title>
+		<link>/working-with-aws-simple-queue-service-sqs-in-golang/comment-page-1/#comment-43</link>
+
+		<dc:creator><![CDATA[homens mentem]]></dc:creator>
+		<pubDate>Sun, 10 Apr 2022 02:12:08 +0000</pubDate>
+		<guid isPermaLink="false">/?p=1012#comment-43</guid>
+
+					<description><![CDATA[I really liked your site. Thanks for the information. 34352572]]></description>
+			<content:encoded><![CDATA[<p>I really liked your site. Thanks for the information. 34352572</p>
+]]></content:encoded>
+		
+			</item>
+	</channel>
+</rss>

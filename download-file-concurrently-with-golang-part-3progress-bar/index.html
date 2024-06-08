@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html class="html" dir="ltr" lang="en-US" prefix="og: https://ogp.me/ns#">
+<head>
+	<meta charset="UTF-8">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+
+	<title>Download file concurrently in Golang-Part 3(Progress Bar)</title>
+
+		<!-- All in One SEO 4.6.4 - aioseo.com -->
+		<meta name="description" content="In this post we will implement a progress bar in terminal and see how to catch the kill signals passed from terminal to stop in middle of the the download.">
+		<meta name="robots" content="max-image-preview:large">
+		<link rel="canonical" href="/download-file-concurrently-with-golang-part-3progress-bar/">
+		<meta name="generator" content="All in One SEO (AIOSEO) 4.6.4">
+		<meta property="og:locale" content="en_US">
+		<meta property="og:site_name" content="Ability Rush – Learn &amp; Improve">
+		<meta property="og:type" content="article">
+		<meta property="og:title" content="Download file concurrently in Golang-Part 3(Progress Bar)">
+		<meta property="og:description" content="In this post we will implement a progress bar in terminal and see how to catch the kill signals passed from terminal to stop in middle of the the download.">
+		<meta property="og:url" content="/download-file-concurrently-with-golang-part-3progress-bar/">
+		<meta property="article:published_time" content="2021-09-11T15:16:49+00:00">
+		<meta property="article:modified_time" content="2022-12-20T17:59:02+00:00">
+		<meta name="twitter:card" content="summary">
+		<meta name="twitter:title" content="Download file concurrently in Golang-Part 3(Progress Bar)">
+		<meta name="twitter:description" content="In this post we will implement a progress bar in terminal and see how to catch the kill signals passed from terminal to stop in middle of the the download.">
+		<script data-jetpack-boost="ignore" type="application/ld+json" class="aioseo-schema">{"@context":"https:\/\/schema.org","@graph":[{"@type":"BlogPosting","@id":"\/download-file-concurrently-with-golang-part-3progress-bar\/#blogposting","name":"Download file concurrently in Golang-Part 3(Progress Bar)","headline":"Download file concurrently in Golang-Part 3(Progress Bar)","author":{"@id":"\/author\/akshaykhairmode\/#author"},"publisher":{"@id":"\/#organization"},"image":{"@type":"ImageObject","url":"\/wp-content\/uploads\/2021\/09\/summon.gif","@id":"\/download-file-concurrently-with-golang-part-3progress-bar\/#articleImage","width":1133,"height":200},"datePublished":"2021-09-11T20:46:49+05:30","dateModified":"2022-12-20T23:29:02+05:30","inLanguage":"en-US","mainEntityOfPage":{"@id":"\/download-file-concurrently-with-golang-part-3progress-bar\/#webpage"},"isPartOf":{"@id":"\/download-file-concurrently-with-golang-part-3progress-bar\/#webpage"},"articleSection":"Golang, Technology, concurrency, download, golang"},{"@type":"BreadcrumbList","@id":"\/download-file-concurrently-with-golang-part-3progress-bar\/#breadcrumblist","itemListElement":[{"@type":"ListItem","@id":"\/#listItem","position":1,"name":"Home","item":"\/","nextItem":"\/download-file-concurrently-with-golang-part-3progress-bar\/#listItem"},{"@type":"ListItem","@id":"\/download-file-concurrently-with-golang-part-3progress-bar\/#listItem","position":2,"name":"Download file concurrently in Golang-Part 3(Progress Bar)","previousItem":"\/#listItem"}]},{"@type":"Organization","@id":"\/#organization","name":"Ability Rush","description":"Learn & Improve","url":"\/","logo":{"@type":"ImageObject","url":"\/wp-content\/uploads\/2021\/10\/cropped-android-chrome-512x512-1.png","@id":"\/download-file-concurrently-with-golang-part-3progress-bar\/#organizationLogo","width":512,"height":512},"image":{"@id":"\/download-file-concurrently-with-golang-part-3progress-bar\/#organizationLogo"}},{"@type":"Person","@id":"\/author\/akshaykhairmode\/#author","url":"\/author\/akshaykhairmode\/","name":"Akshay Khairmode","image":{"@type":"ImageObject","@id":"\/download-file-concurrently-with-golang-part-3progress-bar\/#authorImage","url":"http:\/\/2.gravatar.com\/avatar\/20ffb1dd4c5b351c3a2a7cb6a7f2e342?s=96&d=wavatar&r=g","width":96,"height":96,"caption":"Akshay Khairmode"}},{"@type":"WebPage","@id":"\/download-file-concurrently-with-golang-part-3progress-bar\/#webpage","url":"\/download-file-concurrently-with-golang-part-3progress-bar\/","name":"Download file concurrently in Golang-Part 3(Progress Bar)","description":"In this post we will implement a progress bar in terminal and see how to catch the kill signals passed from terminal to stop in middle of the the download.","inLanguage":"en-US","isPartOf":{"@id":"\/#website"},"breadcrumb":{"@id":"\/download-file-concurrently-with-golang-part-3progress-bar\/#breadcrumblist"},"author":{"@id":"\/author\/akshaykhairmode\/#author"},"creator":{"@id":"\/author\/akshaykhairmode\/#author"},"datePublished":"2021-09-11T20:46:49+05:30","dateModified":"2022-12-20T23:29:02+05:30"},{"@type":"WebSite","@id":"\/#website","url":"\/","name":"Ability Rush","description":"Learn & Improve","inLanguage":"en-US","publisher":{"@id":"\/#organization"}}]}</script>
+		<!-- All in One SEO -->
+
+<link rel="pingback" href="/xmlrpc.php">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="dns-prefetch" href="//www.googletagmanager.com">
+<link rel="dns-prefetch" href="//c0.wp.com">
+<link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+<link rel="dns-prefetch" href="//fundingchoicesmessages.google.com">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Feed" href="/feed/">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Comments Feed" href="/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Download file concurrently in Golang-Part 3(Progress Bar) Comments Feed" href="/download-file-concurrently-with-golang-part-3progress-bar/feed/">
+
+<style type="text/css" media="all">.wpautoterms-footer{background-color:#ffffff;text-align:center;}
+.wpautoterms-footer a{color:#000000;font-family:Arial, sans-serif;font-size:14px;}
+.wpautoterms-footer .separator{color:#cccccc;font-family:Arial, sans-serif;font-size:14px;}</style>
+<style id="wp-emoji-styles-inline-css">img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}</style>
+<link rel="stylesheet" id="mediaelement-css" href="https://c0.wp.com/c/6.5.4/wp-includes/js/mediaelement/mediaelementplayer-legacy.min.css" media="all">
+<link rel="stylesheet" id="wp-mediaelement-css" href="https://c0.wp.com/c/6.5.4/wp-includes/js/mediaelement/wp-mediaelement.min.css" media="all">
+<style id="jetpack-sharing-buttons-style-inline-css">.jetpack-sharing-buttons__services-list{display:flex;flex-direction:row;flex-wrap:wrap;gap:0;list-style-type:none;margin:5px;padding:0}.jetpack-sharing-buttons__services-list.has-small-icon-size{font-size:12px}.jetpack-sharing-buttons__services-list.has-normal-icon-size{font-size:16px}.jetpack-sharing-buttons__services-list.has-large-icon-size{font-size:24px}.jetpack-sharing-buttons__services-list.has-huge-icon-size{font-size:36px}@media print{.jetpack-sharing-buttons__services-list{display:none!important}}.editor-styles-wrapper .wp-block-jetpack-sharing-buttons{gap:0;padding-inline-start:0}ul.jetpack-sharing-buttons__services-list.has-background{padding:1.25em 2.375em}</style>
+<style id="classic-theme-styles-inline-css">/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}</style>
+<style id="global-styles-inline-css">body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}</style>
+<link rel="stylesheet" id="wpautoterms_css-css" href="/wp-content/plugins/auto-terms-of-service-and-privacy-policy/css/wpautoterms.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="mpl-publisher-css" href="/wp-content/plugins/mpl-publisher/assets/css/mpl-widget.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="oceanwp-style-css" href="/wp-content/themes/oceanwp/assets/css/style.min.css?ver=1.0" media="all">
+<link rel="stylesheet" id="child-style-css" href="/wp-content/themes/oceanwp-child-theme-master/style.css?ver=3.5.5" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="/wp-content/themes/oceanwp/assets/fonts/fontawesome/css/all.min.css?ver=6.4.2" media="all">
+<link rel="stylesheet" id="simple-line-icons-css" href="/wp-content/themes/oceanwp/assets/css/third/simple-line-icons.min.css?ver=2.4.0" media="all">
+<link rel="stylesheet" id="elementor-icons-css" href="/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.29.0" media="all">
+<link rel="stylesheet" id="elementor-frontend-css" href="/wp-content/plugins/elementor/assets/css/frontend-lite.min.css?ver=3.21.8" media="all">
+<link rel="stylesheet" id="swiper-css" href="/wp-content/plugins/elementor/assets/lib/swiper/v8/css/swiper.min.css?ver=8.4.5" media="all">
+<link rel="stylesheet" id="elementor-post-6-css" href="/wp-content/uploads/elementor/css/post-6.css?ver=1717861485" media="all">
+<link rel="stylesheet" id="elementor-global-css" href="/wp-content/uploads/elementor/css/global.css?ver=1717861485" media="all">
+<link rel="stylesheet" id="oe-widgets-style-css" href="/wp-content/plugins/ocean-extra/assets/css/widgets.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="ow-perfect-scrollbar-css" href="/wp-content/themes/oceanwp/assets/css/third/perfect-scrollbar.css?ver=1.5.0" media="all">
+<link rel="stylesheet" id="omw-styles-css" href="/wp-content/plugins/ocean-modal-window/assets/css/style.min.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="sharedaddy-css" href="https://c0.wp.com/p/jetpack/13.5/modules/sharedaddy/sharing.css" media="all">
+<link rel="stylesheet" id="social-logos-css" href="https://c0.wp.com/p/jetpack/13.5/_inc/social-logos/social-logos.min.css" media="all">
+<link rel="stylesheet" id="google-fonts-1-css" href="https://fonts.googleapis.com/css?family=Merriweather%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto+Slab%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic&#038;display=auto&#038;ver=6.5.4" media="all">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<script data-jetpack-boost="ignore" src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/jquery.min.js" id="jquery-core-js"></script>
+
+
+
+
+
+
+
+<!-- Google tag (gtag.js) snippet added by Site Kit -->
+
+<!-- Google Analytics snippet added by Site Kit -->
+
+
+
+<!-- End Google tag (gtag.js) snippet added by Site Kit -->
+<link rel="https://api.w.org/" href="/wp-json/">
+<link rel="alternate" type="application/json" href="/wp-json/wp/v2/posts/111">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="/xmlrpc.php?rsd">
+<meta name="generator" content="WordPress 6.5.4">
+<link rel="shortlink" href="/?p=111">
+<link rel="alternate" type="application/json+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2F%2Fdownload-file-concurrently-with-golang-part-3progress-bar%2F">
+<link rel="alternate" type="text/xml+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2F%2Fdownload-file-concurrently-with-golang-part-3progress-bar%2F#038;format=xml">
+<meta name="generator" content="Site Kit by Google 1.128.0">		
+		
+	
+
+<!-- Google AdSense meta tags added by Site Kit -->
+<meta name="google-adsense-platform-account" content="ca-host-pub-2644536267352236">
+<meta name="google-adsense-platform-domain" content="sitekit.withgoogle.com">
+<!-- End Google AdSense meta tags added by Site Kit -->
+<meta name="generator" content="Elementor 3.21.8; features: e_optimized_assets_loading, e_optimized_css_loading, additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-auto">
+<style>.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<!-- Google AdSense snippet added by Site Kit -->
+
+
+<!-- End Google AdSense snippet added by Site Kit -->
+<link rel="icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-32x32.png" sizes="32x32">
+<link rel="icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-180x180.png">
+<meta name="msapplication-TileImage" content="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-270x270.png">
+<!-- OceanWP CSS -->
+<style type="text/css">/* General CSS */a:hover,a.light:hover,.theme-heading .text::before,.theme-heading .text::after,#top-bar-content >a:hover,#top-bar-social li.oceanwp-email a:hover,#site-navigation-wrap .dropdown-menu >li >a:hover,#site-header.medium-header #medium-searchform button:hover,.oceanwp-mobile-menu-icon a:hover,.blog-entry.post .blog-entry-header .entry-title a:hover,.blog-entry.post .blog-entry-readmore a:hover,.blog-entry.thumbnail-entry .blog-entry-category a,ul.meta li a:hover,.dropcap,.single nav.post-navigation .nav-links .title,body .related-post-title a:hover,body #wp-calendar caption,body .contact-info-widget.default i,body .contact-info-widget.big-icons i,body .custom-links-widget .oceanwp-custom-links li a:hover,body .custom-links-widget .oceanwp-custom-links li a:hover:before,body .posts-thumbnails-widget li a:hover,body .social-widget li.oceanwp-email a:hover,.comment-author .comment-meta .comment-reply-link,#respond #cancel-comment-reply-link:hover,#footer-widgets .footer-box a:hover,#footer-bottom a:hover,#footer-bottom #footer-bottom-menu a:hover,.sidr a:hover,.sidr-class-dropdown-toggle:hover,.sidr-class-menu-item-has-children.active >a,.sidr-class-menu-item-has-children.active >a >.sidr-class-dropdown-toggle,input[type=checkbox]:checked:before{color:#3370bf}.single nav.post-navigation .nav-links .title .owp-icon use,.blog-entry.post .blog-entry-readmore a:hover .owp-icon use,body .contact-info-widget.default .owp-icon use,body .contact-info-widget.big-icons .owp-icon use{stroke:#3370bf}input[type="button"],input[type="reset"],input[type="submit"],button[type="submit"],.button,#site-navigation-wrap .dropdown-menu >li.btn >a >span,.thumbnail:hover i,.post-quote-content,.omw-modal .omw-close-modal,body .contact-info-widget.big-icons li:hover i,body div.wpforms-container-full .wpforms-form input[type=submit],body div.wpforms-container-full .wpforms-form button[type=submit],body div.wpforms-container-full .wpforms-form .wpforms-page-button{background-color:#3370bf}.thumbnail:hover .link-post-svg-icon{background-color:#3370bf}body .contact-info-widget.big-icons li:hover .owp-icon{background-color:#3370bf}.widget-title{border-color:#3370bf}blockquote{border-color:#3370bf}#searchform-dropdown{border-color:#3370bf}.dropdown-menu .sub-menu{border-color:#3370bf}.blog-entry.large-entry .blog-entry-readmore a:hover{border-color:#3370bf}.oceanwp-newsletter-form-wrap input[type="email"]:focus{border-color:#3370bf}.social-widget li.oceanwp-email a:hover{border-color:#3370bf}#respond #cancel-comment-reply-link:hover{border-color:#3370bf}body .contact-info-widget.big-icons li:hover i{border-color:#3370bf}#footer-widgets .oceanwp-newsletter-form-wrap input[type="email"]:focus{border-color:#3370bf}blockquote,.wp-block-quote{border-left-color:#3370bf}body .contact-info-widget.big-icons li:hover .owp-icon{border-color:#3370bf}input[type="button"]:hover,input[type="reset"]:hover,input[type="submit"]:hover,button[type="submit"]:hover,input[type="button"]:focus,input[type="reset"]:focus,input[type="submit"]:focus,button[type="submit"]:focus,.button:hover,.button:focus,#site-navigation-wrap .dropdown-menu >li.btn >a:hover >span,.post-quote-author,.omw-modal .omw-close-modal:hover,body div.wpforms-container-full .wpforms-form input[type=submit]:hover,body div.wpforms-container-full .wpforms-form button[type=submit]:hover,body div.wpforms-container-full .wpforms-form .wpforms-page-button:hover{background-color:#81d742}a{color:#1e73be}a .owp-icon use{stroke:#1e73be}a:hover{color:#dd3333}a:hover .owp-icon use{stroke:#dd3333}#scroll-top{background-color:#1e73be}/* Header CSS */#site-header.has-header-media .overlay-header-media{background-color:rgba(0,0,0,0.5)}/* Typography CSS */body{color:#000000}</style>
+<style id="wpforms-css-vars-root">:root {
+					--wpforms-field-border-radius: 3px;
+--wpforms-field-border-style: solid;
+--wpforms-field-border-size: 1px;
+--wpforms-field-background-color: #ffffff;
+--wpforms-field-border-color: rgba( 0, 0, 0, 0.25 );
+--wpforms-field-border-color-spare: rgba( 0, 0, 0, 0.25 );
+--wpforms-field-text-color: rgba( 0, 0, 0, 0.7 );
+--wpforms-field-menu-color: #ffffff;
+--wpforms-label-color: rgba( 0, 0, 0, 0.85 );
+--wpforms-label-sublabel-color: rgba( 0, 0, 0, 0.55 );
+--wpforms-label-error-color: #d63637;
+--wpforms-button-border-radius: 3px;
+--wpforms-button-border-style: none;
+--wpforms-button-border-size: 1px;
+--wpforms-button-background-color: #066aab;
+--wpforms-button-border-color: #066aab;
+--wpforms-button-text-color: #ffffff;
+--wpforms-page-break-color: #066aab;
+--wpforms-background-image: none;
+--wpforms-background-position: center center;
+--wpforms-background-repeat: no-repeat;
+--wpforms-background-size: cover;
+--wpforms-background-width: 100px;
+--wpforms-background-height: 100px;
+--wpforms-background-color: rgba( 0, 0, 0, 0 );
+--wpforms-background-url: none;
+--wpforms-container-padding: 0px;
+--wpforms-container-border-style: none;
+--wpforms-container-border-width: 1px;
+--wpforms-container-border-color: #000000;
+--wpforms-container-border-radius: 3px;
+--wpforms-field-size-input-height: 43px;
+--wpforms-field-size-input-spacing: 15px;
+--wpforms-field-size-font-size: 16px;
+--wpforms-field-size-line-height: 19px;
+--wpforms-field-size-padding-h: 14px;
+--wpforms-field-size-checkbox-size: 16px;
+--wpforms-field-size-sublabel-spacing: 5px;
+--wpforms-field-size-icon-size: 1;
+--wpforms-label-size-font-size: 16px;
+--wpforms-label-size-line-height: 19px;
+--wpforms-label-size-sublabel-font-size: 14px;
+--wpforms-label-size-sublabel-line-height: 17px;
+--wpforms-button-size-font-size: 17px;
+--wpforms-button-size-height: 41px;
+--wpforms-button-size-padding-h: 15px;
+--wpforms-button-size-margin-top: 10px;
+--wpforms-container-shadow-size-box-shadow: none;
+
+				}</style>
+</head>
+
+<body class="post-template-default single single-post postid-111 single-format-standard wp-embed-responsive oceanwp-theme dropdown-mobile top-header-style default-breakpoint has-sidebar content-right-sidebar post-in-category-golang post-in-category-technology page-header-disabled has-breadcrumbs elementor-default elementor-kit-6 elementor-page elementor-page-111" itemscope="itemscope" itemtype="https://schema.org/Article">
+
+	
+	
+	<div id="outer-wrap" class="site clr">
+
+		<a class="skip-link screen-reader-text" href="#main">Skip to content</a>
+
+		
+		<div id="wrap" class="clr">
+
+			
+			
+<header id="site-header" class="top-header clr" data-height="74" itemscope="itemscope" itemtype="https://schema.org/WPHeader" role="banner">
+
+	
+		
+	<div class="header-bottom clr">
+		<div class="container">
+			
+
+<div id="site-logo" class="clr" itemscope itemtype="https://schema.org/Brand">
+
+	
+	<div id="site-logo-inner" class="clr">
+
+						<a href="/" rel="home" class="site-title site-logo-text">Ability Rush</a>
+				
+	</div>
+<!-- #site-logo-inner -->
+
+	
+				<div id="site-description"><h2>Learn &amp; Improve</h2></div>
+			
+</div>
+<!-- #site-logo -->
+
+		</div>
+	</div>
+	
+<div class="header-top clr">
+
+	
+	<div id="site-header-inner" class="clr container">
+
+		
+		<div class="left clr">
+
+			<div class="inner">
+
+				
+				
+			</div>
+
+		</div>
+
+		<div class="right clr">
+
+			<div class="inner">
+
+				<div id="search-toggle"><a href="/#" class="site-search-toggle search-dropdown-toggle" aria-label="Search website"><i class=" fas fa-search" aria-hidden="true" role="img"></i></a></div>
+<div id="searchform-dropdown" class="header-searchform-wrap clr">
+	
+<form aria-label="Search this website" role="search" method="get" class="searchform" action="/">	
+	<input aria-label="Insert search query" type="search" id="ocean-search-form-1" class="field" autocomplete="off" placeholder="Search" name="s">
+		</form>
+</div>
+<!-- #searchform-dropdown -->
+
+			</div>
+
+		</div>
+
+	</div>
+<!-- #site-header-inner -->
+
+	
+<div id="mobile-dropdown" class="clr">
+
+	<nav class="clr" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement">
+
+		<div class="menu">
+<li class="page_item page-item-1832"><a href="/j2csv/">j2csv</a></li>
+<li class="page_item page-item-3"><a href="/privacy-policy/">Privacy Policy</a></li>
+</div>
+
+<div id="mobile-menu-search" class="clr">
+	<form aria-label="Search this website" method="get" action="/" class="mobile-searchform">
+		<input aria-label="Insert search query" value="" class="field" id="ocean-mobile-search-2" type="search" name="s" autocomplete="off" placeholder="Search">
+		<button aria-label="Submit search" type="submit" class="searchform-submit">
+			<i class=" fas fa-search" aria-hidden="true" role="img"></i>		</button>
+					</form>
+</div>
+<!-- .mobile-menu-search -->
+
+	</nav>
+
+</div>
+
+	
+</div>
+<!-- .header-top -->
+
+
+		
+		
+</header><!-- #site-header -->
+
+
+			
+			<main id="main" class="site-main clr" role="main">
+
+				
+	
+	<div id="content-wrap" class="container clr">
+
+		
+		<div id="primary" class="content-area clr">
+
+			
+			<div id="content" class="site-content clr">
+
+				
+				
+<article id="post-111">
+
+	
+
+<header class="entry-header clr">
+	<h2 class="single-post-title entry-title" itemprop="headline">Download file concurrently in Golang-Part 3(Progress Bar)</h2>
+<!-- .single-post-title -->
+</header><!-- .entry-header -->
+
+
+<ul class="meta ospm-default clr">
+
+	
+					<li class="meta-author" itemprop="name">
+<span class="screen-reader-text">Post author:</span><i class=" fas fa-user-circle" aria-hidden="true" role="img"></i><a href="/author/akshaykhairmode/" title="Posts by Akshay Khairmode" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">Akshay Khairmode</a>
+</li>
+		
+		
+		
+		
+		
+		
+	
+		
+					<li class="meta-date" itemprop="datePublished">
+<span class="screen-reader-text">Post published:</span><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>September 11, 2021</li>
+		
+		
+		
+		
+		
+	
+		
+		
+		
+					<li class="meta-cat">
+<span class="screen-reader-text">Post category:</span><i class=" far fa-folder-open" aria-hidden="true" role="img"></i><a href="/category/technology/golang/" rel="category tag">Golang</a> <span class="owp-sep">/</span> <a href="/category/technology/" rel="category tag">Technology</a>
+</li>
+		
+		
+		
+	
+		
+		
+		
+		
+		
+					<li class="meta-comments">
+<span class="screen-reader-text">Post comments:</span><i class=" far fa-comments" aria-hidden="true" role="img"></i><a href="/download-file-concurrently-with-golang-part-3progress-bar/#respond" class="comments-link">0 Comments</a>
+</li>
+		
+	
+</ul>
+
+
+
+<div class="entry-content clr" itemprop="text">
+			<div data-elementor-type="wp-post" data-elementor-id="111" class="elementor elementor-111">
+						<section class="elementor-section elementor-top-section elementor-element elementor-element-c76b71f elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="c76b71f" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-88dce91" data-id="88dce91" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-385236e elementor-widget elementor-widget-text-editor" data-id="385236e" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#69727d;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#69727d;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}</style>				<p>In <a href="/download-file-concurrently-in-golang-part-2" target="_blank" rel="noopener">part 2</a> we updated the code to be more memory efficient using files and io.Copy. Now we will try to implement a progress bar in the tool. This progress bar will show progress for each of the connections. We will also handle the user kill commands like ctrl+c.</p>
+<p>Let&#8217;s start. Full code available <a style="font-size: 14px; background-color: #ffffff;" href="https://github.com/akshaykhairmode/summon/tree/v0.3.1" target="_blank" rel="noopener">here</a></p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-d2e3d2c elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="d2e3d2c" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-cf8c664" data-id="cf8c664" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-1448161 elementor-widget elementor-widget-text-editor" data-id="1448161" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Our updated struct is, We have added a stop channel which will hold an error. We have added a progress bar which is a map. The Key will contain the connection index and the value is a progress struct.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-9297a40 elementor-widget elementor-widget-code-block-for-elementor" data-id="9297a40" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">type summon struct {
+	concurrency   int               //No. of connections
+	uri           string            //URL of the file we want to download
+	chunks        map[int]*os.File  //Map of temporary files we are creating
+	err           error             //used when error occurs inside a goroutine
+	startTime     time.Time         //to track time took
+	fileName      string            //name of the file we are downloading
+	out           *os.File          //output / downloaded file
+	progressBar   map[int]*progress //index =&gt; progress
+	stop          chan error        //to handle stop signals from terminal
+	*sync.RWMutex                   //mutex to lock the maps which accessing it concurrently
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-5c021a7 elementor-widget elementor-widget-text-editor" data-id="5c021a7" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Below is the progress struct, curr holds the number of bytes read for that connection and the total is self-explanatory.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-267de07 elementor-widget elementor-widget-code-block-for-elementor" data-id="267de07" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">type progress struct {
+	curr  int //curr is the current read till now
+	total int //total bytes which we are supposed to read
+}</code></pre>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-4ab2abb elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="4ab2abb" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-40d54ca" data-id="40d54ca" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-a67f935 elementor-widget elementor-widget-heading" data-id="a67f935" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-heading-title{padding:0;margin:0;line-height:1}.elementor-widget-heading .elementor-heading-title[class*=elementor-size-]>a{color:inherit;font-size:inherit;line-height:inherit}.elementor-widget-heading .elementor-heading-title.elementor-size-small{font-size:15px}.elementor-widget-heading .elementor-heading-title.elementor-size-medium{font-size:19px}.elementor-widget-heading .elementor-heading-title.elementor-size-large{font-size:29px}.elementor-widget-heading .elementor-heading-title.elementor-size-xl{font-size:39px}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl{font-size:59px}</style>
+<h2 class="elementor-heading-title elementor-size-default">Updating Progress Bar</h2>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-709f17a elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="709f17a" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-c941599" data-id="c941599" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-5beba1c elementor-widget elementor-widget-text-editor" data-id="5beba1c" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>We have updated our progress function to initialize the progress struct, We are going to update the curr after every read.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-66a6ddc elementor-widget elementor-widget-code-block-for-elementor" data-id="66a6ddc" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">sum.chunks[index] = f
+sum.progressBar[index] = &amp;progress{curr: 0, total: j - i}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-01b9c2f elementor-widget elementor-widget-text-editor" data-id="01b9c2f" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Let&#8217;s see the read body function which we have created, It will run in an infinite loop till we get an EOF from read. buf has a size of 500 bytes, so for every iteration of readBody we try to read 500 bytes though read may not fill it completely. Hence we check if it&#8217;s greater than 0 and write only the number of bytes actually read else the initial bytes will be written to the file also.</p>
+<p>And after that, we are updating the progress bar current with the total bytes read till now.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-13487eb elementor-widget elementor-widget-code-block-for-elementor" data-id="13487eb" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (sum *summon) readBody(response *http.Response, f io.Writer, buf []byte, readTotal *int, index int) error {
+
+	r, err := response.Body.Read(buf)
+
+	if r &gt; 0 {
+		f.Write(buf[:r])
+	}
+
+	if err != nil {
+		return err
+	}
+
+	*readTotal += r
+
+	sum.Lock()
+	sum.progressBar[index].curr = *readTotal
+	sum.Unlock()
+
+	return nil
+}</code></pre>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-ec3b401 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="ec3b401" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-10f296b" data-id="10f296b" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-dad3064 elementor-widget elementor-widget-text-editor" data-id="dad3064" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Now let&#8217;s see our earlier <b>getDataAndWriteToFile</b> function, we have changed it as below, We are not using io.Copy here and reading in 500 byte iteration else we can&#8217;t find the progress. We will come back for the select case. We can see here when EOF is received then we are returning from this function.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-0b1d481 elementor-widget elementor-widget-code-block-for-elementor" data-id="0b1d481" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (sum *summon) getDataAndWriteToFile(request *http.Request, f io.Writer, index int) (int, error) {
+
+	client := http.Client{
+		Timeout: 0,
+	}
+
+	response, err := client.Do(request)
+	if err != nil {
+		return response.StatusCode, fmt.Errorf(&quot;Error while doing request : %v&quot;, err)
+	}
+	defer response.Body.Close()
+
+	//we make buffer of 500 bytes and try to read 500 bytes every iteration.
+	var buf = make([]byte, 500)
+	var readTotal int
+
+	for {
+		select {
+		case cErr := &lt;-sum.stop:
+			return response.StatusCode, cErr
+		default:
+			err := sum.readBody(response, f, buf, &amp;readTotal, index)
+			if err == io.EOF {
+				return response.StatusCode, nil
+			}
+
+			if err != nil {
+				return response.StatusCode, err
+			}
+		}
+	}
+}</code></pre>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-a5ef5c3 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="a5ef5c3" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-39a5a61" data-id="39a5a61" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-b066fc5 elementor-widget elementor-widget-heading" data-id="b066fc5" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Progress Bar - Start</h2>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-95536cb elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="95536cb" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-0d48d28" data-id="0d48d28" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-68a9e3e elementor-widget elementor-widget-text-editor" data-id="68a9e3e" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Till now we have seen how we are updating the progress, Let&#8217;s move to see how we will display the progress bar. We are going to print the progress bar every second. First, we will need a ticker to tick for every second. We will use a for-select loop which will read from the ticker and print the progress bar. We also read from a stop channel to stop the progress bar printing.</p>
+<p>Let&#8217;s first understand how to print a progress bar on a terminal. The idea is that on every iteration we will move our terminal cursor to the beginning of the first line and print again which will overwrite the previous data.</p>
+<p>We will use<b> &#8220;\033[F&#8221;</b> which moves the cursor up one line. Based on how many progress bars we are printing we will move up too. When we receive a stop for the progress bar then we finally print the progress bar again without moving the cursor.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-546eb4a elementor-widget elementor-widget-code-block-for-elementor" data-id="546eb4a" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (sum *summon) startProgressBar(stop chan struct{}) {
+
+	ticker := time.NewTicker(time.Second)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case &lt;-ticker.C:
+			for i := 0; i &lt; len(sum.progressBar); i++ {
+
+				sum.RLock()
+				p := *sum.progressBar[i]
+				sum.RUnlock()
+
+				printProgress(i, p)
+			}
+
+			//Move cursor back
+			for i := 0; i &lt; len(sum.progressBar); i++ {
+				fmt.Print(&quot;\033[F&quot;)
+			}
+
+		case &lt;-stop:
+			for i := 0; i &lt; len(sum.progressBar); i++ {
+				sum.RLock()
+				p := *sum.progressBar[i]
+				sum.RUnlock()
+				printProgress(i, p)
+			}
+			return
+		}
+	}
+
+}</code></pre>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-1e3c34d elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="1e3c34d" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-607fd88" data-id="607fd88" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-7130741 elementor-widget elementor-widget-heading" data-id="7130741" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Progress Bar - Print</h2>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-7448522 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="7448522" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-2a9ade6" data-id="2a9ade6" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-935c839 elementor-widget elementor-widget-text-editor" data-id="935c839" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Let&#8217;s see how we are printing our progress bar, We are going to use strings.Builder for building our string.</p>
+<p>First, we calculate how much percent of the download is done. We have a PROGRESS_SIZE constant defined which tells us how many characters to print the progress bar on.</p>
+<p>n is the number of characters we need to use from the PROGRESS_SIZE to print the progress. For example, if PROGRESS_SIZE is 20 and we have reached 10 percent download then we need to fill 4 spaces. We loop across the PROGRESS_SIZE constant and print &#8220;&gt;&#8221; till n and space for the remaining. We are also printing the actual percentage.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-86c994f elementor-widget elementor-widget-code-block-for-elementor" data-id="86c994f" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func printProgress(index int, p progress) {
+
+	s := strings.Builder{}
+
+	percent := math.Round((float64(p.curr) / float64(p.total)) * 100)
+
+	n := int((percent / 100) * PROGRESS_SIZE)
+
+	s.WriteString(&quot;[&quot;)
+	for i := 0; i &lt; PROGRESS_SIZE; i++ {
+		if i &lt;= n {
+			s.WriteString(&quot;&gt;&quot;)
+		} else {
+			s.WriteString(&quot; &quot;)
+		}
+	}
+	s.WriteString(&quot;]&quot;)
+	s.WriteString(fmt.Sprintf(&quot; %v%%&quot;, percent))
+
+	fmt.Printf(&quot;Connection %d  - %s\n&quot;, index+1, s.String())
+}</code></pre>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-3995096 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="3995096" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-ce533c8" data-id="ce533c8" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-c792649 elementor-widget elementor-widget-text-editor" data-id="c792649" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Let&#8217;s see our progress bar in action.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-a0e15ae elementor-widget elementor-widget-image" data-id="a0e15ae" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-widget-image{text-align:center}.elementor-widget-image a{display:inline-block}.elementor-widget-image a img[src$=".svg"]{width:48px}.elementor-widget-image img{vertical-align:middle;display:inline-block}</style>										<img fetchpriority="high" decoding="async" width="1024" height="181" src="/wp-content/uploads/2021/09/summon-1024x181.gif" class="attachment-large size-large wp-image-115" alt="" srcset="/wp-content/uploads/2021/09/summon-1024x181.gif 1024w, /wp-content/uploads/2021/09/summon-300x53.gif 300w, /wp-content/uploads/2021/09/summon-768x136.gif 768w" sizes="(max-width: 1024px) 100vw, 1024px">													</div>
+				</div>
+				<div class="elementor-element elementor-element-b5ac779 elementor-widget elementor-widget-text-editor" data-id="b5ac779" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Our progress bar is ready, now we need to handle the interrupt or ctrl+c signals. Once we get it we need to stop the file download and delete the file which we have created.</p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-2c54cb7 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="2c54cb7" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-15f3480" data-id="15f3480" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-387a980 elementor-widget elementor-widget-heading" data-id="387a980" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Catching Kill / Interrupt Signals</h2>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-05f507c elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="05f507c" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-6e7909b" data-id="6e7909b" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-bc79eab elementor-widget elementor-widget-text-editor" data-id="bc79eab" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p style="font-variant-ligatures: normal; font-variant-caps: normal; font-family: Merriweather, sans-serif; font-size: 14px; font-style: normal; font-weight: 400;">We will be using the below function to catch signals, We are creating a signal channel of size 1 and then passing it to signal.Notify. Once a kill signal is received we pass it to the stop channel based on the number of chunks we are working with.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-66ade0a elementor-widget elementor-widget-code-block-for-elementor" data-id="66ade0a" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (sum *summon) catchSignals() {
+	sigc := make(chan os.Signal, 1)
+	signal.Notify(sigc,
+		syscall.SIGHUP,
+		syscall.SIGINT,
+		syscall.SIGTERM,
+		syscall.SIGQUIT)
+	go func() {
+		s := &lt;-sigc
+		for i := 0; i &lt; len(sum.chunks); i++ {
+			sum.stop &lt;- fmt.Errorf(&quot;got stop signal : %v&quot;, s)
+		}
+	}()
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-74ada99 elementor-widget elementor-widget-text-editor" data-id="74ada99" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>If you remember we did a for-select loop, in which we were reading from the stop channel, this signal will be received there and the reading will be stopped.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-4238b95 elementor-widget elementor-widget-code-block-for-elementor" data-id="4238b95" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">for {
+		select {
+		case cErr := &lt;-sum.stop:
+			return response.StatusCode, cErr
+		default:
+			err := sum.readBody(response, f, buf, &amp;readTotal, index)
+			if err == io.EOF {
+				return response.StatusCode, nil
+			}
+
+			if err != nil {
+				return response.StatusCode, err
+			}
+		}
+	}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-e557fb1 elementor-widget elementor-widget-text-editor" data-id="e557fb1" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Let&#8217;s see what it looks like when we stop a download in middle. We have used the ctrl+c command to stop and we are able to stop it. This will then remove the file which we had created earlier.</p>
+<p><img decoding="async" src="data:image/png;base64,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" alt=""></p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-f322d04 elementor-widget elementor-widget-text-editor" data-id="f322d04" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>This was all for the progress bar and catching signals, In the <a href="/download-file-concurrently-in-golang-part-4-resume/">next part</a>, we will add resume functionality to the tool.</p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				</div>
+		<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-official sd-sharing">
+<h3 class="sd-title">Share this:</h3>
+<div class="sd-content"><ul>
+<li class="share-facebook"><div class="fb-share-button" data-href="/download-file-concurrently-with-golang-part-3progress-bar/" data-layout="button_count"></div></li>
+<li class="share-x"><a href="https://x.com/share" class="twitter-share-button" data-url="/download-file-concurrently-with-golang-part-3progress-bar/" data-text="Download file concurrently in Golang-Part 3(Progress Bar)" data-via="AbilityRush">Post</a></li>
+<li class="share-end">
+</ul></div>
+</div></div>
+</div>
+<!-- .entry -->
+
+
+<div class="post-tags clr">
+	<span class="owp-tag-text">Tags: </span><a href="/tag/concurrency/" rel="tag">concurrency</a><span class="owp-sep">,</span> <a href="/tag/download/" rel="tag">download</a><span class="owp-sep">,</span> <a href="/tag/golang/" rel="tag">golang</a>
+</div>
+
+
+
+	<nav class="navigation post-navigation" aria-label="Read more articles">
+		<h2 class="screen-reader-text">Read more articles</h2>
+		<div class="nav-links">
+<div class="nav-previous"><a href="/download-file-concurrently-in-golang-part-2/" rel="prev"><span class="title"><i class=" fas fa-long-arrow-alt-left" aria-hidden="true" role="img"></i> Previous Post</span><span class="post-title">Download file concurrently in Golang-Part 2(Memory)</span></a></div>
+<div class="nav-next"><a href="/understanding-interfaces-in-golang-with-use-case/" rel="next"><span class="title"><i class=" fas fa-long-arrow-alt-right" aria-hidden="true" role="img"></i> Next Post</span><span class="post-title">Understanding Interfaces in Golang with use case</span></a></div>
+</div>
+	</nav>
+
+	<section id="related-posts" class="clr">
+
+		<h3 class="theme-heading related-posts-title">
+			<span class="text">You Might Also Like</span>
+		</h3>
+
+		<div class="oceanwp-row clr">
+
+			
+			
+				
+				<article class="related-post clr col span_1_of_3 col-1 post-448 post type-post status-publish format-standard hentry category-golang category-technology tag-go tag-golang tag-http tag-middleware tag-net-http entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/writing-middleware-in-golang/" rel="bookmark">Writing middleware in Golang</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2021-10-25T19:24:39+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>October 25, 2021</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+				
+				<article class="related-post clr col span_1_of_3 col-2 post-377 post type-post status-publish format-standard hentry category-golang category-technology tag-docker tag-golang entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/running-go-binary-with-docker/" rel="bookmark">Running Go Binary with Docker</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2022-02-05T14:57:51+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>February 5, 2022</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+				
+				<article class="related-post clr col span_1_of_3 col-3 post-40 post type-post status-publish format-standard hentry category-golang category-technology tag-concurrency tag-download tag-file tag-go entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/download-file-concurrently-in-golang-part-1/" rel="bookmark">Download file concurrently in Golang</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2021-09-05T01:32:03+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>September 5, 2021</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+		</div>
+<!-- .oceanwp-row -->
+
+	</section><!-- .related-posts -->
+
+
+
+
+<section id="comments" class="comments-area clr has-comments">
+
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/download-file-concurrently-with-golang-part-3progress-bar/#respond" style="display:none;">Cancel reply</a></small>
+</h3>
+<form action="/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+<div class="comment-textarea">
+<label for="comment" class="screen-reader-text">Comment</label><textarea name="comment" id="comment" cols="39" rows="4" tabindex="0" class="textarea-comment" placeholder="Your comment here..."></textarea>
+</div>
+<div class="comment-form-author">
+<label for="author" class="screen-reader-text">Enter your name or username to comment</label><input type="text" name="author" id="author" value="" placeholder="Name (required)" size="22" tabindex="0" aria-required="true" class="input-name">
+</div>
+<div class="comment-form-email">
+<label for="email" class="screen-reader-text">Enter your email address to comment</label><input type="text" name="email" id="email" value="" placeholder="Email (required)" size="22" tabindex="0" aria-required="true" class="input-email">
+</div>
+<div class="comment-form-url">
+<label for="url" class="screen-reader-text">Enter your website URL (optional)</label><input type="text" name="url" id="url" value="" placeholder="Website" size="22" tabindex="0" class="input-website">
+</div>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="111" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="f1bd0096db"></p>
+<p style="display: none !important;" class="akismet-fields-container" data-prefix="ak_"><label>&#916;<textarea name="ak_hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label><input type="hidden" id="ak_js_1" name="ak_js" value="136"></p>
+</form>	</div>
+<!-- #respond -->
+	
+</section><!-- #comments -->
+
+</article>
+
+				
+			</div>
+<!-- #content -->
+
+			
+		</div>
+<!-- #primary -->
+
+		
+
+<aside id="right-sidebar" class="sidebar-container widget-area sidebar-primary" itemscope="itemscope" itemtype="https://schema.org/WPSideBar" role="complementary" aria-label="Primary Sidebar">
+
+	
+	<div id="right-sidebar-inner" class="clr">
+
+		
+		<div id="recent-posts-2" class="sidebar-box widget_recent_entries clr">
+		<h4 class="widget-title">Recent Posts</h4>
+		<ul>
+											<li>
+					<a href="/how-to-accept-input-from-terminal-in-golang/">How to Accept Input from Terminal in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-update-variables-compile-time-in-go/">How to Update Variables Compile Time in Go</a>
+									</li>
+											<li>
+					<a href="/how-to-use-unbuffered-channels-in-golang/">How to use Unbuffered channels in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-use-buffered-channel-in-golang/">How to use Buffered Channel in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-receive-file-uploads-in-the-golang-http-server/">How to receive file uploads in the Golang HTTP server</a>
+									</li>
+					</ul>
+
+		</div>
+<div id="recent-comments-2" class="sidebar-box widget_recent_comments clr">
+<h4 class="widget-title">Recent Comments</h4>
+<ul id="recentcomments">
+<li class="recentcomments">
+<span class="comment-author-link"><a href="/" class="url" rel="ugc">Akshay Khairmode</a></span> on <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1931">Uploading File to AWS S3 in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link">Nihat</span> on <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1856">Uploading File to AWS S3 in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://livrooshomensmentem.com.br/" class="url" rel="ugc external nofollow">homens mentem</a></span> on <a href="/working-with-aws-simple-queue-service-sqs-in-golang/comment-page-1/#comment-43">Working with AWS SQS in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://comfort.kr.ua/kuhni-krivoj-rog/" class="url" rel="ugc external nofollow">Сергей</a></span> on <a href="/writing-mocks-in-golang-with-mockery/comment-page-1/#comment-24">Writing Mocks in Golang with mockery</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://github.com/chakal1337" class="url" rel="ugc external nofollow">JadSaint</a></span> on <a href="/download-file-concurrently-in-golang-part-2/comment-page-1/#comment-14">Download file concurrently in Golang-Part 2(Memory)</a>
+</li>
+</ul>
+</div>
+<div id="archives-2" class="sidebar-box widget_archive clr">
+<h4 class="widget-title">Archives</h4>
+			<ul>
+					<li><a href="/2023/05/">May 2023</a></li>
+	<li><a href="/2023/03/">March 2023</a></li>
+	<li><a href="/2023/02/">February 2023</a></li>
+	<li><a href="/2023/01/">January 2023</a></li>
+	<li><a href="/2022/12/">December 2022</a></li>
+	<li><a href="/2022/10/">October 2022</a></li>
+	<li><a href="/2022/09/">September 2022</a></li>
+	<li><a href="/2022/06/">June 2022</a></li>
+	<li><a href="/2022/05/">May 2022</a></li>
+	<li><a href="/2022/04/">April 2022</a></li>
+	<li><a href="/2022/03/">March 2022</a></li>
+	<li><a href="/2022/02/">February 2022</a></li>
+	<li><a href="/2022/01/">January 2022</a></li>
+	<li><a href="/2021/11/">November 2021</a></li>
+	<li><a href="/2021/10/">October 2021</a></li>
+	<li><a href="/2021/09/">September 2021</a></li>
+			</ul>
+
+			</div>
+<div id="categories-2" class="sidebar-box widget_categories clr">
+<h4 class="widget-title">Categories</h4>
+			<ul>
+					<li class="cat-item cat-item-3">
+<a href="/category/technology/golang/">Golang</a>
+</li>
+	<li class="cat-item cat-item-2">
+<a href="/category/technology/">Technology</a>
+</li>
+			</ul>
+
+			</div>
+<div id="block-13" class="sidebar-box widget_block clr">
+<div class="wp-block-buttons alignfull is-content-justification-center omw-open-modal is-layout-flex wp-block-buttons-is-layout-flex">
+<div class="wp-block-button has-custom-width wp-block-button__width-100 is-style-outline"><a class="wp-block-button__link has-vivid-cyan-blue-color has-text-color" href="#omw-514">Notify Me</a></div>
+</div>
+</div>
+	</div>
+<!-- #sidebar-inner -->
+
+	
+</aside><!-- #right-sidebar -->
+
+
+	</div>
+<!-- #content-wrap -->
+
+	
+
+	</main><!-- #main -->
+
+	
+	
+	
+		
+<footer id="footer" class="site-footer" itemscope="itemscope" itemtype="https://schema.org/WPFooter" role="contentinfo">
+
+	
+	<div id="footer-inner" class="clr">
+
+		
+
+<div id="footer-widgets" class="oceanwp-row clr">
+
+	
+	<div class="footer-widgets-inner container">
+
+					<div class="footer-box span_1_of_4 col col-1">
+							</div>
+<!-- .footer-one-box -->
+
+							<div class="footer-box span_1_of_4 col col-2">
+									</div>
+<!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-3 ">
+									</div>
+<!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-4">
+									</div>
+<!-- .footer-box -->
+				
+			
+	</div>
+<!-- .container -->
+
+	
+</div>
+<!-- #footer-widgets -->
+
+
+
+<div id="footer-bottom" class="clr no-footer-nav">
+
+	
+	<div id="footer-bottom-inner" class="container clr">
+
+		
+		
+			<div id="copyright" class="clr" role="contentinfo">
+				Copyright - OceanWP Theme by OceanWP			</div>
+<!-- #copyright -->
+
+			
+	</div>
+<!-- #footer-bottom-inner -->
+
+	
+</div>
+<!-- #footer-bottom -->
+
+
+	</div>
+<!-- #footer-inner -->
+
+	
+</footer><!-- #footer -->
+
+	
+	
+</div>
+<!-- #wrap -->
+
+
+</div>
+<!-- #outer-wrap -->
+
+
+
+<a aria-label="Scroll to the top of the page" href="#" id="scroll-top" class="scroll-top-right"><i class=" fa fa-angle-double-up" aria-hidden="true" role="img"></i></a>
+
+
+
+
+
+				<div id="omw-514" class="omw-modal">
+
+											<a href="/#mwc-514" class="omw-close-modal" aria-label="Close this modal window ID 514"></a>
+					
+					<div class="omw-modal-inner clr">
+						<p><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSehnVQsuv4by0SLBubMNAldpPAmQRjoFZ4k8kvM2AJ06H93VA/viewform?embedded=true" width="640" height="700" frameborder="0" marginwidth="0" marginheight="0"><span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span><span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span>Loadi<span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span>ng…</iframe></p>
+					</div>
+				</div>
+
+							<div class="omw-modal-overlay"></div>
+
+						<div id="fb-root"></div>
+			
+			
+						
+			<link rel="stylesheet" id="code-block-for-elementor-coy-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-coy.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-dark-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-dark.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-default-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-default.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-funky-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-funky.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-okaidia-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-okaidia.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-solarized-light-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-solarized-light.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-tomorrow-night-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-tomorrow-night.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-twilight-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-twilight.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-toolbar-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-toolbar.css?ver=1.0.3" media="all">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.5.4"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"🏳️‍⚧️","🏳️​⚧️")?!1:!n(e,"🇺🇳","🇺​🇳")&&!n(e,"🏴󠁧󠁢󠁥󠁮󠁧󠁿","🏴​󠁧​󠁢​󠁥​󠁮​󠁧​󠁿");case"emoji":return!n(e,"🐦‍⬛","🐦​⬛")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+</script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/jquery-migrate.min.js" id="jquery-migrate-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/wp-polyfill-inert.min.js" id="wp-polyfill-inert-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/regenerator-runtime.min.js" id="regenerator-runtime-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/wp-polyfill.min.js" id="wp-polyfill-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/dom-ready.min.js" id="wp-dom-ready-js"></script><script src="/wp-content/plugins/auto-terms-of-service-and-privacy-policy/js/base.js?ver=2.5.1" id="wpautoterms_base-js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-DXSQBK2RY1" id="google_gtagjs-js" async></script><script id="google_gtagjs-js-after">window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag("set","linker",{"domains":["localhost"]});
+gtag("js", new Date());
+gtag("set", "developer_id.dZTNiMT", true);
+gtag("config", "G-DXSQBK2RY1");</script><script>( function() {
+				window.onpageshow = function( event ) {
+					// Defined window.wpforms means that a form exists on a page.
+					// If so and back/forward button has been clicked,
+					// force reload a page to prevent the submit button state stuck.
+					if ( typeof window.wpforms !== 'undefined' && event.persisted ) {
+						window.location.reload();
+					}
+				};
+			}() );</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4736925107936916" crossorigin="anonymous"></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4736925107936916&amp;host=ca-host-pub-2644536267352236" crossorigin="anonymous"></script><script>document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );</script><script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&appId=249643311490&version=v2.3'; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script><script>document.body.addEventListener( 'is.post-load', function() {
+				if ( 'undefined' !== typeof FB ) {
+					FB.XFBML.parse();
+				}
+			} );</script><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script><script id="starter-templates-zip-preview-js-extra">var starter_templates_zip_preview = {"AstColorPaletteVarPrefix":"--ast-global-","AstEleColorPaletteVarPrefix":"--ast-global-"};</script><script src="/wp-content/plugins/astra-sites/inc/lib/onboarding/assets/dist/template-preview/main.js?ver=06758d4d807d9d22c6ea" id="starter-templates-zip-preview-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/comment-reply.min.js" id="comment-reply-js" async data-wp-strategy="async"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/imagesloaded.min.js" id="imagesloaded-js"></script><script id="oceanwp-main-js-extra">var oceanwpLocalize = {"nonce":"2984539bf0","isRTL":"","menuSearchStyle":"drop_down","mobileMenuSearchStyle":"disabled","sidrSource":null,"sidrDisplace":"1","sidrSide":"left","sidrDropdownTarget":"link","verticalHeaderTarget":"link","customScrollOffset":"0","customSelects":".woocommerce-ordering .orderby, #dropdown_product_cat, .widget_categories select, .widget_archive select, .single-product .variations_form .variations select","ajax_url":"\/wp-admin\/admin-ajax.php","oe_mc_wpnonce":"0f85b48aaa"};</script><script src="/wp-content/themes/oceanwp/assets/js/theme.min.js?ver=1.0" id="oceanwp-main-js"></script><script src="/wp-content/themes/oceanwp/assets/js/drop-down-mobile-menu.min.js?ver=1.0" id="oceanwp-drop-down-mobile-menu-js"></script><script src="/wp-content/themes/oceanwp/assets/js/drop-down-search.min.js?ver=1.0" id="oceanwp-drop-down-search-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/magnific-popup.min.js?ver=1.0" id="ow-magnific-popup-js"></script><script src="/wp-content/themes/oceanwp/assets/js/ow-lightbox.min.js?ver=1.0" id="oceanwp-lightbox-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/flickity.pkgd.min.js?ver=1.0" id="ow-flickity-js"></script><script src="/wp-content/themes/oceanwp/assets/js/ow-slider.min.js?ver=1.0" id="oceanwp-slider-js"></script><script src="/wp-content/themes/oceanwp/assets/js/scroll-effect.min.js?ver=1.0" id="oceanwp-scroll-effect-js"></script><script src="/wp-content/themes/oceanwp/assets/js/scroll-top.min.js?ver=1.0" id="oceanwp-scroll-top-js"></script><script src="/wp-content/themes/oceanwp/assets/js/select.min.js?ver=1.0" id="oceanwp-select-js"></script><script id="flickr-widget-script-js-extra">var flickrWidgetParams = {"widgets":[]};</script><script src="/wp-content/plugins/ocean-extra/includes/widgets/js/flickr.min.js?ver=6.5.4" id="flickr-widget-script-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/perfect-scrollbar.min.js?ver=1.0" id="ow-perfect-scrollbar-js"></script><script src="/wp-content/plugins/ocean-modal-window/assets/js/modal-window.min.js?ver=2.2.2" id="omw-js-scripts-js"></script><script src="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism.js?ver=1.0.3" id="code-block-for-elementor-prismjs-js"></script><script src="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-toolbar.js?ver=1.0.3" id="code-block-for-elementor-toolbarjs-js"></script><script defer src="/wp-content/plugins/akismet/_inc/akismet-frontend.js?ver=1711132304" id="akismet-frontend-js"></script><script src="/wp-content/plugins/elementor/assets/js/webpack.runtime.min.js?ver=3.21.8" id="elementor-webpack-runtime-js"></script><script src="/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=3.21.8" id="elementor-frontend-modules-js"></script><script src="/wp-content/plugins/elementor/assets/lib/waypoints/waypoints.min.js?ver=4.0.2" id="elementor-waypoints-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/ui/core.min.js" id="jquery-ui-core-js"></script><script id="elementor-frontend-js-before">var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Share on Facebook","shareOnTwitter":"Share on Twitter","pinIt":"Pin it","download":"Download","downloadImage":"Download image","fullscreen":"Fullscreen","zoom":"Zoom","share":"Share","playVideo":"Play Video","previous":"Previous","next":"Next","close":"Close","a11yCarouselWrapperAriaLabel":"Carousel | Horizontal scrolling: Arrow Left & Right","a11yCarouselPrevSlideMessage":"Previous slide","a11yCarouselNextSlideMessage":"Next slide","a11yCarouselFirstSlideMessage":"This is the first slide","a11yCarouselLastSlideMessage":"This is the last slide","a11yCarouselPaginationBulletMessage":"Go to slide"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Mobile Portrait","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobile Landscape","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet Portrait","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet Landscape","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Laptop","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Widescreen","value":2400,"default_value":2400,"direction":"min","is_enabled":false}}},"version":"3.21.8","is_static":false,"experimentalFeatures":{"e_optimized_assets_loading":true,"e_optimized_css_loading":true,"additional_custom_breakpoints":true,"container":true,"e_swiper_latest":true,"container_grid":true,"home_screen":true,"ai-layout":true,"landing-pages":true},"urls":{"assets":"\/wp-content\/plugins\/elementor\/assets\/"},"swiperClass":"swiper","settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description"},"post":{"id":111,"title":"Download%20file%20concurrently%20in%20Golang-Part%203%28Progress%20Bar%29","excerpt":"","featuredImage":false}};</script><script src="/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.21.8" id="elementor-frontend-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/underscore.min.js" id="underscore-js"></script><script id="wp-util-js-extra">var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};</script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/wp-util.min.js" id="wp-util-js"></script><script id="wpforms-elementor-js-extra">var wpformsElementorVars = {"captcha_provider":"recaptcha","recaptcha_type":"v2"};</script><script src="/wp-content/plugins/wpforms-lite/assets/js/integrations/elementor/frontend.min.js?ver=1.8.8.3" id="wpforms-elementor-js"></script><script id="sharing-js-js-extra">var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};</script><script src="https://c0.wp.com/p/jetpack/13.5/_inc/build/sharedaddy/sharing.min.js" id="sharing-js-js"></script><script id="sharing-js-js-after">var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-facebook' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-facebook' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+						return false;
+					}
+				} );
+			} )();</script>
+</body>
+</html>

@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html class="html" dir="ltr" lang="en-US" prefix="og: https://ogp.me/ns#">
+<head>
+	<meta charset="UTF-8">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+
+	<title>All about structs in Golang – Ability Rush</title>
+
+		<!-- All in One SEO 4.6.4 - aioseo.com -->
+		<meta name="description" content="We learn one of the basic data type in Go. We will learn defining structs, using them, how pointers work with them and empty structs.">
+		<meta name="robots" content="max-image-preview:large">
+		<link rel="canonical" href="/all-about-structs-in-golang/">
+		<meta name="generator" content="All in One SEO (AIOSEO) 4.6.4">
+		<meta property="og:locale" content="en_US">
+		<meta property="og:site_name" content="Ability Rush – Learn &amp; Improve">
+		<meta property="og:type" content="article">
+		<meta property="og:title" content="All about structs in Golang – Ability Rush">
+		<meta property="og:description" content="We learn one of the basic data type in Go. We will learn defining structs, using them, how pointers work with them and empty structs.">
+		<meta property="og:url" content="/all-about-structs-in-golang/">
+		<meta property="article:published_time" content="2021-10-18T14:25:49+00:00">
+		<meta property="article:modified_time" content="2021-10-18T14:25:51+00:00">
+		<meta name="twitter:card" content="summary">
+		<meta name="twitter:title" content="All about structs in Golang – Ability Rush">
+		<meta name="twitter:description" content="We learn one of the basic data type in Go. We will learn defining structs, using them, how pointers work with them and empty structs.">
+		<script data-jetpack-boost="ignore" type="application/ld+json" class="aioseo-schema">{"@context":"https:\/\/schema.org","@graph":[{"@type":"BlogPosting","@id":"\/all-about-structs-in-golang\/#blogposting","name":"All about structs in Golang – Ability Rush","headline":"All about structs in Golang","author":{"@id":"\/author\/akshaykhairmode\/#author"},"publisher":{"@id":"\/#organization"},"image":{"@type":"ImageObject","url":"\/wp-content\/uploads\/2021\/10\/cropped-android-chrome-512x512-1.png","@id":"\/#articleImage","width":512,"height":512},"datePublished":"2021-10-18T19:55:49+05:30","dateModified":"2021-10-18T19:55:51+05:30","inLanguage":"en-US","mainEntityOfPage":{"@id":"\/all-about-structs-in-golang\/#webpage"},"isPartOf":{"@id":"\/all-about-structs-in-golang\/#webpage"},"articleSection":"Golang, Technology, empty struct, go, golang, json, struct"},{"@type":"BreadcrumbList","@id":"\/all-about-structs-in-golang\/#breadcrumblist","itemListElement":[{"@type":"ListItem","@id":"\/#listItem","position":1,"name":"Home","item":"\/","nextItem":"\/all-about-structs-in-golang\/#listItem"},{"@type":"ListItem","@id":"\/all-about-structs-in-golang\/#listItem","position":2,"name":"All about structs in Golang","previousItem":"\/#listItem"}]},{"@type":"Organization","@id":"\/#organization","name":"Ability Rush","description":"Learn & Improve","url":"\/","logo":{"@type":"ImageObject","url":"\/wp-content\/uploads\/2021\/10\/cropped-android-chrome-512x512-1.png","@id":"\/all-about-structs-in-golang\/#organizationLogo","width":512,"height":512},"image":{"@id":"\/all-about-structs-in-golang\/#organizationLogo"}},{"@type":"Person","@id":"\/author\/akshaykhairmode\/#author","url":"\/author\/akshaykhairmode\/","name":"Akshay Khairmode","image":{"@type":"ImageObject","@id":"\/all-about-structs-in-golang\/#authorImage","url":"http:\/\/2.gravatar.com\/avatar\/20ffb1dd4c5b351c3a2a7cb6a7f2e342?s=96&d=wavatar&r=g","width":96,"height":96,"caption":"Akshay Khairmode"}},{"@type":"WebPage","@id":"\/all-about-structs-in-golang\/#webpage","url":"\/all-about-structs-in-golang\/","name":"All about structs in Golang – Ability Rush","description":"We learn one of the basic data type in Go. We will learn defining structs, using them, how pointers work with them and empty structs.","inLanguage":"en-US","isPartOf":{"@id":"\/#website"},"breadcrumb":{"@id":"\/all-about-structs-in-golang\/#breadcrumblist"},"author":{"@id":"\/author\/akshaykhairmode\/#author"},"creator":{"@id":"\/author\/akshaykhairmode\/#author"},"datePublished":"2021-10-18T19:55:49+05:30","dateModified":"2021-10-18T19:55:51+05:30"},{"@type":"WebSite","@id":"\/#website","url":"\/","name":"Ability Rush","description":"Learn & Improve","inLanguage":"en-US","publisher":{"@id":"\/#organization"}}]}</script>
+		<!-- All in One SEO -->
+
+<link rel="pingback" href="/xmlrpc.php">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="dns-prefetch" href="//www.googletagmanager.com">
+<link rel="dns-prefetch" href="//c0.wp.com">
+<link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+<link rel="dns-prefetch" href="//fundingchoicesmessages.google.com">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Feed" href="/feed/">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Comments Feed" href="/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; All about structs in Golang Comments Feed" href="/all-about-structs-in-golang/feed/">
+
+<style type="text/css" media="all">.wpautoterms-footer{background-color:#ffffff;text-align:center;}
+.wpautoterms-footer a{color:#000000;font-family:Arial, sans-serif;font-size:14px;}
+.wpautoterms-footer .separator{color:#cccccc;font-family:Arial, sans-serif;font-size:14px;}</style>
+<style id="wp-emoji-styles-inline-css">img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}</style>
+<link rel="stylesheet" id="mediaelement-css" href="https://c0.wp.com/c/6.5.4/wp-includes/js/mediaelement/mediaelementplayer-legacy.min.css" media="all">
+<link rel="stylesheet" id="wp-mediaelement-css" href="https://c0.wp.com/c/6.5.4/wp-includes/js/mediaelement/wp-mediaelement.min.css" media="all">
+<style id="jetpack-sharing-buttons-style-inline-css">.jetpack-sharing-buttons__services-list{display:flex;flex-direction:row;flex-wrap:wrap;gap:0;list-style-type:none;margin:5px;padding:0}.jetpack-sharing-buttons__services-list.has-small-icon-size{font-size:12px}.jetpack-sharing-buttons__services-list.has-normal-icon-size{font-size:16px}.jetpack-sharing-buttons__services-list.has-large-icon-size{font-size:24px}.jetpack-sharing-buttons__services-list.has-huge-icon-size{font-size:36px}@media print{.jetpack-sharing-buttons__services-list{display:none!important}}.editor-styles-wrapper .wp-block-jetpack-sharing-buttons{gap:0;padding-inline-start:0}ul.jetpack-sharing-buttons__services-list.has-background{padding:1.25em 2.375em}</style>
+<style id="classic-theme-styles-inline-css">/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}</style>
+<style id="global-styles-inline-css">body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}</style>
+<link rel="stylesheet" id="wpautoterms_css-css" href="/wp-content/plugins/auto-terms-of-service-and-privacy-policy/css/wpautoterms.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="mpl-publisher-css" href="/wp-content/plugins/mpl-publisher/assets/css/mpl-widget.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="oceanwp-style-css" href="/wp-content/themes/oceanwp/assets/css/style.min.css?ver=1.0" media="all">
+<link rel="stylesheet" id="child-style-css" href="/wp-content/themes/oceanwp-child-theme-master/style.css?ver=3.5.5" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="/wp-content/themes/oceanwp/assets/fonts/fontawesome/css/all.min.css?ver=6.4.2" media="all">
+<link rel="stylesheet" id="simple-line-icons-css" href="/wp-content/themes/oceanwp/assets/css/third/simple-line-icons.min.css?ver=2.4.0" media="all">
+<link rel="stylesheet" id="elementor-icons-css" href="/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.29.0" media="all">
+<link rel="stylesheet" id="elementor-frontend-css" href="/wp-content/plugins/elementor/assets/css/frontend-lite.min.css?ver=3.21.8" media="all">
+<link rel="stylesheet" id="swiper-css" href="/wp-content/plugins/elementor/assets/lib/swiper/v8/css/swiper.min.css?ver=8.4.5" media="all">
+<link rel="stylesheet" id="elementor-post-6-css" href="/wp-content/uploads/elementor/css/post-6.css?ver=1717861485" media="all">
+<link rel="stylesheet" id="elementor-global-css" href="/wp-content/uploads/elementor/css/global.css?ver=1717861485" media="all">
+<link rel="stylesheet" id="oe-widgets-style-css" href="/wp-content/plugins/ocean-extra/assets/css/widgets.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="ow-perfect-scrollbar-css" href="/wp-content/themes/oceanwp/assets/css/third/perfect-scrollbar.css?ver=1.5.0" media="all">
+<link rel="stylesheet" id="omw-styles-css" href="/wp-content/plugins/ocean-modal-window/assets/css/style.min.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="sharedaddy-css" href="https://c0.wp.com/p/jetpack/13.5/modules/sharedaddy/sharing.css" media="all">
+<link rel="stylesheet" id="social-logos-css" href="https://c0.wp.com/p/jetpack/13.5/_inc/social-logos/social-logos.min.css" media="all">
+<link rel="stylesheet" id="google-fonts-1-css" href="https://fonts.googleapis.com/css?family=Merriweather%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto+Slab%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic&#038;display=auto&#038;ver=6.5.4" media="all">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<script data-jetpack-boost="ignore" src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/jquery.min.js" id="jquery-core-js"></script>
+
+
+
+
+
+
+
+<!-- Google tag (gtag.js) snippet added by Site Kit -->
+
+<!-- Google Analytics snippet added by Site Kit -->
+
+
+
+<!-- End Google tag (gtag.js) snippet added by Site Kit -->
+<link rel="https://api.w.org/" href="/wp-json/">
+<link rel="alternate" type="application/json" href="/wp-json/wp/v2/posts/383">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="/xmlrpc.php?rsd">
+<meta name="generator" content="WordPress 6.5.4">
+<link rel="shortlink" href="/?p=383">
+<link rel="alternate" type="application/json+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2F%2Fall-about-structs-in-golang%2F">
+<link rel="alternate" type="text/xml+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2F%2Fall-about-structs-in-golang%2F#038;format=xml">
+<meta name="generator" content="Site Kit by Google 1.128.0">		
+		
+	
+
+<!-- Google AdSense meta tags added by Site Kit -->
+<meta name="google-adsense-platform-account" content="ca-host-pub-2644536267352236">
+<meta name="google-adsense-platform-domain" content="sitekit.withgoogle.com">
+<!-- End Google AdSense meta tags added by Site Kit -->
+<meta name="generator" content="Elementor 3.21.8; features: e_optimized_assets_loading, e_optimized_css_loading, additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-auto">
+<style>.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<!-- Google AdSense snippet added by Site Kit -->
+
+
+<!-- End Google AdSense snippet added by Site Kit -->
+<link rel="icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-32x32.png" sizes="32x32">
+<link rel="icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-180x180.png">
+<meta name="msapplication-TileImage" content="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-270x270.png">
+<!-- OceanWP CSS -->
+<style type="text/css">/* General CSS */a:hover,a.light:hover,.theme-heading .text::before,.theme-heading .text::after,#top-bar-content >a:hover,#top-bar-social li.oceanwp-email a:hover,#site-navigation-wrap .dropdown-menu >li >a:hover,#site-header.medium-header #medium-searchform button:hover,.oceanwp-mobile-menu-icon a:hover,.blog-entry.post .blog-entry-header .entry-title a:hover,.blog-entry.post .blog-entry-readmore a:hover,.blog-entry.thumbnail-entry .blog-entry-category a,ul.meta li a:hover,.dropcap,.single nav.post-navigation .nav-links .title,body .related-post-title a:hover,body #wp-calendar caption,body .contact-info-widget.default i,body .contact-info-widget.big-icons i,body .custom-links-widget .oceanwp-custom-links li a:hover,body .custom-links-widget .oceanwp-custom-links li a:hover:before,body .posts-thumbnails-widget li a:hover,body .social-widget li.oceanwp-email a:hover,.comment-author .comment-meta .comment-reply-link,#respond #cancel-comment-reply-link:hover,#footer-widgets .footer-box a:hover,#footer-bottom a:hover,#footer-bottom #footer-bottom-menu a:hover,.sidr a:hover,.sidr-class-dropdown-toggle:hover,.sidr-class-menu-item-has-children.active >a,.sidr-class-menu-item-has-children.active >a >.sidr-class-dropdown-toggle,input[type=checkbox]:checked:before{color:#3370bf}.single nav.post-navigation .nav-links .title .owp-icon use,.blog-entry.post .blog-entry-readmore a:hover .owp-icon use,body .contact-info-widget.default .owp-icon use,body .contact-info-widget.big-icons .owp-icon use{stroke:#3370bf}input[type="button"],input[type="reset"],input[type="submit"],button[type="submit"],.button,#site-navigation-wrap .dropdown-menu >li.btn >a >span,.thumbnail:hover i,.post-quote-content,.omw-modal .omw-close-modal,body .contact-info-widget.big-icons li:hover i,body div.wpforms-container-full .wpforms-form input[type=submit],body div.wpforms-container-full .wpforms-form button[type=submit],body div.wpforms-container-full .wpforms-form .wpforms-page-button{background-color:#3370bf}.thumbnail:hover .link-post-svg-icon{background-color:#3370bf}body .contact-info-widget.big-icons li:hover .owp-icon{background-color:#3370bf}.widget-title{border-color:#3370bf}blockquote{border-color:#3370bf}#searchform-dropdown{border-color:#3370bf}.dropdown-menu .sub-menu{border-color:#3370bf}.blog-entry.large-entry .blog-entry-readmore a:hover{border-color:#3370bf}.oceanwp-newsletter-form-wrap input[type="email"]:focus{border-color:#3370bf}.social-widget li.oceanwp-email a:hover{border-color:#3370bf}#respond #cancel-comment-reply-link:hover{border-color:#3370bf}body .contact-info-widget.big-icons li:hover i{border-color:#3370bf}#footer-widgets .oceanwp-newsletter-form-wrap input[type="email"]:focus{border-color:#3370bf}blockquote,.wp-block-quote{border-left-color:#3370bf}body .contact-info-widget.big-icons li:hover .owp-icon{border-color:#3370bf}input[type="button"]:hover,input[type="reset"]:hover,input[type="submit"]:hover,button[type="submit"]:hover,input[type="button"]:focus,input[type="reset"]:focus,input[type="submit"]:focus,button[type="submit"]:focus,.button:hover,.button:focus,#site-navigation-wrap .dropdown-menu >li.btn >a:hover >span,.post-quote-author,.omw-modal .omw-close-modal:hover,body div.wpforms-container-full .wpforms-form input[type=submit]:hover,body div.wpforms-container-full .wpforms-form button[type=submit]:hover,body div.wpforms-container-full .wpforms-form .wpforms-page-button:hover{background-color:#81d742}a{color:#1e73be}a .owp-icon use{stroke:#1e73be}a:hover{color:#dd3333}a:hover .owp-icon use{stroke:#dd3333}#scroll-top{background-color:#1e73be}/* Header CSS */#site-header.has-header-media .overlay-header-media{background-color:rgba(0,0,0,0.5)}/* Typography CSS */body{color:#000000}</style>
+<style id="wpforms-css-vars-root">:root {
+					--wpforms-field-border-radius: 3px;
+--wpforms-field-border-style: solid;
+--wpforms-field-border-size: 1px;
+--wpforms-field-background-color: #ffffff;
+--wpforms-field-border-color: rgba( 0, 0, 0, 0.25 );
+--wpforms-field-border-color-spare: rgba( 0, 0, 0, 0.25 );
+--wpforms-field-text-color: rgba( 0, 0, 0, 0.7 );
+--wpforms-field-menu-color: #ffffff;
+--wpforms-label-color: rgba( 0, 0, 0, 0.85 );
+--wpforms-label-sublabel-color: rgba( 0, 0, 0, 0.55 );
+--wpforms-label-error-color: #d63637;
+--wpforms-button-border-radius: 3px;
+--wpforms-button-border-style: none;
+--wpforms-button-border-size: 1px;
+--wpforms-button-background-color: #066aab;
+--wpforms-button-border-color: #066aab;
+--wpforms-button-text-color: #ffffff;
+--wpforms-page-break-color: #066aab;
+--wpforms-background-image: none;
+--wpforms-background-position: center center;
+--wpforms-background-repeat: no-repeat;
+--wpforms-background-size: cover;
+--wpforms-background-width: 100px;
+--wpforms-background-height: 100px;
+--wpforms-background-color: rgba( 0, 0, 0, 0 );
+--wpforms-background-url: none;
+--wpforms-container-padding: 0px;
+--wpforms-container-border-style: none;
+--wpforms-container-border-width: 1px;
+--wpforms-container-border-color: #000000;
+--wpforms-container-border-radius: 3px;
+--wpforms-field-size-input-height: 43px;
+--wpforms-field-size-input-spacing: 15px;
+--wpforms-field-size-font-size: 16px;
+--wpforms-field-size-line-height: 19px;
+--wpforms-field-size-padding-h: 14px;
+--wpforms-field-size-checkbox-size: 16px;
+--wpforms-field-size-sublabel-spacing: 5px;
+--wpforms-field-size-icon-size: 1;
+--wpforms-label-size-font-size: 16px;
+--wpforms-label-size-line-height: 19px;
+--wpforms-label-size-sublabel-font-size: 14px;
+--wpforms-label-size-sublabel-line-height: 17px;
+--wpforms-button-size-font-size: 17px;
+--wpforms-button-size-height: 41px;
+--wpforms-button-size-padding-h: 15px;
+--wpforms-button-size-margin-top: 10px;
+--wpforms-container-shadow-size-box-shadow: none;
+
+				}</style>
+</head>
+
+<body class="post-template-default single single-post postid-383 single-format-standard wp-embed-responsive oceanwp-theme dropdown-mobile top-header-style default-breakpoint has-sidebar content-right-sidebar post-in-category-golang post-in-category-technology page-header-disabled has-breadcrumbs elementor-default elementor-kit-6 elementor-page elementor-page-383" itemscope="itemscope" itemtype="https://schema.org/Article">
+
+	
+	
+	<div id="outer-wrap" class="site clr">
+
+		<a class="skip-link screen-reader-text" href="#main">Skip to content</a>
+
+		
+		<div id="wrap" class="clr">
+
+			
+			
+<header id="site-header" class="top-header clr" data-height="74" itemscope="itemscope" itemtype="https://schema.org/WPHeader" role="banner">
+
+	
+		
+	<div class="header-bottom clr">
+		<div class="container">
+			
+
+<div id="site-logo" class="clr" itemscope itemtype="https://schema.org/Brand">
+
+	
+	<div id="site-logo-inner" class="clr">
+
+						<a href="/" rel="home" class="site-title site-logo-text">Ability Rush</a>
+				
+	</div>
+<!-- #site-logo-inner -->
+
+	
+				<div id="site-description"><h2>Learn &amp; Improve</h2></div>
+			
+</div>
+<!-- #site-logo -->
+
+		</div>
+	</div>
+	
+<div class="header-top clr">
+
+	
+	<div id="site-header-inner" class="clr container">
+
+		
+		<div class="left clr">
+
+			<div class="inner">
+
+				
+				
+			</div>
+
+		</div>
+
+		<div class="right clr">
+
+			<div class="inner">
+
+				<div id="search-toggle"><a href="/#" class="site-search-toggle search-dropdown-toggle" aria-label="Search website"><i class=" fas fa-search" aria-hidden="true" role="img"></i></a></div>
+<div id="searchform-dropdown" class="header-searchform-wrap clr">
+	
+<form aria-label="Search this website" role="search" method="get" class="searchform" action="/">	
+	<input aria-label="Insert search query" type="search" id="ocean-search-form-1" class="field" autocomplete="off" placeholder="Search" name="s">
+		</form>
+</div>
+<!-- #searchform-dropdown -->
+
+			</div>
+
+		</div>
+
+	</div>
+<!-- #site-header-inner -->
+
+	
+<div id="mobile-dropdown" class="clr">
+
+	<nav class="clr" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement">
+
+		<div class="menu">
+<li class="page_item page-item-1832"><a href="/j2csv/">j2csv</a></li>
+<li class="page_item page-item-3"><a href="/privacy-policy/">Privacy Policy</a></li>
+</div>
+
+<div id="mobile-menu-search" class="clr">
+	<form aria-label="Search this website" method="get" action="/" class="mobile-searchform">
+		<input aria-label="Insert search query" value="" class="field" id="ocean-mobile-search-2" type="search" name="s" autocomplete="off" placeholder="Search">
+		<button aria-label="Submit search" type="submit" class="searchform-submit">
+			<i class=" fas fa-search" aria-hidden="true" role="img"></i>		</button>
+					</form>
+</div>
+<!-- .mobile-menu-search -->
+
+	</nav>
+
+</div>
+
+	
+</div>
+<!-- .header-top -->
+
+
+		
+		
+</header><!-- #site-header -->
+
+
+			
+			<main id="main" class="site-main clr" role="main">
+
+				
+	
+	<div id="content-wrap" class="container clr">
+
+		
+		<div id="primary" class="content-area clr">
+
+			
+			<div id="content" class="site-content clr">
+
+				
+				
+<article id="post-383">
+
+	
+
+<header class="entry-header clr">
+	<h2 class="single-post-title entry-title" itemprop="headline">All about structs in Golang</h2>
+<!-- .single-post-title -->
+</header><!-- .entry-header -->
+
+
+<ul class="meta ospm-default clr">
+
+	
+					<li class="meta-author" itemprop="name">
+<span class="screen-reader-text">Post author:</span><i class=" fas fa-user-circle" aria-hidden="true" role="img"></i><a href="/author/akshaykhairmode/" title="Posts by Akshay Khairmode" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">Akshay Khairmode</a>
+</li>
+		
+		
+		
+		
+		
+		
+	
+		
+					<li class="meta-date" itemprop="datePublished">
+<span class="screen-reader-text">Post published:</span><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>October 18, 2021</li>
+		
+		
+		
+		
+		
+	
+		
+		
+		
+					<li class="meta-cat">
+<span class="screen-reader-text">Post category:</span><i class=" far fa-folder-open" aria-hidden="true" role="img"></i><a href="/category/technology/golang/" rel="category tag">Golang</a> <span class="owp-sep">/</span> <a href="/category/technology/" rel="category tag">Technology</a>
+</li>
+		
+		
+		
+	
+		
+		
+		
+		
+		
+					<li class="meta-comments">
+<span class="screen-reader-text">Post comments:</span><i class=" far fa-comments" aria-hidden="true" role="img"></i><a href="/all-about-structs-in-golang/#respond" class="comments-link">0 Comments</a>
+</li>
+		
+	
+</ul>
+
+
+
+<div class="entry-content clr" itemprop="text">
+			<div data-elementor-type="wp-post" data-elementor-id="383" class="elementor elementor-383">
+						<section class="elementor-section elementor-top-section elementor-element elementor-element-975d4c7 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="975d4c7" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-d3c6e44" data-id="d3c6e44" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-fbb6177 elementor-widget elementor-widget-heading" data-id="fbb6177" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-heading-title{padding:0;margin:0;line-height:1}.elementor-widget-heading .elementor-heading-title[class*=elementor-size-]>a{color:inherit;font-size:inherit;line-height:inherit}.elementor-widget-heading .elementor-heading-title.elementor-size-small{font-size:15px}.elementor-widget-heading .elementor-heading-title.elementor-size-medium{font-size:19px}.elementor-widget-heading .elementor-heading-title.elementor-size-large{font-size:29px}.elementor-widget-heading .elementor-heading-title.elementor-size-xl{font-size:39px}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl{font-size:59px}</style>
+<h2 class="elementor-heading-title elementor-size-default">Introduction</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-0e7f55a elementor-widget elementor-widget-text-editor" data-id="0e7f55a" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#69727d;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#69727d;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}</style>				<p><a href="https://tour.golang.org/moretypes/2">Structs</a> are basically a collection of fields of any type. We use it to logically group data, For example, if we are creating a program where we have to work with shops then our fields would be <strong>name, address, typ, phone, customers</strong> then we can create a struct shop that will have these details.</p>
+<p>This is the most common user-defined data structure.</p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-df5b97d elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="df5b97d" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-159e15e" data-id="159e15e" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-4680d91 elementor-widget elementor-widget-heading" data-id="4680d91" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Syntax for structs</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-0fe23ab elementor-widget elementor-widget-text-editor" data-id="0fe23ab" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Considering the example of a shop we can create a struct like below,</p>
+<blockquote>
+<p>type shop struct {<br>    Name                          string<br>    Address                      string<br>    Typ                              string<br>    Phone                          int<br>    AverageCustomers *int<br>}</p>
+</blockquote>
+<p>For average customers, we are using a pointer of int. Let&#8217;s create few shops,</p>
+<blockquote>
+<p>shop1 := shop{&#8220;Shop1&#8221;, &#8220;Canada&#8221;, &#8220;Grocery&#8221;, 1111111111, new(int)}</p>
+<p>shop2 := shop{Name: &#8220;Shop2&#8221;, Address: &#8220;US&#8221;, Typ: &#8220;Pharmacy&#8221;, Phone: 1111111111, AverageCustomers: new(int)}</p>
+<p>shop3 := new(shop)<br>shop3.Name = &#8220;Shop3&#8221;<br>shop3.Address = &#8220;Japan&#8221;<br>shop3.Typ = &#8220;Restaurant&#8221;<br>shop3.Phone = 1111111111<br>shop3.AverageCustomers = new(int)</p>
+</blockquote>
+<p>We are using struct literals for creating structs. For shop1 we are passing the data directly. It will follow the declaration order of the struct. Shop2 has field names present so the order is not important in this case. shop3 is created using new which returns a pointer so we are setting the fields after that.</p>
+<p>Note &#8211; If we add a field name for some key in shop1 then the compiler will throw an error as we cannot have both together.</p>
+<p>Let&#8217;s create a printShop function that will print the shops.</p>
+<blockquote>
+<p>func printShop(s &#8230;shop) {</p>
+<p>    for _, v := range s {<br>        fmt.Printf(&#8220;Printing for : %v &#8212;- %+v&#8221;, v.Name, v)<br>        fmt.Printf(&#8221; &#8211; AverageCustomers Value &#8211; %v \n&#8221;, *v.AverageCustomers)<br>    }</p>
+<p>}</p>
+</blockquote>
+<p>Now let&#8217;s make some functions which will update the shop,</p>
+<blockquote>
+<p>func updatePhone(s shop, v int) {<br>    s.Phone = v<br>}</p>
+<p>func updateCustomers(s shop, v int) {<br>    *s.AverageCustomers = v<br>}</p>
+</blockquote>
+<p>Finally, let&#8217;s write some code to run our functions,</p>
+<blockquote>
+<p>fmt.Println(&#8220;Printing Initial Values&#8230;&#8221;)<br>printShop(shop1, shop2, *shop3)<br>fmt.Println(&#8220;Updating Customer Values&#8230;&#8221;)<br>updateCustomers(shop1, 5)<br>updateCustomers(shop2, 10)<br>updateCustomers(*shop3, 15)<br>fmt.Println(&#8220;Printing Values After Customer Update&#8230;&#8221;)<br>printShop(shop1, shop2, *shop3)<br>fmt.Println(&#8220;Updating Phone Values&#8230;&#8221;)<br>updatePhone(shop1, 000000000)<br>updatePhone(shop2, 000000000)<br>updatePhone(*shop3, 000000000)<br>printShop(shop1, shop2, *shop3)</p>
+</blockquote>
+<p>After running our code, we got the below output,</p>
+<blockquote>
+<p>Printing Initial Values&#8230;<br>Printing for : Shop1 &#8212;- {Name:Shop1 Address:Canada Typ:Grocery Phone:1111111111 AverageCustomers:<strong>0xc000012078</strong>} &#8211; AverageCustomers Value &#8211; 0<br>Printing for : Shop2 &#8212;- {Name:Shop2 Address:US Typ:Pharmacy Phone:1111111111 AverageCustomers:<strong>0xc000012080</strong>} &#8211; AverageCustomers Value &#8211; 0 <br>Printing for : Shop3 &#8212;- {Name:Shop3 Address:Japan Typ:Restaurant Phone:1111111111 AverageCustomers:<strong>0xc000012088</strong>} &#8211; AverageCustomers Value &#8211; 0 <br>Updating Customer Values&#8230;<br>Printing Values After Customer Update&#8230;<br>Printing for : Shop1 &#8212;- {Name:Shop1 Address:Canada Typ:Grocery Phone:1111111111 AverageCustomers:0xc000012078} &#8211; AverageCustomers Value &#8211; <strong>5</strong> //AverageCustomers got updated<br>Printing for : Shop2 &#8212;- {Name:Shop2 Address:US Typ:Pharmacy Phone:1111111111 AverageCustomers:0xc000012080} &#8211; AverageCustomers Value &#8211; <strong>10</strong> <br>Printing for : Shop3 &#8212;- {Name:Shop3 Address:Japan Typ:Restaurant Phone:1111111111 AverageCustomers:0xc000012088} &#8211; AverageCustomers Value &#8211; <strong>15</strong> <br>Updating Phone Values&#8230;<br>Printing for : Shop1 &#8212;- {Name:Shop1 Address:Canada Typ:Grocery Phone:<span style="color: #ff0000;">1111111111</span> AverageCustomers:0xc000012078} &#8211; AverageCustomers Value &#8211; 5 <br>Printing for : Shop2 &#8212;- {Name:Shop2 Address:US Typ:Pharmacy Phone:<span style="color: #ff0000;">1111111111</span> AverageCustomers:0xc000012080} &#8211; AverageCustomers Value &#8211; 10 <br>Printing for : Shop3 &#8212;- {Name:Shop3 Address:Japan Typ:Restaurant Phone:<span style="color: #ff0000;">1111111111</span> AverageCustomers:0xc000012088} &#8211; AverageCustomers Value &#8211; 15</p>
+</blockquote>
+<p>We can see that the memory address is being printed for AverageCustomers. Also, <strong>AverageCustomers</strong> value is getting updated even when we are passing a copy, This is because the address remains the same even if a copy is passed.</p>
+<p>We are also trying to update the phone but it&#8217;s not working because the address is not in the picture. so it&#8217;s not updating the original value.</p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-a895f1f elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="a895f1f" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-cbceb42" data-id="cbceb42" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-5d6bbe7 elementor-widget elementor-widget-heading" data-id="5d6bbe7" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">JSON and Structs</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-6b2b4ff elementor-widget elementor-widget-text-editor" data-id="6b2b4ff" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>So now we know how structs work. Let&#8217;s see how JSON and other libraries work with <a href="https://golang.org/ref/spec#Struct_types">struct tags</a>.</p>
+<p>Let&#8217;s modify our struct,</p>
+<blockquote>
+<p>type shop struct {<br>    Name             string `json:&#8221;shopName&#8221;`<br>    Address          string `json:&#8221;shopAddr&#8221;`<br>    Typ                 string `json:&#8221;type&#8221;`<br>    Phone            int    `json:&#8221;-&#8220;`<br>    AverageCustomers *int   `json:&#8221;avgCust&#8221;`<br>}</p>
+</blockquote>
+<p>We have added some JSON tags in this struct. Now JSON package can read these and can use it when encoding or decoding json.</p>
+<p>Adding some more code below,</p>
+<blockquote>
+<p>var js []byte<br>js, _ = json.Marshal(shop1)<br>fmt.Printf(&#8220;Json Marshal Shop1 : %s\n&#8221;, js)</p>
+<p>js, _ = json.Marshal(shop2)<br>fmt.Printf(&#8220;Json Marshal Shop2 : %s\n&#8221;, js)</p>
+<p>js, _ = json.Marshal(shop3)<br>fmt.Printf(&#8220;Json Marshal Shop3 : %s\n&#8221;, js)</p>
+</blockquote>
+<p>And our output is,</p>
+<blockquote>
+<p>Json Marshal Shop1 : {&#8220;shopName&#8221;:&#8221;Shop1&#8243;,&#8221;shopAddr&#8221;:&#8221;Canada&#8221;,&#8221;type&#8221;:&#8221;Grocery&#8221;,&#8221;avgCust&#8221;:5}<br>Json Marshal Shop2 : {&#8220;shopName&#8221;:&#8221;Shop2&#8243;,&#8221;shopAddr&#8221;:&#8221;US&#8221;,&#8221;type&#8221;:&#8221;Pharmacy&#8221;,&#8221;avgCust&#8221;:10}<br>Json Marshal Shop3 : {&#8220;shopName&#8221;:&#8221;Shop3&#8243;,&#8221;shopAddr&#8221;:&#8221;Japan&#8221;,&#8221;type&#8221;:&#8221;Restaurant&#8221;,&#8221;avgCust&#8221;:15}</p>
+</blockquote>
+<p>The point to note is that even though shop3 is a pointer JSON marshall still works as expected.</p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-d95d252 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="d95d252" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-030d51a" data-id="030d51a" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-dfc11c0 elementor-widget elementor-widget-heading" data-id="dfc11c0" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Empty structs</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-a9ae9ce elementor-widget elementor-widget-text-editor" data-id="a9ae9ce" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>So what are empty structs? They are like normal structs only but do not have any fields attached to them. ok so why would we use these? Well because they consume zero space to exist.</p>
+<p>To understand better, let&#8217;s make some slices of length 50 million.</p>
+<blockquote>
+<p>_ = make([]int, size)</p>
+<p>_ = make([]float64, size)</p>
+<p>_ = make([]complex128, size)</p>
+<p>_ = make([]bool, size)</p>
+<p>_ = make([]byte, size)</p>
+<p>_ = make([]struct{}, size)</p>
+</blockquote>
+<p>Now we check the allocation each of these do so we create a function that will print allocations and execute the GC. We call this function after every make line.</p>
+<blockquote>
+<p>func printMemUsage(v string) {</p>
+<p>    defer runtime.GC()</p>
+<p>    var m runtime.MemStats<br>    runtime.ReadMemStats(&amp;m)</p>
+<p>    fmt.Print(v + fmt.Sprintf(&#8221; &#8211; Memory Allocated : %v MB\n&#8221;, m.Alloc/1024/1024))</p>
+<p>}</p>
+</blockquote>
+<p>We also need to stop the GC to run automatically so we use this line &#8211; <strong>debug.SetGCPercent(-1)</strong></p>
+<p>So our main function looks like this,</p>
+<blockquote>
+<p>func main() {</p>
+<p>    debug.SetGCPercent(-1)</p>
+<p>    _ = make([]int, size)<br>    printMemUsage(&#8220;Using Int&#8221;)</p>
+<p>    _ = make([]float64, size)<br>    printMemUsage(&#8220;Using Float&#8221;)</p>
+<p>    _ = make([]complex128, size)<br>    printMemUsage(&#8220;Using Complex&#8221;)</p>
+<p>    _ = make([]bool, size)<br>    printMemUsage(&#8220;Using Bool&#8221;)</p>
+<p>    _ = make([]byte, size)<br>    printMemUsage(&#8220;Using Byte&#8221;)</p>
+<p>    _ = make([]struct{}, size)<br>    printMemUsage(&#8220;Using Empty Structs&#8221;)<br>}</p>
+</blockquote>
+<p>If we run our code we get the below output,</p>
+<blockquote>
+<p>akshay@AKSHAY-PC:~/learning-go/structs$ go run empty_struct.go <br>Using Int &#8211; Memory Allocated : 381 MB<br>Using Float &#8211; Memory Allocated : 381 MB<br>Using Complex &#8211; Memory Allocated : 763 MB<br>Using Bool &#8211; Memory Allocated : 47 MB<br>Using Byte &#8211; Memory Allocated : 47 MB<br><span style="color: #ff0000;">Using Empty Structs &#8211; Memory Allocated : 0 MB</span></p>
+</blockquote>
+<p>If we see the allocations, empty structs have 0MB allocated. Now let&#8217;s say we want to create a set. we can use a map for creating it but the value in a set is useless so we can use <code>map[int]struct{}</code>so if our map has millions of elements then our memory used will only be for the int keys.</p>
+<p>Since these behave the same as a normal struct we can also attach methods to these structs.</p>
+<p> More on <a href="https://dave.cheney.net/2014/03/25/the-empty-struct">this</a></p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-8098215 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="8098215" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-1da9b2c" data-id="1da9b2c" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-c21c54b elementor-widget elementor-widget-heading" data-id="c21c54b" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Conclusion</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-3e37d3e elementor-widget elementor-widget-text-editor" data-id="3e37d3e" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>So to conclude, We have 2 types of structs, a normal struct, and an empty struct. normal structs use some memory while empty structs do not. Methods can be attached to both of them.</p>
+<p>Any type of field can be used inside when creating structs.</p>
+<p>Code is also available on <a href="https://github.com/akshaykhairmode/learning-go/tree/main/structs">Github</a>.</p>
+<p>Also, feel free to check our <a href="/understanding-slices-in-golang-with-examples/">slices</a> explained post.</p>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				</div>
+		<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-official sd-sharing">
+<h3 class="sd-title">Share this:</h3>
+<div class="sd-content"><ul>
+<li class="share-facebook"><div class="fb-share-button" data-href="/all-about-structs-in-golang/" data-layout="button_count"></div></li>
+<li class="share-x"><a href="https://x.com/share" class="twitter-share-button" data-url="/all-about-structs-in-golang/" data-text="All about structs in Golang" data-via="AbilityRush">Post</a></li>
+<li class="share-end">
+</ul></div>
+</div></div>
+</div>
+<!-- .entry -->
+
+
+<div class="post-tags clr">
+	<span class="owp-tag-text">Tags: </span><a href="/tag/empty-struct/" rel="tag">empty struct</a><span class="owp-sep">,</span> <a href="/tag/go/" rel="tag">go</a><span class="owp-sep">,</span> <a href="/tag/golang/" rel="tag">golang</a><span class="owp-sep">,</span> <a href="/tag/json/" rel="tag">json</a><span class="owp-sep">,</span> <a href="/tag/struct/" rel="tag">struct</a>
+</div>
+
+
+
+	<nav class="navigation post-navigation" aria-label="Read more articles">
+		<h2 class="screen-reader-text">Read more articles</h2>
+		<div class="nav-links">
+<div class="nav-previous"><a href="/how-to-embed-any-file-in-golang-binary/" rel="prev"><span class="title"><i class=" fas fa-long-arrow-alt-left" aria-hidden="true" role="img"></i> Previous Post</span><span class="post-title">How to embed any file in Golang binary</span></a></div>
+<div class="nav-next"><a href="/creating-a-simple-http-server-in-golang/" rel="next"><span class="title"><i class=" fas fa-long-arrow-alt-right" aria-hidden="true" role="img"></i> Next Post</span><span class="post-title">Creating a Simple HTTP server in Golang</span></a></div>
+</div>
+	</nav>
+
+	<section id="related-posts" class="clr">
+
+		<h3 class="theme-heading related-posts-title">
+			<span class="text">You Might Also Like</span>
+		</h3>
+
+		<div class="oceanwp-row clr">
+
+			
+			
+				
+				<article class="related-post clr col span_1_of_3 col-1 post-523 post type-post status-publish format-standard hentry category-golang category-technology tag-go tag-golang tag-http tag-net-http entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/creating-a-simple-http-server-in-golang/" rel="bookmark">Creating a Simple HTTP server in Golang</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2021-10-23T19:07:39+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>October 23, 2021</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+				
+				<article class="related-post clr col span_1_of_3 col-2 post-1073 post type-post status-publish format-standard hentry category-golang category-technology tag-go tag-golang tag-proxy entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/how-to-create-a-proxy-in-golang/" rel="bookmark">How to create a proxy in Golang</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2022-04-02T01:03:48+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>April 2, 2022</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+				
+				<article class="related-post clr col span_1_of_3 col-3 post-1313 post type-post status-publish format-standard hentry category-golang category-technology tag-aws tag-dynamodb tag-go tag-golang entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/how-to-use-dynamo-db-with-golang/" rel="bookmark">How to use Dynamo DB with Golang</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2022-10-05T00:08:33+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>October 5, 2022</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+		</div>
+<!-- .oceanwp-row -->
+
+	</section><!-- .related-posts -->
+
+
+
+
+<section id="comments" class="comments-area clr has-comments">
+
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/all-about-structs-in-golang/#respond" style="display:none;">Cancel reply</a></small>
+</h3>
+<form action="/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+<div class="comment-textarea">
+<label for="comment" class="screen-reader-text">Comment</label><textarea name="comment" id="comment" cols="39" rows="4" tabindex="0" class="textarea-comment" placeholder="Your comment here..."></textarea>
+</div>
+<div class="comment-form-author">
+<label for="author" class="screen-reader-text">Enter your name or username to comment</label><input type="text" name="author" id="author" value="" placeholder="Name (required)" size="22" tabindex="0" aria-required="true" class="input-name">
+</div>
+<div class="comment-form-email">
+<label for="email" class="screen-reader-text">Enter your email address to comment</label><input type="text" name="email" id="email" value="" placeholder="Email (required)" size="22" tabindex="0" aria-required="true" class="input-email">
+</div>
+<div class="comment-form-url">
+<label for="url" class="screen-reader-text">Enter your website URL (optional)</label><input type="text" name="url" id="url" value="" placeholder="Website" size="22" tabindex="0" class="input-website">
+</div>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="383" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="89f03f98d1"></p>
+<p style="display: none !important;" class="akismet-fields-container" data-prefix="ak_"><label>&#916;<textarea name="ak_hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label><input type="hidden" id="ak_js_1" name="ak_js" value="57"></p>
+</form>	</div>
+<!-- #respond -->
+	
+</section><!-- #comments -->
+
+</article>
+
+				
+			</div>
+<!-- #content -->
+
+			
+		</div>
+<!-- #primary -->
+
+		
+
+<aside id="right-sidebar" class="sidebar-container widget-area sidebar-primary" itemscope="itemscope" itemtype="https://schema.org/WPSideBar" role="complementary" aria-label="Primary Sidebar">
+
+	
+	<div id="right-sidebar-inner" class="clr">
+
+		
+		<div id="recent-posts-2" class="sidebar-box widget_recent_entries clr">
+		<h4 class="widget-title">Recent Posts</h4>
+		<ul>
+											<li>
+					<a href="/how-to-accept-input-from-terminal-in-golang/">How to Accept Input from Terminal in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-update-variables-compile-time-in-go/">How to Update Variables Compile Time in Go</a>
+									</li>
+											<li>
+					<a href="/how-to-use-unbuffered-channels-in-golang/">How to use Unbuffered channels in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-use-buffered-channel-in-golang/">How to use Buffered Channel in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-receive-file-uploads-in-the-golang-http-server/">How to receive file uploads in the Golang HTTP server</a>
+									</li>
+					</ul>
+
+		</div>
+<div id="recent-comments-2" class="sidebar-box widget_recent_comments clr">
+<h4 class="widget-title">Recent Comments</h4>
+<ul id="recentcomments">
+<li class="recentcomments">
+<span class="comment-author-link"><a href="/" class="url" rel="ugc">Akshay Khairmode</a></span> on <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1931">Uploading File to AWS S3 in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link">Nihat</span> on <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1856">Uploading File to AWS S3 in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://livrooshomensmentem.com.br/" class="url" rel="ugc external nofollow">homens mentem</a></span> on <a href="/working-with-aws-simple-queue-service-sqs-in-golang/comment-page-1/#comment-43">Working with AWS SQS in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://comfort.kr.ua/kuhni-krivoj-rog/" class="url" rel="ugc external nofollow">Сергей</a></span> on <a href="/writing-mocks-in-golang-with-mockery/comment-page-1/#comment-24">Writing Mocks in Golang with mockery</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://github.com/chakal1337" class="url" rel="ugc external nofollow">JadSaint</a></span> on <a href="/download-file-concurrently-in-golang-part-2/comment-page-1/#comment-14">Download file concurrently in Golang-Part 2(Memory)</a>
+</li>
+</ul>
+</div>
+<div id="archives-2" class="sidebar-box widget_archive clr">
+<h4 class="widget-title">Archives</h4>
+			<ul>
+					<li><a href="/2023/05/">May 2023</a></li>
+	<li><a href="/2023/03/">March 2023</a></li>
+	<li><a href="/2023/02/">February 2023</a></li>
+	<li><a href="/2023/01/">January 2023</a></li>
+	<li><a href="/2022/12/">December 2022</a></li>
+	<li><a href="/2022/10/">October 2022</a></li>
+	<li><a href="/2022/09/">September 2022</a></li>
+	<li><a href="/2022/06/">June 2022</a></li>
+	<li><a href="/2022/05/">May 2022</a></li>
+	<li><a href="/2022/04/">April 2022</a></li>
+	<li><a href="/2022/03/">March 2022</a></li>
+	<li><a href="/2022/02/">February 2022</a></li>
+	<li><a href="/2022/01/">January 2022</a></li>
+	<li><a href="/2021/11/">November 2021</a></li>
+	<li><a href="/2021/10/">October 2021</a></li>
+	<li><a href="/2021/09/">September 2021</a></li>
+			</ul>
+
+			</div>
+<div id="categories-2" class="sidebar-box widget_categories clr">
+<h4 class="widget-title">Categories</h4>
+			<ul>
+					<li class="cat-item cat-item-3">
+<a href="/category/technology/golang/">Golang</a>
+</li>
+	<li class="cat-item cat-item-2">
+<a href="/category/technology/">Technology</a>
+</li>
+			</ul>
+
+			</div>
+<div id="block-13" class="sidebar-box widget_block clr">
+<div class="wp-block-buttons alignfull is-content-justification-center omw-open-modal is-layout-flex wp-block-buttons-is-layout-flex">
+<div class="wp-block-button has-custom-width wp-block-button__width-100 is-style-outline"><a class="wp-block-button__link has-vivid-cyan-blue-color has-text-color" href="#omw-514">Notify Me</a></div>
+</div>
+</div>
+	</div>
+<!-- #sidebar-inner -->
+
+	
+</aside><!-- #right-sidebar -->
+
+
+	</div>
+<!-- #content-wrap -->
+
+	
+
+	</main><!-- #main -->
+
+	
+	
+	
+		
+<footer id="footer" class="site-footer" itemscope="itemscope" itemtype="https://schema.org/WPFooter" role="contentinfo">
+
+	
+	<div id="footer-inner" class="clr">
+
+		
+
+<div id="footer-widgets" class="oceanwp-row clr">
+
+	
+	<div class="footer-widgets-inner container">
+
+					<div class="footer-box span_1_of_4 col col-1">
+							</div>
+<!-- .footer-one-box -->
+
+							<div class="footer-box span_1_of_4 col col-2">
+									</div>
+<!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-3 ">
+									</div>
+<!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-4">
+									</div>
+<!-- .footer-box -->
+				
+			
+	</div>
+<!-- .container -->
+
+	
+</div>
+<!-- #footer-widgets -->
+
+
+
+<div id="footer-bottom" class="clr no-footer-nav">
+
+	
+	<div id="footer-bottom-inner" class="container clr">
+
+		
+		
+			<div id="copyright" class="clr" role="contentinfo">
+				Copyright - OceanWP Theme by OceanWP			</div>
+<!-- #copyright -->
+
+			
+	</div>
+<!-- #footer-bottom-inner -->
+
+	
+</div>
+<!-- #footer-bottom -->
+
+
+	</div>
+<!-- #footer-inner -->
+
+	
+</footer><!-- #footer -->
+
+	
+	
+</div>
+<!-- #wrap -->
+
+
+</div>
+<!-- #outer-wrap -->
+
+
+
+<a aria-label="Scroll to the top of the page" href="#" id="scroll-top" class="scroll-top-right"><i class=" fa fa-angle-double-up" aria-hidden="true" role="img"></i></a>
+
+
+
+
+
+				<div id="omw-514" class="omw-modal">
+
+											<a href="/#mwc-514" class="omw-close-modal" aria-label="Close this modal window ID 514"></a>
+					
+					<div class="omw-modal-inner clr">
+						<p><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSehnVQsuv4by0SLBubMNAldpPAmQRjoFZ4k8kvM2AJ06H93VA/viewform?embedded=true" width="640" height="700" frameborder="0" marginwidth="0" marginheight="0"><span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span><span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span>Loadi<span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span>ng…</iframe></p>
+					</div>
+				</div>
+
+							<div class="omw-modal-overlay"></div>
+
+						<div id="fb-root"></div>
+			
+			
+						
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.5.4"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"🏳️‍⚧️","🏳️​⚧️")?!1:!n(e,"🇺🇳","🇺​🇳")&&!n(e,"🏴󠁧󠁢󠁥󠁮󠁧󠁿","🏴​󠁧​󠁢​󠁥​󠁮​󠁧​󠁿");case"emoji":return!n(e,"🐦‍⬛","🐦​⬛")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+</script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/jquery-migrate.min.js" id="jquery-migrate-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/wp-polyfill-inert.min.js" id="wp-polyfill-inert-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/regenerator-runtime.min.js" id="regenerator-runtime-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/wp-polyfill.min.js" id="wp-polyfill-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/dom-ready.min.js" id="wp-dom-ready-js"></script><script src="/wp-content/plugins/auto-terms-of-service-and-privacy-policy/js/base.js?ver=2.5.1" id="wpautoterms_base-js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-DXSQBK2RY1" id="google_gtagjs-js" async></script><script id="google_gtagjs-js-after">window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag("set","linker",{"domains":["localhost"]});
+gtag("js", new Date());
+gtag("set", "developer_id.dZTNiMT", true);
+gtag("config", "G-DXSQBK2RY1");</script><script>( function() {
+				window.onpageshow = function( event ) {
+					// Defined window.wpforms means that a form exists on a page.
+					// If so and back/forward button has been clicked,
+					// force reload a page to prevent the submit button state stuck.
+					if ( typeof window.wpforms !== 'undefined' && event.persisted ) {
+						window.location.reload();
+					}
+				};
+			}() );</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4736925107936916" crossorigin="anonymous"></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4736925107936916&amp;host=ca-host-pub-2644536267352236" crossorigin="anonymous"></script><script>document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );</script><script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&appId=249643311490&version=v2.3'; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script><script>document.body.addEventListener( 'is.post-load', function() {
+				if ( 'undefined' !== typeof FB ) {
+					FB.XFBML.parse();
+				}
+			} );</script><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script><script id="starter-templates-zip-preview-js-extra">var starter_templates_zip_preview = {"AstColorPaletteVarPrefix":"--ast-global-","AstEleColorPaletteVarPrefix":"--ast-global-"};</script><script src="/wp-content/plugins/astra-sites/inc/lib/onboarding/assets/dist/template-preview/main.js?ver=06758d4d807d9d22c6ea" id="starter-templates-zip-preview-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/comment-reply.min.js" id="comment-reply-js" async data-wp-strategy="async"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/imagesloaded.min.js" id="imagesloaded-js"></script><script id="oceanwp-main-js-extra">var oceanwpLocalize = {"nonce":"2984539bf0","isRTL":"","menuSearchStyle":"drop_down","mobileMenuSearchStyle":"disabled","sidrSource":null,"sidrDisplace":"1","sidrSide":"left","sidrDropdownTarget":"link","verticalHeaderTarget":"link","customScrollOffset":"0","customSelects":".woocommerce-ordering .orderby, #dropdown_product_cat, .widget_categories select, .widget_archive select, .single-product .variations_form .variations select","ajax_url":"\/wp-admin\/admin-ajax.php","oe_mc_wpnonce":"0f85b48aaa"};</script><script src="/wp-content/themes/oceanwp/assets/js/theme.min.js?ver=1.0" id="oceanwp-main-js"></script><script src="/wp-content/themes/oceanwp/assets/js/drop-down-mobile-menu.min.js?ver=1.0" id="oceanwp-drop-down-mobile-menu-js"></script><script src="/wp-content/themes/oceanwp/assets/js/drop-down-search.min.js?ver=1.0" id="oceanwp-drop-down-search-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/magnific-popup.min.js?ver=1.0" id="ow-magnific-popup-js"></script><script src="/wp-content/themes/oceanwp/assets/js/ow-lightbox.min.js?ver=1.0" id="oceanwp-lightbox-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/flickity.pkgd.min.js?ver=1.0" id="ow-flickity-js"></script><script src="/wp-content/themes/oceanwp/assets/js/ow-slider.min.js?ver=1.0" id="oceanwp-slider-js"></script><script src="/wp-content/themes/oceanwp/assets/js/scroll-effect.min.js?ver=1.0" id="oceanwp-scroll-effect-js"></script><script src="/wp-content/themes/oceanwp/assets/js/scroll-top.min.js?ver=1.0" id="oceanwp-scroll-top-js"></script><script src="/wp-content/themes/oceanwp/assets/js/select.min.js?ver=1.0" id="oceanwp-select-js"></script><script id="flickr-widget-script-js-extra">var flickrWidgetParams = {"widgets":[]};</script><script src="/wp-content/plugins/ocean-extra/includes/widgets/js/flickr.min.js?ver=6.5.4" id="flickr-widget-script-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/perfect-scrollbar.min.js?ver=1.0" id="ow-perfect-scrollbar-js"></script><script src="/wp-content/plugins/ocean-modal-window/assets/js/modal-window.min.js?ver=2.2.2" id="omw-js-scripts-js"></script><script defer src="/wp-content/plugins/akismet/_inc/akismet-frontend.js?ver=1711132304" id="akismet-frontend-js"></script><script src="/wp-content/plugins/elementor/assets/js/webpack.runtime.min.js?ver=3.21.8" id="elementor-webpack-runtime-js"></script><script src="/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=3.21.8" id="elementor-frontend-modules-js"></script><script src="/wp-content/plugins/elementor/assets/lib/waypoints/waypoints.min.js?ver=4.0.2" id="elementor-waypoints-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/ui/core.min.js" id="jquery-ui-core-js"></script><script id="elementor-frontend-js-before">var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Share on Facebook","shareOnTwitter":"Share on Twitter","pinIt":"Pin it","download":"Download","downloadImage":"Download image","fullscreen":"Fullscreen","zoom":"Zoom","share":"Share","playVideo":"Play Video","previous":"Previous","next":"Next","close":"Close","a11yCarouselWrapperAriaLabel":"Carousel | Horizontal scrolling: Arrow Left & Right","a11yCarouselPrevSlideMessage":"Previous slide","a11yCarouselNextSlideMessage":"Next slide","a11yCarouselFirstSlideMessage":"This is the first slide","a11yCarouselLastSlideMessage":"This is the last slide","a11yCarouselPaginationBulletMessage":"Go to slide"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Mobile Portrait","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobile Landscape","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet Portrait","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet Landscape","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Laptop","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Widescreen","value":2400,"default_value":2400,"direction":"min","is_enabled":false}}},"version":"3.21.8","is_static":false,"experimentalFeatures":{"e_optimized_assets_loading":true,"e_optimized_css_loading":true,"additional_custom_breakpoints":true,"container":true,"e_swiper_latest":true,"container_grid":true,"home_screen":true,"ai-layout":true,"landing-pages":true},"urls":{"assets":"\/wp-content\/plugins\/elementor\/assets\/"},"swiperClass":"swiper","settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description"},"post":{"id":383,"title":"All%20about%20structs%20in%20Golang%20%E2%80%93%20Ability%20Rush","excerpt":"We learn one of the basic data type in Go. We will learn defining structs, using them, how pointers work with them and empty structs.","featuredImage":false}};</script><script src="/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.21.8" id="elementor-frontend-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/underscore.min.js" id="underscore-js"></script><script id="wp-util-js-extra">var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};</script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/wp-util.min.js" id="wp-util-js"></script><script id="wpforms-elementor-js-extra">var wpformsElementorVars = {"captcha_provider":"recaptcha","recaptcha_type":"v2"};</script><script src="/wp-content/plugins/wpforms-lite/assets/js/integrations/elementor/frontend.min.js?ver=1.8.8.3" id="wpforms-elementor-js"></script><script id="sharing-js-js-extra">var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};</script><script src="https://c0.wp.com/p/jetpack/13.5/_inc/build/sharedaddy/sharing.min.js" id="sharing-js-js"></script><script id="sharing-js-js-after">var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-facebook' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-facebook' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+						return false;
+					}
+				} );
+			} )();</script>
+</body>
+</html>

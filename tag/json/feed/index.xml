@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	>
+
+<channel>
+	<title>json – Ability Rush</title>
+	<atom:link href="/tag/json/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>Learn &#38; Improve</description>
+	<lastBuildDate>Thu, 05 Jan 2023 19:18:04 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.5.4</generator>
+
+<image>
+	<url>/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-32x32.png</url>
+	<title>json – Ability Rush</title>
+	<link>/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>j2csv &#8211; How to ignore comments while converting JSON to CSV?</title>
+		<link>/j2csv-how-to-ignore-comments-while-converting-json-to-csv/</link>
+					<comments>/j2csv-how-to-ignore-comments-while-converting-json-to-csv/#respond</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Thu, 29 Dec 2022 21:43:18 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[csv]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[golang]]></category>
+		<category><![CDATA[json]]></category>
+		<guid isPermaLink="false">/?p=1511</guid>
+
+					<description><![CDATA[<p>j2csv - Part 2 -We will create a custom reader that satisfies io.Reader interface that will strip the single and multi line comments and pass it to json decoder</p>
+<p>The post <a href="/j2csv-how-to-ignore-comments-while-converting-json-to-csv/">j2csv – How to ignore comments while converting JSON to CSV?</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/j2csv-how-to-ignore-comments-while-converting-json-to-csv/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">1511</post-id>	</item>
+		<item>
+		<title>j2csv &#8211; How to convert JSON to CSV in Golang</title>
+		<link>/j2csv-how-to-convert-json-to-csv-in-golang/</link>
+					<comments>/j2csv-how-to-convert-json-to-csv-in-golang/#respond</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Thu, 29 Dec 2022 14:57:39 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[csv]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[golang]]></category>
+		<category><![CDATA[json]]></category>
+		<guid isPermaLink="false">/?p=1512</guid>
+
+					<description><![CDATA[<p>In this post, We are going to create a tool which will take input json file and convert it to csv. It will also convert the timestamps as required.</p>
+<p>The post <a href="/j2csv-how-to-convert-json-to-csv-in-golang/">j2csv – How to convert JSON to CSV in Golang</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/j2csv-how-to-convert-json-to-csv-in-golang/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">1512</post-id>	</item>
+		<item>
+		<title>All about structs in Golang</title>
+		<link>/all-about-structs-in-golang/</link>
+					<comments>/all-about-structs-in-golang/#respond</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Mon, 18 Oct 2021 14:25:49 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[empty struct]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[golang]]></category>
+		<category><![CDATA[json]]></category>
+		<category><![CDATA[struct]]></category>
+		<guid isPermaLink="false">/?p=383</guid>
+
+					<description><![CDATA[<p>We learn one of the basic data type in Go. We will learn defining structs, using them, how pointers work with them and empty structs.</p>
+<p>The post <a href="/all-about-structs-in-golang/">All about structs in Golang</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/all-about-structs-in-golang/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">383</post-id>	</item>
+	</channel>
+</rss>

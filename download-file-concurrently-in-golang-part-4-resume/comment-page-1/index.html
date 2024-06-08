@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html class="html" dir="ltr" lang="en-US" prefix="og: https://ogp.me/ns#">
+<head>
+	<meta charset="UTF-8">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+
+	<title>Download file concurrently in Golang – Part 4(Resume)</title>
+
+		<!-- All in One SEO 4.6.4 - aioseo.com -->
+		<meta name="description" content="In this post, We will store the file metadata, read it the next time, and using that data we will resume our download along with verbose logging.">
+		<meta name="robots" content="noindex, nofollow, max-image-preview:large">
+		<link rel="canonical" href="/download-file-concurrently-in-golang-part-4-resume/">
+		<meta name="generator" content="All in One SEO (AIOSEO) 4.6.4">
+		<meta property="og:locale" content="en_US">
+		<meta property="og:site_name" content="Ability Rush – Learn &amp; Improve">
+		<meta property="og:type" content="article">
+		<meta property="og:title" content="Download file concurrently in Golang – Part 4(Resume)">
+		<meta property="og:description" content="In this post, We will store the file metadata, read it the next time, and using that data we will resume our download along with verbose logging.">
+		<meta property="og:url" content="/download-file-concurrently-in-golang-part-4-resume/">
+		<meta property="article:published_time" content="2021-09-26T12:51:02+00:00">
+		<meta property="article:modified_time" content="2022-12-20T18:27:23+00:00">
+		<meta name="twitter:card" content="summary">
+		<meta name="twitter:title" content="Download file concurrently in Golang – Part 4(Resume)">
+		<meta name="twitter:description" content="In this post, We will store the file metadata, read it the next time, and using that data we will resume our download along with verbose logging.">
+		<script data-jetpack-boost="ignore" type="application/ld+json" class="aioseo-schema">{"@context":"https:\/\/schema.org","@graph":[{"@type":"BlogPosting","@id":"\/download-file-concurrently-in-golang-part-4-resume\/#blogposting","name":"Download file concurrently in Golang – Part 4(Resume)","headline":"Download file concurrently in Golang – Part 4(Resume)","author":{"@id":"\/author\/akshaykhairmode\/#author"},"publisher":{"@id":"\/#organization"},"image":{"@type":"ImageObject","url":"\/wp-content\/uploads\/2021\/09\/summon_resume.gif","@id":"\/download-file-concurrently-in-golang-part-4-resume\/#articleImage","width":1133,"height":966},"datePublished":"2021-09-26T18:21:02+05:30","dateModified":"2022-12-20T23:57:23+05:30","inLanguage":"en-US","commentCount":3,"mainEntityOfPage":{"@id":"\/download-file-concurrently-in-golang-part-4-resume\/#webpage"},"isPartOf":{"@id":"\/download-file-concurrently-in-golang-part-4-resume\/#webpage"},"articleSection":"Golang, Technology, concurrency, download file, go, resume"},{"@type":"BreadcrumbList","@id":"\/download-file-concurrently-in-golang-part-4-resume\/#breadcrumblist","itemListElement":[{"@type":"ListItem","@id":"\/#listItem","position":1,"name":"Home","item":"\/","nextItem":"\/download-file-concurrently-in-golang-part-4-resume\/#listItem"},{"@type":"ListItem","@id":"\/download-file-concurrently-in-golang-part-4-resume\/#listItem","position":2,"name":"Download file concurrently in Golang - Part 4(Resume)","previousItem":"\/#listItem"}]},{"@type":"Organization","@id":"\/#organization","name":"Ability Rush","description":"Learn & Improve","url":"\/","logo":{"@type":"ImageObject","url":"\/wp-content\/uploads\/2021\/10\/cropped-android-chrome-512x512-1.png","@id":"\/download-file-concurrently-in-golang-part-4-resume\/#organizationLogo","width":512,"height":512},"image":{"@id":"\/download-file-concurrently-in-golang-part-4-resume\/#organizationLogo"}},{"@type":"Person","@id":"\/author\/akshaykhairmode\/#author","url":"\/author\/akshaykhairmode\/","name":"Akshay Khairmode","image":{"@type":"ImageObject","@id":"\/download-file-concurrently-in-golang-part-4-resume\/#authorImage","url":"http:\/\/2.gravatar.com\/avatar\/20ffb1dd4c5b351c3a2a7cb6a7f2e342?s=96&d=wavatar&r=g","width":96,"height":96,"caption":"Akshay Khairmode"}},{"@type":"WebPage","@id":"\/download-file-concurrently-in-golang-part-4-resume\/#webpage","url":"\/download-file-concurrently-in-golang-part-4-resume\/","name":"Download file concurrently in Golang – Part 4(Resume)","description":"In this post, We will store the file metadata, read it the next time, and using that data we will resume our download along with verbose logging.","inLanguage":"en-US","isPartOf":{"@id":"\/#website"},"breadcrumb":{"@id":"\/download-file-concurrently-in-golang-part-4-resume\/#breadcrumblist"},"author":{"@id":"\/author\/akshaykhairmode\/#author"},"creator":{"@id":"\/author\/akshaykhairmode\/#author"},"datePublished":"2021-09-26T18:21:02+05:30","dateModified":"2022-12-20T23:57:23+05:30"},{"@type":"WebSite","@id":"\/#website","url":"\/","name":"Ability Rush","description":"Learn & Improve","inLanguage":"en-US","publisher":{"@id":"\/#organization"}}]}</script>
+		<!-- All in One SEO -->
+
+<link rel="pingback" href="/xmlrpc.php">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="dns-prefetch" href="//www.googletagmanager.com">
+<link rel="dns-prefetch" href="//c0.wp.com">
+<link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+<link rel="dns-prefetch" href="//fundingchoicesmessages.google.com">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Feed" href="/feed/">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Comments Feed" href="/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Ability Rush &raquo; Download file concurrently in Golang &#8211; Part 4(Resume) Comments Feed" href="/download-file-concurrently-in-golang-part-4-resume/feed/">
+
+<style type="text/css" media="all">.wpautoterms-footer{background-color:#ffffff;text-align:center;}
+.wpautoterms-footer a{color:#000000;font-family:Arial, sans-serif;font-size:14px;}
+.wpautoterms-footer .separator{color:#cccccc;font-family:Arial, sans-serif;font-size:14px;}</style>
+<style id="wp-emoji-styles-inline-css">img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}</style>
+<link rel="stylesheet" id="mediaelement-css" href="https://c0.wp.com/c/6.5.4/wp-includes/js/mediaelement/mediaelementplayer-legacy.min.css" media="all">
+<link rel="stylesheet" id="wp-mediaelement-css" href="https://c0.wp.com/c/6.5.4/wp-includes/js/mediaelement/wp-mediaelement.min.css" media="all">
+<style id="jetpack-sharing-buttons-style-inline-css">.jetpack-sharing-buttons__services-list{display:flex;flex-direction:row;flex-wrap:wrap;gap:0;list-style-type:none;margin:5px;padding:0}.jetpack-sharing-buttons__services-list.has-small-icon-size{font-size:12px}.jetpack-sharing-buttons__services-list.has-normal-icon-size{font-size:16px}.jetpack-sharing-buttons__services-list.has-large-icon-size{font-size:24px}.jetpack-sharing-buttons__services-list.has-huge-icon-size{font-size:36px}@media print{.jetpack-sharing-buttons__services-list{display:none!important}}.editor-styles-wrapper .wp-block-jetpack-sharing-buttons{gap:0;padding-inline-start:0}ul.jetpack-sharing-buttons__services-list.has-background{padding:1.25em 2.375em}</style>
+<style id="classic-theme-styles-inline-css">/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}</style>
+<style id="global-styles-inline-css">body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}</style>
+<link rel="stylesheet" id="wpautoterms_css-css" href="/wp-content/plugins/auto-terms-of-service-and-privacy-policy/css/wpautoterms.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="mpl-publisher-css" href="/wp-content/plugins/mpl-publisher/assets/css/mpl-widget.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="oceanwp-style-css" href="/wp-content/themes/oceanwp/assets/css/style.min.css?ver=1.0" media="all">
+<link rel="stylesheet" id="child-style-css" href="/wp-content/themes/oceanwp-child-theme-master/style.css?ver=3.5.5" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="/wp-content/themes/oceanwp/assets/fonts/fontawesome/css/all.min.css?ver=6.4.2" media="all">
+<link rel="stylesheet" id="simple-line-icons-css" href="/wp-content/themes/oceanwp/assets/css/third/simple-line-icons.min.css?ver=2.4.0" media="all">
+<link rel="stylesheet" id="elementor-icons-css" href="/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.29.0" media="all">
+<link rel="stylesheet" id="elementor-frontend-css" href="/wp-content/plugins/elementor/assets/css/frontend-lite.min.css?ver=3.21.8" media="all">
+<link rel="stylesheet" id="swiper-css" href="/wp-content/plugins/elementor/assets/lib/swiper/v8/css/swiper.min.css?ver=8.4.5" media="all">
+<link rel="stylesheet" id="elementor-post-6-css" href="/wp-content/uploads/elementor/css/post-6.css?ver=1717861485" media="all">
+<link rel="stylesheet" id="elementor-global-css" href="/wp-content/uploads/elementor/css/global.css?ver=1717861485" media="all">
+<link rel="stylesheet" id="oe-widgets-style-css" href="/wp-content/plugins/ocean-extra/assets/css/widgets.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="ow-perfect-scrollbar-css" href="/wp-content/themes/oceanwp/assets/css/third/perfect-scrollbar.css?ver=1.5.0" media="all">
+<link rel="stylesheet" id="omw-styles-css" href="/wp-content/plugins/ocean-modal-window/assets/css/style.min.css?ver=6.5.4" media="all">
+<link rel="stylesheet" id="sharedaddy-css" href="https://c0.wp.com/p/jetpack/13.5/modules/sharedaddy/sharing.css" media="all">
+<link rel="stylesheet" id="social-logos-css" href="https://c0.wp.com/p/jetpack/13.5/_inc/social-logos/social-logos.min.css" media="all">
+<link rel="stylesheet" id="google-fonts-1-css" href="https://fonts.googleapis.com/css?family=Merriweather%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto+Slab%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic&#038;display=auto&#038;ver=6.5.4" media="all">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<script data-jetpack-boost="ignore" src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/jquery.min.js" id="jquery-core-js"></script>
+
+
+
+
+
+
+
+<!-- Google tag (gtag.js) snippet added by Site Kit -->
+
+<!-- Google Analytics snippet added by Site Kit -->
+
+
+
+<!-- End Google tag (gtag.js) snippet added by Site Kit -->
+<link rel="https://api.w.org/" href="/wp-json/">
+<link rel="alternate" type="application/json" href="/wp-json/wp/v2/posts/177">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="/xmlrpc.php?rsd">
+<meta name="generator" content="WordPress 6.5.4">
+<link rel="shortlink" href="/?p=177">
+<link rel="alternate" type="application/json+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2F%2Fdownload-file-concurrently-in-golang-part-4-resume%2F">
+<link rel="alternate" type="text/xml+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2F%2Fdownload-file-concurrently-in-golang-part-4-resume%2F#038;format=xml">
+<meta name="generator" content="Site Kit by Google 1.128.0">		
+		
+	
+
+<!-- Google AdSense meta tags added by Site Kit -->
+<meta name="google-adsense-platform-account" content="ca-host-pub-2644536267352236">
+<meta name="google-adsense-platform-domain" content="sitekit.withgoogle.com">
+<!-- End Google AdSense meta tags added by Site Kit -->
+<meta name="generator" content="Elementor 3.21.8; features: e_optimized_assets_loading, e_optimized_css_loading, additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-auto">
+<style>.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<!-- Google AdSense snippet added by Site Kit -->
+
+
+<!-- End Google AdSense snippet added by Site Kit -->
+<link rel="icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-32x32.png" sizes="32x32">
+<link rel="icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-180x180.png">
+<meta name="msapplication-TileImage" content="/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-270x270.png">
+<!-- OceanWP CSS -->
+<style type="text/css">/* General CSS */a:hover,a.light:hover,.theme-heading .text::before,.theme-heading .text::after,#top-bar-content >a:hover,#top-bar-social li.oceanwp-email a:hover,#site-navigation-wrap .dropdown-menu >li >a:hover,#site-header.medium-header #medium-searchform button:hover,.oceanwp-mobile-menu-icon a:hover,.blog-entry.post .blog-entry-header .entry-title a:hover,.blog-entry.post .blog-entry-readmore a:hover,.blog-entry.thumbnail-entry .blog-entry-category a,ul.meta li a:hover,.dropcap,.single nav.post-navigation .nav-links .title,body .related-post-title a:hover,body #wp-calendar caption,body .contact-info-widget.default i,body .contact-info-widget.big-icons i,body .custom-links-widget .oceanwp-custom-links li a:hover,body .custom-links-widget .oceanwp-custom-links li a:hover:before,body .posts-thumbnails-widget li a:hover,body .social-widget li.oceanwp-email a:hover,.comment-author .comment-meta .comment-reply-link,#respond #cancel-comment-reply-link:hover,#footer-widgets .footer-box a:hover,#footer-bottom a:hover,#footer-bottom #footer-bottom-menu a:hover,.sidr a:hover,.sidr-class-dropdown-toggle:hover,.sidr-class-menu-item-has-children.active >a,.sidr-class-menu-item-has-children.active >a >.sidr-class-dropdown-toggle,input[type=checkbox]:checked:before{color:#3370bf}.single nav.post-navigation .nav-links .title .owp-icon use,.blog-entry.post .blog-entry-readmore a:hover .owp-icon use,body .contact-info-widget.default .owp-icon use,body .contact-info-widget.big-icons .owp-icon use{stroke:#3370bf}input[type="button"],input[type="reset"],input[type="submit"],button[type="submit"],.button,#site-navigation-wrap .dropdown-menu >li.btn >a >span,.thumbnail:hover i,.post-quote-content,.omw-modal .omw-close-modal,body .contact-info-widget.big-icons li:hover i,body div.wpforms-container-full .wpforms-form input[type=submit],body div.wpforms-container-full .wpforms-form button[type=submit],body div.wpforms-container-full .wpforms-form .wpforms-page-button{background-color:#3370bf}.thumbnail:hover .link-post-svg-icon{background-color:#3370bf}body .contact-info-widget.big-icons li:hover .owp-icon{background-color:#3370bf}.widget-title{border-color:#3370bf}blockquote{border-color:#3370bf}#searchform-dropdown{border-color:#3370bf}.dropdown-menu .sub-menu{border-color:#3370bf}.blog-entry.large-entry .blog-entry-readmore a:hover{border-color:#3370bf}.oceanwp-newsletter-form-wrap input[type="email"]:focus{border-color:#3370bf}.social-widget li.oceanwp-email a:hover{border-color:#3370bf}#respond #cancel-comment-reply-link:hover{border-color:#3370bf}body .contact-info-widget.big-icons li:hover i{border-color:#3370bf}#footer-widgets .oceanwp-newsletter-form-wrap input[type="email"]:focus{border-color:#3370bf}blockquote,.wp-block-quote{border-left-color:#3370bf}body .contact-info-widget.big-icons li:hover .owp-icon{border-color:#3370bf}input[type="button"]:hover,input[type="reset"]:hover,input[type="submit"]:hover,button[type="submit"]:hover,input[type="button"]:focus,input[type="reset"]:focus,input[type="submit"]:focus,button[type="submit"]:focus,.button:hover,.button:focus,#site-navigation-wrap .dropdown-menu >li.btn >a:hover >span,.post-quote-author,.omw-modal .omw-close-modal:hover,body div.wpforms-container-full .wpforms-form input[type=submit]:hover,body div.wpforms-container-full .wpforms-form button[type=submit]:hover,body div.wpforms-container-full .wpforms-form .wpforms-page-button:hover{background-color:#81d742}a{color:#1e73be}a .owp-icon use{stroke:#1e73be}a:hover{color:#dd3333}a:hover .owp-icon use{stroke:#dd3333}#scroll-top{background-color:#1e73be}/* Header CSS */#site-header.has-header-media .overlay-header-media{background-color:rgba(0,0,0,0.5)}/* Typography CSS */body{color:#000000}</style>
+<style id="wpforms-css-vars-root">:root {
+					--wpforms-field-border-radius: 3px;
+--wpforms-field-border-style: solid;
+--wpforms-field-border-size: 1px;
+--wpforms-field-background-color: #ffffff;
+--wpforms-field-border-color: rgba( 0, 0, 0, 0.25 );
+--wpforms-field-border-color-spare: rgba( 0, 0, 0, 0.25 );
+--wpforms-field-text-color: rgba( 0, 0, 0, 0.7 );
+--wpforms-field-menu-color: #ffffff;
+--wpforms-label-color: rgba( 0, 0, 0, 0.85 );
+--wpforms-label-sublabel-color: rgba( 0, 0, 0, 0.55 );
+--wpforms-label-error-color: #d63637;
+--wpforms-button-border-radius: 3px;
+--wpforms-button-border-style: none;
+--wpforms-button-border-size: 1px;
+--wpforms-button-background-color: #066aab;
+--wpforms-button-border-color: #066aab;
+--wpforms-button-text-color: #ffffff;
+--wpforms-page-break-color: #066aab;
+--wpforms-background-image: none;
+--wpforms-background-position: center center;
+--wpforms-background-repeat: no-repeat;
+--wpforms-background-size: cover;
+--wpforms-background-width: 100px;
+--wpforms-background-height: 100px;
+--wpforms-background-color: rgba( 0, 0, 0, 0 );
+--wpforms-background-url: none;
+--wpforms-container-padding: 0px;
+--wpforms-container-border-style: none;
+--wpforms-container-border-width: 1px;
+--wpforms-container-border-color: #000000;
+--wpforms-container-border-radius: 3px;
+--wpforms-field-size-input-height: 43px;
+--wpforms-field-size-input-spacing: 15px;
+--wpforms-field-size-font-size: 16px;
+--wpforms-field-size-line-height: 19px;
+--wpforms-field-size-padding-h: 14px;
+--wpforms-field-size-checkbox-size: 16px;
+--wpforms-field-size-sublabel-spacing: 5px;
+--wpforms-field-size-icon-size: 1;
+--wpforms-label-size-font-size: 16px;
+--wpforms-label-size-line-height: 19px;
+--wpforms-label-size-sublabel-font-size: 14px;
+--wpforms-label-size-sublabel-line-height: 17px;
+--wpforms-button-size-font-size: 17px;
+--wpforms-button-size-height: 41px;
+--wpforms-button-size-padding-h: 15px;
+--wpforms-button-size-margin-top: 10px;
+--wpforms-container-shadow-size-box-shadow: none;
+
+				}</style>
+</head>
+
+<body class="post-template-default single single-post postid-177 single-format-standard wp-embed-responsive oceanwp-theme dropdown-mobile top-header-style default-breakpoint has-sidebar content-right-sidebar post-in-category-golang post-in-category-technology page-header-disabled has-breadcrumbs elementor-default elementor-kit-6 elementor-page elementor-page-177" itemscope="itemscope" itemtype="https://schema.org/Article">
+
+	
+	
+	<div id="outer-wrap" class="site clr">
+
+		<a class="skip-link screen-reader-text" href="#main">Skip to content</a>
+
+		
+		<div id="wrap" class="clr">
+
+			
+			
+<header id="site-header" class="top-header clr" data-height="74" itemscope="itemscope" itemtype="https://schema.org/WPHeader" role="banner">
+
+	
+		
+	<div class="header-bottom clr">
+		<div class="container">
+			
+
+<div id="site-logo" class="clr" itemscope itemtype="https://schema.org/Brand">
+
+	
+	<div id="site-logo-inner" class="clr">
+
+						<a href="/" rel="home" class="site-title site-logo-text">Ability Rush</a>
+				
+	</div>
+<!-- #site-logo-inner -->
+
+	
+				<div id="site-description"><h2>Learn &amp; Improve</h2></div>
+			
+</div>
+<!-- #site-logo -->
+
+		</div>
+	</div>
+	
+<div class="header-top clr">
+
+	
+	<div id="site-header-inner" class="clr container">
+
+		
+		<div class="left clr">
+
+			<div class="inner">
+
+				
+				
+			</div>
+
+		</div>
+
+		<div class="right clr">
+
+			<div class="inner">
+
+				<div id="search-toggle"><a href="/#" class="site-search-toggle search-dropdown-toggle" aria-label="Search website"><i class=" fas fa-search" aria-hidden="true" role="img"></i></a></div>
+<div id="searchform-dropdown" class="header-searchform-wrap clr">
+	
+<form aria-label="Search this website" role="search" method="get" class="searchform" action="/">	
+	<input aria-label="Insert search query" type="search" id="ocean-search-form-1" class="field" autocomplete="off" placeholder="Search" name="s">
+		</form>
+</div>
+<!-- #searchform-dropdown -->
+
+			</div>
+
+		</div>
+
+	</div>
+<!-- #site-header-inner -->
+
+	
+<div id="mobile-dropdown" class="clr">
+
+	<nav class="clr" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement">
+
+		<div class="menu">
+<li class="page_item page-item-1832"><a href="/j2csv/">j2csv</a></li>
+<li class="page_item page-item-3"><a href="/privacy-policy/">Privacy Policy</a></li>
+</div>
+
+<div id="mobile-menu-search" class="clr">
+	<form aria-label="Search this website" method="get" action="/" class="mobile-searchform">
+		<input aria-label="Insert search query" value="" class="field" id="ocean-mobile-search-2" type="search" name="s" autocomplete="off" placeholder="Search">
+		<button aria-label="Submit search" type="submit" class="searchform-submit">
+			<i class=" fas fa-search" aria-hidden="true" role="img"></i>		</button>
+					</form>
+</div>
+<!-- .mobile-menu-search -->
+
+	</nav>
+
+</div>
+
+	
+</div>
+<!-- .header-top -->
+
+
+		
+		
+</header><!-- #site-header -->
+
+
+			
+			<main id="main" class="site-main clr" role="main">
+
+				
+	
+	<div id="content-wrap" class="container clr">
+
+		
+		<div id="primary" class="content-area clr">
+
+			
+			<div id="content" class="site-content clr">
+
+				
+				
+<article id="post-177">
+
+	
+
+<header class="entry-header clr">
+	<h2 class="single-post-title entry-title" itemprop="headline">Download file concurrently in Golang &#8211; Part 4(Resume)</h2>
+<!-- .single-post-title -->
+</header><!-- .entry-header -->
+
+
+<ul class="meta ospm-default clr">
+
+	
+					<li class="meta-author" itemprop="name">
+<span class="screen-reader-text">Post author:</span><i class=" fas fa-user-circle" aria-hidden="true" role="img"></i><a href="/author/akshaykhairmode/" title="Posts by Akshay Khairmode" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">Akshay Khairmode</a>
+</li>
+		
+		
+		
+		
+		
+		
+	
+		
+					<li class="meta-date" itemprop="datePublished">
+<span class="screen-reader-text">Post published:</span><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>September 26, 2021</li>
+		
+		
+		
+		
+		
+	
+		
+		
+		
+					<li class="meta-cat">
+<span class="screen-reader-text">Post category:</span><i class=" far fa-folder-open" aria-hidden="true" role="img"></i><a href="/category/technology/golang/" rel="category tag">Golang</a> <span class="owp-sep">/</span> <a href="/category/technology/" rel="category tag">Technology</a>
+</li>
+		
+		
+		
+	
+		
+		
+		
+		
+		
+					<li class="meta-comments">
+<span class="screen-reader-text">Post comments:</span><i class=" far fa-comments" aria-hidden="true" role="img"></i><a href="/download-file-concurrently-in-golang-part-4-resume/#comments" class="comments-link">3 Comments</a>
+</li>
+		
+	
+</ul>
+
+
+
+<div class="entry-content clr" itemprop="text">
+			<div data-elementor-type="wp-post" data-elementor-id="177" class="elementor elementor-177">
+						<section class="elementor-section elementor-top-section elementor-element elementor-element-9a12569 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="9a12569" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-88e5352" data-id="88e5352" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-6ae834f elementor-widget elementor-widget-heading" data-id="6ae834f" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-heading-title{padding:0;margin:0;line-height:1}.elementor-widget-heading .elementor-heading-title[class*=elementor-size-]>a{color:inherit;font-size:inherit;line-height:inherit}.elementor-widget-heading .elementor-heading-title.elementor-size-small{font-size:15px}.elementor-widget-heading .elementor-heading-title.elementor-size-medium{font-size:19px}.elementor-widget-heading .elementor-heading-title.elementor-size-large{font-size:29px}.elementor-widget-heading .elementor-heading-title.elementor-size-xl{font-size:39px}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl{font-size:59px}</style>
+<h2 class="elementor-heading-title elementor-size-default">Introduction</h2>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-4343c54 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="4343c54" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-fda0eba" data-id="fda0eba" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-f504be9 elementor-widget elementor-widget-text-editor" data-id="f504be9" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#69727d;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#69727d;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}</style>				<p>Welcome back, In this part, we will implement the resume functionality to our tool. This would be a long post so bear with me 🙂 We will be doing the below things,</p>
+<ol>
+<li>Store download details in a file.</li>
+<li>Use stored details to resume the download.</li>
+<li>Add verbose logging.</li>
+<li>Code Refactoring.</li>
+</ol>						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-f66af2f elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="f66af2f" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-9006268" data-id="9006268" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-7e5c8e3 elementor-widget elementor-widget-heading" data-id="7e5c8e3" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Storing Download Details in a File</h2>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-15575ff elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="15575ff" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-fb7df72" data-id="fb7df72" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-39c32af elementor-widget elementor-widget-text-editor" data-id="39c32af" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>We have created a meta struct that will store the metadata information like below, Key is the index for both the maps. ChunkPaths will hold the absolute path of the chunks. Range value will have <code>start</code> at the 0th index and end at the 1st index.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-b8bc2b1 elementor-widget elementor-widget-code-block-for-elementor" data-id="b8bc2b1" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">type meta struct {
+	ChunkPaths map[int64]string  `json:&quot;chunkPaths&quot;` //Key is index &amp; value is absolute path of chunk
+	Range      map[int64][]int64 `json:&quot;range&quot;`      //Key is index &amp; value is the initial range which was used. 0 being start and 1 being the end
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-16d47dd elementor-widget elementor-widget-text-editor" data-id="16d47dd" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Resume struct holds the metadata info, downloaded is the chunk which is downloaded till now. start</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-e1c6b2a elementor-widget elementor-widget-code-block-for-elementor" data-id="e1c6b2a" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">type resume struct {
+	downloaded   int64
+	start        int64
+	end          int64
+	tempFilePath string
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-414e8d5 elementor-widget elementor-widget-text-editor" data-id="414e8d5" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<div><div>We need to do 2 things,</div></div>
+<ol>
+<li>Create a file that will have the metadata and write metadata information to it.</li>
+<li>While checking if the download can be resumed we read the metadata from the file and set it to our summon struct.</li>
+</ol>
+<p><i><b>We are storing our data in base64 format. The encode and decode functions are encoding and decoding to and from base64 respectively.</b></i></p>
+<p>Let&#8217;s see how we are writing the metadata using the function <code>addMetadataToFile</code> . We write to this function after we start our chunk downloads.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-e366601 elementor-widget elementor-widget-code-block-for-elementor" data-id="e366601" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (sum summon) addMetadataToFile(m meta) {
+	//Add metadata to file
+	metaFname := sum.getMetaFileName()
+	metaData, err := json.Marshal(m)
+	if err != nil {
+		LogWriter.Printf(&quot;Error occured while marshalling json : %v&quot;, err)
+	}
+
+	finalData := bytes.NewBuffer(nil)
+	if err := encode(metaData, finalData); err != nil {
+		LogWriter.Printf(&quot;Error occured while encoding meta data : %v&quot;, err)
+	}
+
+	if err := os.WriteFile(metaFname, finalData.Bytes(), 0644); err != nil {
+		LogWriter.Printf(&quot;Error occured while writing meta data : %v&quot;, err)
+	}
+}</code></pre>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-6e3a9b2 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="6e3a9b2" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-d55cbc0" data-id="d55cbc0" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-83c1cc7 elementor-widget elementor-widget-heading" data-id="83c1cc7" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Use stored details to resume the download</h2>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-267de0e elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="267de0e" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-fc8b9eb" data-id="fc8b9eb" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-6cfd9af elementor-widget elementor-widget-text-editor" data-id="6cfd9af" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p style="font-variant-ligatures: normal; font-variant-caps: normal; font-family: Merriweather, sans-serif; font-size: 14px; font-style: normal; font-weight: 400;">To resume download first we must find the metadata file and set the meta details to the struct. Then we must implement a resume download function.</p>
+<p style="font-variant-ligatures: normal; font-variant-caps: normal; font-family: Merriweather, sans-serif; font-size: 14px; font-style: normal; font-weight: 400;">Let&#8217;s look at <code>setMetaData</code> method which reads the metadata information and sets it to summon struct.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-97d4d2c elementor-widget elementor-widget-code-block-for-elementor" data-id="97d4d2c" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (sum *summon) setMetaData(fpath string) error {
+
+	fname := sum.getMetaFileName()
+	meta := meta{}
+
+	data, err := os.ReadFile(fname)
+	if err != nil {
+		return err
+	}
+
+	decoded, err := decode(data)
+	if err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(decoded, &amp;meta); err != nil {
+		return err
+	}
+
+	sum.metaData = meta
+
+	return nil
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-c03579d elementor-widget elementor-widget-text-editor" data-id="c03579d" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>We will now create <code>canBeResumed</code> method which tells us if we can resume the download, We need to ask the user if the download should be resumed or not so we will need to take input from the user. </p>
+<p>If the user says <strong>no</strong> then we <strong>delete</strong> the chunks and the metafile.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-0d7a5ae elementor-widget elementor-widget-code-block-for-elementor" data-id="0d7a5ae" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (sum *summon) canBeResumed(fpath string) (bool, []string) {
+
+	//If meta file does not exist we cant resume the download
+	if !fileExists(sum.getMetaFileName()) {
+		return false, []string{}
+	}
+
+	//Set the metadata
+	if err := sum.setMetaData(fpath); err != nil {
+		return false, []string{}
+	}
+
+	parts := []string{}
+
+	for index, filePath := range sum.metaData.ChunkPaths {
+
+		start, end := sum.metaData.Range[index][0], sum.metaData.Range[index][1]
+
+		finfo, err := os.Stat(filePath)
+		if err != nil {
+			LogWriter.Println(err)
+			return false, parts
+		}
+
+		//This size is in bytes
+		contentL := finfo.Size()
+
+		sum.fileDetails.chunks[index] = nil
+		sum.fileDetails.resume[index] = resume{downloaded: int64(contentL), end: end, start: start, tempFilePath: filePath}
+	}
+
+	return true, parts
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-2d942cd elementor-widget elementor-widget-text-editor" data-id="2d942cd" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>We have modified our <code>createTempOutputFile</code> method as below, we are checking if the download can be resumed here. we also return the chunk paths from <code>canBeResumed</code> method as we want to delete them if the user says no.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-d29262f elementor-widget elementor-widget-code-block-for-elementor" data-id="d29262f" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (sum *summon) createTempOutputFile() error {
+
+	//Check if file already exists with same name
+	if fileExists(sum.fileDetails.absolutePath) {
+		return fmt.Errorf(&quot;file : %v already exists&quot;, sum.fileDetails.absolutePath)
+	}
+
+	tempOutFileName := sum.fileDetails.fileDir + sum.separator + &quot;.&quot; + sum.fileDetails.fileName
+
+	if isValid, parts := sum.canBeResumed(tempOutFileName); isValid {
+		var shouldResume string
+		fmt.Print(&quot;Looks like previous download was incomplete for this file, do you want to resume ? [Y/n] &quot;)
+		_, err := fmt.Scanln(&amp;shouldResume)
+		if err != nil {
+			return err
+		}
+
+		if shouldResume == &quot;Y&quot; {
+			sum.isResume = true
+			sum.concurrency = int64(len(sum.fileDetails.chunks))
+		} else {
+			//Delete Temp file and chunks both
+			if err := deleteFiles(map[int64]*os.File{}, append(parts, tempOutFileName, sum.getMetaFileName())...); err != nil {
+				return err
+			}
+		}
+	}
+
+	out, err := os.OpenFile(tempOutFileName, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
+	if err != nil {
+		return fmt.Errorf(&quot;error while creating file : %v&quot;, err)
+	}
+
+	sum.fileDetails.tempOutFile = out
+
+	return nil
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-68e1661 elementor-widget elementor-widget-text-editor" data-id="68e1661" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Finally, let&#8217;s see the <code>resumeDownload</code> method, here we need to pass the next set of bytes remaining for downloading. <code>canBeResumed</code> method sets the data to resume struct which holds the download information of chunks. </p>
+<p>Since we are starting the download from the middle we should also update the progress bar accordingly.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-5ee6a6a elementor-widget elementor-widget-code-block-for-elementor" data-id="5ee6a6a" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (sum *summon) resumeDownload(wg *sync.WaitGroup) error {
+
+	for index := range sum.fileDetails.chunks {
+
+		var start, end, total int64
+
+		//The previous start range + the bytes we have downloaded will give us the new range
+		start = sum.fileDetails.resume[index].start + sum.fileDetails.resume[index].downloaded
+
+		//We will use the same end here as we are going to use same concurrency
+		end = sum.fileDetails.resume[index].end
+
+		//We need to use the old total value only
+		total = sum.fileDetails.resume[index].end - sum.fileDetails.resume[index].start
+
+		//We will start the progress from last time, so we set the current progress directly
+		sum.progressBar.p[index] = &amp;progress{curr: sum.fileDetails.resume[index].downloaded, total: total}
+
+		f, err := os.OpenFile(sum.fileDetails.resume[index].tempFilePath, os.O_RDWR|os.O_APPEND, 0644)
+		if err != nil {
+			return err
+		}
+
+		//Set the file handles so that combine can use them
+		sum.fileDetails.chunks[index] = f
+
+		//If chunk is already completed skip download
+		if start &gt; sum.fileDetails.resume[index].end {
+			continue
+		}
+
+		contentRange := fmt.Sprintf(&quot;%d-%d&quot;, start, end)
+
+		wg.Add(1)
+		go sum.downloadFileForRange(wg, contentRange, index, f)
+	}
+
+	return nil
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-cbf53e2 elementor-widget elementor-widget-text-editor" data-id="cbf53e2" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p><span style="font-size: 14px; color: var( --e-global-color-text );">We use the same </span><code>combineChunks</code><span style="font-size: 14px; color: var( --e-global-color-text );"> method here. The change here is that initially we were creating the output file first and combine chunks would then write to that file. Now the initial output file is also a hidden file and finally, we remove the initial dot and make it a visible file. </span></p>
+<p>What remains is the cleanup of the part files. <span style="font-size: 14px; color: var( --e-global-color-text );">We have implemented a </span><code>deleteFiles</code><span style="font-size: 14px; color: var( --e-global-color-text );"> method which will as the name suggests, delete the files.</span></p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-80a235f elementor-widget elementor-widget-code-block-for-elementor" data-id="80a235f" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func deleteFiles(chunks map[int64]*os.File, tempFileName ...string) error {
+
+	for _, handle := range chunks {
+		if handle == nil {
+			continue
+		}
+		LogWriter.Printf(&quot;Removing file : %v, Err : %v&quot;, handle.Name(), os.Remove(handle.Name()))
+	}
+
+	for _, temp := range tempFileName {
+
+		if !fileExists(temp) {
+			continue
+		}
+
+		LogWriter.Printf(&quot;Removing file : %v, Err : %v&quot;, temp, os.Remove(temp))
+
+	}
+
+	return nil
+}</code></pre>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-da08c12 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="da08c12" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-d46746f" data-id="d46746f" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-3f7dbe6 elementor-widget elementor-widget-heading" data-id="3f7dbe6" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Verbose Logging</h2>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-3edb93a elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="3edb93a" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-147afa2" data-id="147afa2" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-97975f7 elementor-widget elementor-widget-text-editor" data-id="97975f7" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>In <a href="/understanding-interfaces-in-golang-with-use-case/">this</a> post while explaining interfaces we have used logging examples. It is recommended to read it first to understand interfaces. We are going to implement it here. </p>
+<p>We need verbose logging so that in case of bugs we can easily find them. I was also using verbose logging while doing development.</p>
+<p>We are going to follow the below steps,</p>
+<ol>
+<li>Create a <code>Logger</code> interface, 2 structs <code>ProdLogger</code> and <code>DevLogger</code> both will have <code>Printf</code> and <code>Println</code> methods and a global <code>LogWriter</code> variable which will be of type <code>Logger</code>
+</li>
+<li>Create a function <code>setLogWriter</code> to set the logger to the global <code>LogWriter</code> variable.</li>
+</ol>
+<div>Now we just need to pass true to setLogWriter in case we want all the logs and it will set the struct accordingly.</div>						</div>
+				</div>
+				<div class="elementor-element elementor-element-fa4c436 elementor-widget elementor-widget-code-block-for-elementor" data-id="fa4c436" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">type Logger interface {
+	Printf(format string, args ...interface{})
+	Println(args ...interface{})
+}
+
+type ProdLogger struct{}
+
+type DevLogger struct{}
+
+//Printf we keep prodlogger empty as we dont want to print anything even if print is called
+func (pl ProdLogger) Printf(format string, args ...interface{}) {
+
+}
+
+//Printf if verbose option is selected this function will be called so we need to print all of them
+func (dl DevLogger) Printf(format string, args ...interface{}) {
+	log.Printf(format, args...)
+}
+
+//Printf we keep prodlogger empty as we dont want to print anything even if print is called
+func (pl ProdLogger) Println(args ...interface{}) {
+
+}
+
+//Printf if verbose option is selected this function will be called so we need to print all of them
+func (dl DevLogger) Println(args ...interface{}) {
+	log.Println(args...)
+}
+
+//LogWriter will hold our logger
+var LogWriter Logger
+
+func setLogWriter(v bool) {
+
+	if v {
+		LogWriter = DevLogger{}
+		return
+	}
+
+	LogWriter = ProdLogger{}
+}</code></pre>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-eb8a8d4 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="eb8a8d4" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-d1fcd2e" data-id="d1fcd2e" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-f4f5739 elementor-widget elementor-widget-heading" data-id="f4f5739" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Code Refactoring</h2>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-18bff27 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="18bff27" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-cf6a484" data-id="cf6a484" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-d848361 elementor-widget elementor-widget-text-editor" data-id="d848361" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>We have done a lot of refactoring in this part. Below are the files we have created based on </p>
+<ul>
+<li>
+<code>logger.go</code> &#8211; log methods and structs.</li>
+<li>
+<code>progress.go</code> &#8211; progress bar code.</li>
+<li>
+<code>resume.go</code> &#8211; download and resume code.</li>
+<li>
+<code>summon.go</code> &#8211; have the combine, construct, and other code.</li>
+<li>
+<code>utils.go</code> &#8211; common functions</li>
+</ul>
+<p>We have defined a type as below,</p>
+<p><code>type downloader func(wg *sync.WaitGroup) error</code></p>
+<p>The reason for this type is that our <code>download</code> &amp; <code>resumeDownload</code> have the same method definition.  We have also created  <code>getDownloader</code> method which returns a downloader.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-aacca3d elementor-widget elementor-widget-code-block-for-elementor" data-id="aacca3d" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (sum *summon) getDownloader() downloader {
+
+	if sum.isResume {
+		return sum.resumeDownload
+	}
+
+	return sum.download
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-247dc93 elementor-widget elementor-widget-text-editor" data-id="247dc93" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Let&#8217;s see our latest <code>process</code> method and how we are using the above method.  We have also created <code>pWg</code> to wait for the progress bar function to end so that our log output does not print on the final progress bar output.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-9c43f84 elementor-widget elementor-widget-code-block-for-elementor" data-id="9c43f84" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">func (sum *summon) process() error {
+
+	progressSize = getProgressSize()
+
+	//pwg is the progressbar waitgroup
+	wg, pWg := &amp;sync.WaitGroup{}, &amp;sync.WaitGroup{}
+
+	if err := sum.getDownloader()(wg); err != nil {
+		return err
+	}
+
+	stop := make(chan struct{})
+
+	pWg.Add(1)
+	//Keep Printing Progress
+	go sum.startProgressBar(pWg, stop)
+	wg.Wait()
+
+	//Defer file closing
+	defer sum.fileDetails.tempOutFile.Close()
+	for _, f := range sum.fileDetails.chunks {
+		defer f.Close()
+	}
+
+	stop &lt;- struct{}{}
+
+	//Wait for progressbar function to stop
+	pWg.Wait()
+
+	if sum.err != nil {
+		return sum.err
+	}
+
+	return sum.combineChunks()
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-0dbb780 elementor-widget elementor-widget-text-editor" data-id="0dbb780" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>We have also updated the <code>summon</code> struct, below is the latest struct</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-2823b2d elementor-widget elementor-widget-code-block-for-elementor" data-id="2823b2d" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">type summon struct {
+	concurrency      int64       //No. of connections
+	uri              string      //URL of the file we want to download
+	isResume         bool        //is this a resume request
+	isRangeSupported bool        //if this request supports range
+	err              error       //used when error occurs inside a goroutine
+	startTime        time.Time   //to track time took
+	fileDetails      fileDetails //will hold the file related details
+	metaData         meta        //Will hold the meta data of the range and file details
+	progressBar      progressBar //index =&gt; progress
+	stop             chan error  //to handle stop signals from terminal
+	separator        string      //store the path separator based on the OS
+	*sync.RWMutex                //mutex to lock the maps which accessing it concurrently
+}</code></pre>		</div>
+				</div>
+				<div class="elementor-element elementor-element-39421fd elementor-widget elementor-widget-text-editor" data-id="39421fd" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p><span style="font-size: 14px; color: var( --e-global-color-text );">We are storing file-related details in </span><code>fileDetails</code><span style="font-size: 14px; color: var( --e-global-color-text );"> the struct,</span></p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-930c8c6 elementor-widget elementor-widget-code-block-for-elementor" data-id="930c8c6" data-element_type="widget" data-widget_type="code-block-for-elementor.default">
+				<div class="elementor-widget-container">
+			<pre class="line-numbers theme-okaidia" data-show-toolbar="yes"><code class="language-go">type fileDetails struct {
+	chunks        map[int64]*os.File //Map of part files we are creating
+	fileName      string             //name of the file we are downloading
+	fileDir       string             //dir of the file
+	absolutePath  string             //absolute path of the output file
+	tempOutFile   *os.File           //output / downloaded file
+	resume        map[int64]resume   //how much is downloaded
+	contentLength int64
+}</code></pre>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-5d7b2ec elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="5d7b2ec" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-06b2f7c" data-id="06b2f7c" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-41149c3 elementor-widget elementor-widget-heading" data-id="41149c3" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Conclusion</h2>		</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-101c66a elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="101c66a" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-40255e2" data-id="40255e2" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-95fc398 elementor-widget elementor-widget-text-editor" data-id="95fc398" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Finally, we have completed the tool, full code can be found <a href="https://github.com/akshaykhairmode/summon">here</a>. Let&#8217;s see it in action. If you would like to contribute open a pull request on Github.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-81f490e elementor-widget elementor-widget-image" data-id="81f490e" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.21.0 - 26-05-2024 */
+.elementor-widget-image{text-align:center}.elementor-widget-image a{display:inline-block}.elementor-widget-image a img[src$=".svg"]{width:48px}.elementor-widget-image img{vertical-align:middle;display:inline-block}</style>											<a href="/wp-content/uploads/2021/09/summon_resume.gif" data-elementor-open-lightbox="yes" data-elementor-lightbox-title="summon_resume" data-e-action-hash="#elementor-action%3Aaction%3Dlightbox%26settings%3DeyJpZCI6MjAyLCJ1cmwiOiJodHRwOlwvXC9sb2NhbGhvc3RcL3dwLWNvbnRlbnRcL3VwbG9hZHNcLzIwMjFcLzA5XC9zdW1tb25fcmVzdW1lLmdpZiJ9">
+							<img fetchpriority="high" decoding="async" width="1024" height="873" src="/wp-content/uploads/2021/09/summon_resume-1024x873.gif" class="attachment-large size-large wp-image-202" alt="" srcset="/wp-content/uploads/2021/09/summon_resume-1024x873.gif 1024w, /wp-content/uploads/2021/09/summon_resume-300x256.gif 300w, /wp-content/uploads/2021/09/summon_resume-768x655.gif 768w" sizes="(max-width: 1024px) 100vw, 1024px">								</a>
+													</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				</div>
+		<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-official sd-sharing">
+<h3 class="sd-title">Share this:</h3>
+<div class="sd-content"><ul>
+<li class="share-facebook"><div class="fb-share-button" data-href="/download-file-concurrently-in-golang-part-4-resume/" data-layout="button_count"></div></li>
+<li class="share-x"><a href="https://x.com/share" class="twitter-share-button" data-url="/download-file-concurrently-in-golang-part-4-resume/" data-text="Download file concurrently in Golang - Part 4(Resume)" data-via="AbilityRush">Post</a></li>
+<li class="share-end">
+</ul></div>
+</div></div>
+</div>
+<!-- .entry -->
+
+
+<div class="post-tags clr">
+	<span class="owp-tag-text">Tags: </span><a href="/tag/concurrency/" rel="tag">concurrency</a><span class="owp-sep">,</span> <a href="/tag/download-file/" rel="tag">download file</a><span class="owp-sep">,</span> <a href="/tag/go/" rel="tag">go</a><span class="owp-sep">,</span> <a href="/tag/resume/" rel="tag">resume</a>
+</div>
+
+
+
+	<nav class="navigation post-navigation" aria-label="Read more articles">
+		<h2 class="screen-reader-text">Read more articles</h2>
+		<div class="nav-links">
+<div class="nav-previous"><a href="/download-file-concurrently-with-golang-part-3progress-bar/" rel="prev"><span class="title"><i class=" fas fa-long-arrow-alt-left" aria-hidden="true" role="img"></i> Previous Post</span><span class="post-title">Download file concurrently in Golang-Part 3(Progress Bar)</span></a></div>
+<div class="nav-next"><a href="/writing-unit-tests-in-golang/" rel="next"><span class="title"><i class=" fas fa-long-arrow-alt-right" aria-hidden="true" role="img"></i> Next Post</span><span class="post-title">Writing Unit Tests in Golang</span></a></div>
+</div>
+	</nav>
+
+	<section id="related-posts" class="clr">
+
+		<h3 class="theme-heading related-posts-title">
+			<span class="text">You Might Also Like</span>
+		</h3>
+
+		<div class="oceanwp-row clr">
+
+			
+			
+				
+				<article class="related-post clr col span_1_of_3 col-1 post-448 post type-post status-publish format-standard hentry category-golang category-technology tag-go tag-golang tag-http tag-middleware tag-net-http entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/writing-middleware-in-golang/" rel="bookmark">Writing middleware in Golang</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2021-10-25T19:24:39+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>October 25, 2021</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+				
+				<article class="related-post clr col span_1_of_3 col-2 post-1335 post type-post status-publish format-standard hentry category-golang category-technology tag-context tag-deadline tag-go tag-golang tag-timeout entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/how-to-use-context-package-in-golang-with-use-case/" rel="bookmark">How to use Context package in Golang with Use Case</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2022-10-08T01:19:17+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>October 8, 2022</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+				
+				<article class="related-post clr col span_1_of_3 col-3 post-1420 post type-post status-publish format-standard hentry category-golang category-technology tag-expire tag-go tag-golang tag-redis tag-ttl entry">
+
+					
+					<h3 class="related-post-title">
+						<a href="/how-to-expire-keys-in-redis-with-golang/" rel="bookmark">How to expire keys in Redis with Golang</a>
+					</h3>
+<!-- .related-post-title -->
+
+								
+						<time class="published" datetime="2022-12-02T22:39:53+05:30"><i class=" far fa-calendar-alt" aria-hidden="true" role="img"></i>December 2, 2022</time>
+						
+
+				</article><!-- .related-post -->
+
+				
+			
+		</div>
+<!-- .oceanwp-row -->
+
+	</section><!-- .related-posts -->
+
+
+
+
+<section id="comments" class="comments-area clr has-comments">
+
+	
+	
+		<h3 class="theme-heading comments-title">
+			<span class="text">This Post Has 3 Comments</span>
+		</h3>
+
+		<ol class="comment-list">
+			
+			<li id="comment-3" class="comment-container">
+
+				<article class="comment even thread-even depth-1 comment-body">
+
+				<img alt="" src="http://0.gravatar.com/avatar/6235966bad3387c33cefb7e75bd99a69?s=150&#038;d=wavatar&#038;r=g" srcset="http://0.gravatar.com/avatar/6235966bad3387c33cefb7e75bd99a69?s=300&#038;d=wavatar&#038;r=g 2x" class="avatar avatar-150 photo" height="150" width="150" decoding="async">
+					<div class="comment-content">
+						<div class="comment-author">
+							<span class="comment-link">Sugeng </span>
+
+							<span class="comment-meta commentmetadata">
+																<span class="comment-date">October 6, 2021</span>
+								
+							<a rel="nofollow" class="comment-reply-link" href="/download-file-concurrently-in-golang-part-4-resume/comment-page-1/?replytocom=3#respond" data-commentid="3" data-postid="177" data-belowelement="comment-3" data-respondelement="respond" data-replyto="Reply to Sugeng" aria-label="Reply to Sugeng">Reply</a>
+														
+														</span>
+						</div>
+
+						<div class="clr"></div>
+
+						<div class="comment-entry">
+						
+							<div class="comment-content">
+							<p>I really enjoy this tutorial series, really help me understand golang. Can I use your code for my project?</p>
+							</div>
+						</div>
+					</div>
+
+				</article><!-- #comment-## -->
+
+				<ol class="children">
+
+			<li id="comment-4" class="comment-container">
+
+				<article class="comment byuser comment-author-akshaykhairmode bypostauthor odd alt depth-2 comment-body">
+
+				<img alt="" src="http://2.gravatar.com/avatar/20ffb1dd4c5b351c3a2a7cb6a7f2e342?s=150&#038;d=wavatar&#038;r=g" srcset="http://2.gravatar.com/avatar/20ffb1dd4c5b351c3a2a7cb6a7f2e342?s=300&#038;d=wavatar&#038;r=g 2x" class="avatar avatar-150 photo" height="150" width="150" decoding="async">
+					<div class="comment-content">
+						<div class="comment-author">
+							<span class="comment-link"><a href="/" class="url" rel="ugc">Akshay Khairmode</a> </span>
+
+							<span class="comment-meta commentmetadata">
+																<span class="comment-date">October 6, 2021</span>
+								
+							<a rel="nofollow" class="comment-reply-link" href="/download-file-concurrently-in-golang-part-4-resume/comment-page-1/?replytocom=4#respond" data-commentid="4" data-postid="177" data-belowelement="comment-4" data-respondelement="respond" data-replyto="Reply to Akshay Khairmode" aria-label="Reply to Akshay Khairmode">Reply</a>
+														
+														</span>
+						</div>
+
+						<div class="clr"></div>
+
+						<div class="comment-entry">
+						
+							<div class="comment-content">
+							<p>Hi Sugeng,</p>
+<p>Thanks for the feedback. Let me know if anything can be improved.</p>
+<p>If your project is academic I would suggest you code it yourself so you learn better, If you are working on some production applications then please use the code at your own risk. </p>
+<p>If it&#8217;s for a personal project feel free to use it.  Anyways a credit would be appreciated.</p>
+							</div>
+						</div>
+					</div>
+
+				</article><!-- #comment-## -->
+
+				<ol class="children">
+
+			<li id="comment-5" class="comment-container">
+
+				<article class="comment even depth-3 comment-body">
+
+				<img alt="" src="http://0.gravatar.com/avatar/6235966bad3387c33cefb7e75bd99a69?s=150&#038;d=wavatar&#038;r=g" srcset="http://0.gravatar.com/avatar/6235966bad3387c33cefb7e75bd99a69?s=300&#038;d=wavatar&#038;r=g 2x" class="avatar avatar-150 photo" height="150" width="150" decoding="async">
+					<div class="comment-content">
+						<div class="comment-author">
+							<span class="comment-link">Sugeng </span>
+
+							<span class="comment-meta commentmetadata">
+																<span class="comment-date">October 7, 2021</span>
+								
+							<a rel="nofollow" class="comment-reply-link" href="/download-file-concurrently-in-golang-part-4-resume/comment-page-1/?replytocom=5#respond" data-commentid="5" data-postid="177" data-belowelement="comment-5" data-respondelement="respond" data-replyto="Reply to Sugeng" aria-label="Reply to Sugeng">Reply</a>
+														
+														</span>
+						</div>
+
+						<div class="clr"></div>
+
+						<div class="comment-entry">
+						
+							<div class="comment-content">
+							<p>Hi Akshay,</p>
+<p>Mainly I just want to learn it, I&#8217;ll try to code it myself, but it&#8217;s good to have some references. Of course, I will reference this article if I publish my code 🙂</p>
+							</div>
+						</div>
+					</div>
+
+				</article><!-- #comment-## -->
+
+				</li>
+<!-- #comment-## -->
+</ol>
+<!-- .children -->
+</li>
+<!-- #comment-## -->
+</ol>
+<!-- .children -->
+</li>
+<!-- #comment-## -->
+		</ol>
+<!-- .comment-list -->
+
+		
+		
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#respond" style="display:none;">Cancel reply</a></small>
+</h3>
+<form action="/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+<div class="comment-textarea">
+<label for="comment" class="screen-reader-text">Comment</label><textarea name="comment" id="comment" cols="39" rows="4" tabindex="0" class="textarea-comment" placeholder="Your comment here..."></textarea>
+</div>
+<div class="comment-form-author">
+<label for="author" class="screen-reader-text">Enter your name or username to comment</label><input type="text" name="author" id="author" value="" placeholder="Name (required)" size="22" tabindex="0" aria-required="true" class="input-name">
+</div>
+<div class="comment-form-email">
+<label for="email" class="screen-reader-text">Enter your email address to comment</label><input type="text" name="email" id="email" value="" placeholder="Email (required)" size="22" tabindex="0" aria-required="true" class="input-email">
+</div>
+<div class="comment-form-url">
+<label for="url" class="screen-reader-text">Enter your website URL (optional)</label><input type="text" name="url" id="url" value="" placeholder="Website" size="22" tabindex="0" class="input-website">
+</div>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="177" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="564917e6de"></p>
+<p style="display: none !important;" class="akismet-fields-container" data-prefix="ak_"><label>&#916;<textarea name="ak_hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label><input type="hidden" id="ak_js_1" name="ak_js" value="104"></p>
+</form>	</div>
+<!-- #respond -->
+	
+</section><!-- #comments -->
+
+</article>
+
+				
+			</div>
+<!-- #content -->
+
+			
+		</div>
+<!-- #primary -->
+
+		
+
+<aside id="right-sidebar" class="sidebar-container widget-area sidebar-primary" itemscope="itemscope" itemtype="https://schema.org/WPSideBar" role="complementary" aria-label="Primary Sidebar">
+
+	
+	<div id="right-sidebar-inner" class="clr">
+
+		
+		<div id="recent-posts-2" class="sidebar-box widget_recent_entries clr">
+		<h4 class="widget-title">Recent Posts</h4>
+		<ul>
+											<li>
+					<a href="/how-to-accept-input-from-terminal-in-golang/">How to Accept Input from Terminal in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-update-variables-compile-time-in-go/">How to Update Variables Compile Time in Go</a>
+									</li>
+											<li>
+					<a href="/how-to-use-unbuffered-channels-in-golang/">How to use Unbuffered channels in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-use-buffered-channel-in-golang/">How to use Buffered Channel in Golang</a>
+									</li>
+											<li>
+					<a href="/how-to-receive-file-uploads-in-the-golang-http-server/">How to receive file uploads in the Golang HTTP server</a>
+									</li>
+					</ul>
+
+		</div>
+<div id="recent-comments-2" class="sidebar-box widget_recent_comments clr">
+<h4 class="widget-title">Recent Comments</h4>
+<ul id="recentcomments">
+<li class="recentcomments">
+<span class="comment-author-link"><a href="/" class="url" rel="ugc">Akshay Khairmode</a></span> on <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1931">Uploading File to AWS S3 in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link">Nihat</span> on <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1856">Uploading File to AWS S3 in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://livrooshomensmentem.com.br/" class="url" rel="ugc external nofollow">homens mentem</a></span> on <a href="/working-with-aws-simple-queue-service-sqs-in-golang/comment-page-1/#comment-43">Working with AWS SQS in Golang</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://comfort.kr.ua/kuhni-krivoj-rog/" class="url" rel="ugc external nofollow">Сергей</a></span> on <a href="/writing-mocks-in-golang-with-mockery/comment-page-1/#comment-24">Writing Mocks in Golang with mockery</a>
+</li>
+<li class="recentcomments">
+<span class="comment-author-link"><a href="https://github.com/chakal1337" class="url" rel="ugc external nofollow">JadSaint</a></span> on <a href="/download-file-concurrently-in-golang-part-2/comment-page-1/#comment-14">Download file concurrently in Golang-Part 2(Memory)</a>
+</li>
+</ul>
+</div>
+<div id="archives-2" class="sidebar-box widget_archive clr">
+<h4 class="widget-title">Archives</h4>
+			<ul>
+					<li><a href="/2023/05/">May 2023</a></li>
+	<li><a href="/2023/03/">March 2023</a></li>
+	<li><a href="/2023/02/">February 2023</a></li>
+	<li><a href="/2023/01/">January 2023</a></li>
+	<li><a href="/2022/12/">December 2022</a></li>
+	<li><a href="/2022/10/">October 2022</a></li>
+	<li><a href="/2022/09/">September 2022</a></li>
+	<li><a href="/2022/06/">June 2022</a></li>
+	<li><a href="/2022/05/">May 2022</a></li>
+	<li><a href="/2022/04/">April 2022</a></li>
+	<li><a href="/2022/03/">March 2022</a></li>
+	<li><a href="/2022/02/">February 2022</a></li>
+	<li><a href="/2022/01/">January 2022</a></li>
+	<li><a href="/2021/11/">November 2021</a></li>
+	<li><a href="/2021/10/">October 2021</a></li>
+	<li><a href="/2021/09/">September 2021</a></li>
+			</ul>
+
+			</div>
+<div id="categories-2" class="sidebar-box widget_categories clr">
+<h4 class="widget-title">Categories</h4>
+			<ul>
+					<li class="cat-item cat-item-3">
+<a href="/category/technology/golang/">Golang</a>
+</li>
+	<li class="cat-item cat-item-2">
+<a href="/category/technology/">Technology</a>
+</li>
+			</ul>
+
+			</div>
+<div id="block-13" class="sidebar-box widget_block clr">
+<div class="wp-block-buttons alignfull is-content-justification-center omw-open-modal is-layout-flex wp-block-buttons-is-layout-flex">
+<div class="wp-block-button has-custom-width wp-block-button__width-100 is-style-outline"><a class="wp-block-button__link has-vivid-cyan-blue-color has-text-color" href="#omw-514">Notify Me</a></div>
+</div>
+</div>
+	</div>
+<!-- #sidebar-inner -->
+
+	
+</aside><!-- #right-sidebar -->
+
+
+	</div>
+<!-- #content-wrap -->
+
+	
+
+	</main><!-- #main -->
+
+	
+	
+	
+		
+<footer id="footer" class="site-footer" itemscope="itemscope" itemtype="https://schema.org/WPFooter" role="contentinfo">
+
+	
+	<div id="footer-inner" class="clr">
+
+		
+
+<div id="footer-widgets" class="oceanwp-row clr">
+
+	
+	<div class="footer-widgets-inner container">
+
+					<div class="footer-box span_1_of_4 col col-1">
+							</div>
+<!-- .footer-one-box -->
+
+							<div class="footer-box span_1_of_4 col col-2">
+									</div>
+<!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-3 ">
+									</div>
+<!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-4">
+									</div>
+<!-- .footer-box -->
+				
+			
+	</div>
+<!-- .container -->
+
+	
+</div>
+<!-- #footer-widgets -->
+
+
+
+<div id="footer-bottom" class="clr no-footer-nav">
+
+	
+	<div id="footer-bottom-inner" class="container clr">
+
+		
+		
+			<div id="copyright" class="clr" role="contentinfo">
+				Copyright - OceanWP Theme by OceanWP			</div>
+<!-- #copyright -->
+
+			
+	</div>
+<!-- #footer-bottom-inner -->
+
+	
+</div>
+<!-- #footer-bottom -->
+
+
+	</div>
+<!-- #footer-inner -->
+
+	
+</footer><!-- #footer -->
+
+	
+	
+</div>
+<!-- #wrap -->
+
+
+</div>
+<!-- #outer-wrap -->
+
+
+
+<a aria-label="Scroll to the top of the page" href="#" id="scroll-top" class="scroll-top-right"><i class=" fa fa-angle-double-up" aria-hidden="true" role="img"></i></a>
+
+
+
+
+
+				<div id="omw-514" class="omw-modal">
+
+											<a href="/#mwc-514" class="omw-close-modal" aria-label="Close this modal window ID 514"></a>
+					
+					<div class="omw-modal-inner clr">
+						<p><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSehnVQsuv4by0SLBubMNAldpPAmQRjoFZ4k8kvM2AJ06H93VA/viewform?embedded=true" width="640" height="700" frameborder="0" marginwidth="0" marginheight="0"><span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span><span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span>Loadi<span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start">﻿</span>ng…</iframe></p>
+					</div>
+				</div>
+
+							<div class="omw-modal-overlay"></div>
+
+						<div id="fb-root"></div>
+			
+			
+						
+			<link rel="stylesheet" id="code-block-for-elementor-coy-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-coy.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-dark-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-dark.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-default-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-default.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-funky-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-funky.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-okaidia-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-okaidia.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-solarized-light-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-solarized-light.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-tomorrow-night-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-tomorrow-night.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-twilight-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-twilight.css?ver=1.0.3" media="all">
+<link rel="stylesheet" id="code-block-for-elementor-toolbar-css" href="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-toolbar.css?ver=1.0.3" media="all">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.5.4"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"🏳️‍⚧️","🏳️​⚧️")?!1:!n(e,"🇺🇳","🇺​🇳")&&!n(e,"🏴󠁧󠁢󠁥󠁮󠁧󠁿","🏴​󠁧​󠁢​󠁥​󠁮​󠁧​󠁿");case"emoji":return!n(e,"🐦‍⬛","🐦​⬛")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+</script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/jquery-migrate.min.js" id="jquery-migrate-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/wp-polyfill-inert.min.js" id="wp-polyfill-inert-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/regenerator-runtime.min.js" id="regenerator-runtime-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/vendor/wp-polyfill.min.js" id="wp-polyfill-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/dist/dom-ready.min.js" id="wp-dom-ready-js"></script><script src="/wp-content/plugins/auto-terms-of-service-and-privacy-policy/js/base.js?ver=2.5.1" id="wpautoterms_base-js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-DXSQBK2RY1" id="google_gtagjs-js" async></script><script id="google_gtagjs-js-after">window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag("set","linker",{"domains":["localhost"]});
+gtag("js", new Date());
+gtag("set", "developer_id.dZTNiMT", true);
+gtag("config", "G-DXSQBK2RY1");</script><script>( function() {
+				window.onpageshow = function( event ) {
+					// Defined window.wpforms means that a form exists on a page.
+					// If so and back/forward button has been clicked,
+					// force reload a page to prevent the submit button state stuck.
+					if ( typeof window.wpforms !== 'undefined' && event.persisted ) {
+						window.location.reload();
+					}
+				};
+			}() );</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4736925107936916" crossorigin="anonymous"></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4736925107936916&amp;host=ca-host-pub-2644536267352236" crossorigin="anonymous"></script><script>document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );</script><script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&appId=249643311490&version=v2.3'; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script><script>document.body.addEventListener( 'is.post-load', function() {
+				if ( 'undefined' !== typeof FB ) {
+					FB.XFBML.parse();
+				}
+			} );</script><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script><script id="starter-templates-zip-preview-js-extra">var starter_templates_zip_preview = {"AstColorPaletteVarPrefix":"--ast-global-","AstEleColorPaletteVarPrefix":"--ast-global-"};</script><script src="/wp-content/plugins/astra-sites/inc/lib/onboarding/assets/dist/template-preview/main.js?ver=06758d4d807d9d22c6ea" id="starter-templates-zip-preview-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/comment-reply.min.js" id="comment-reply-js" async data-wp-strategy="async"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/imagesloaded.min.js" id="imagesloaded-js"></script><script id="oceanwp-main-js-extra">var oceanwpLocalize = {"nonce":"2984539bf0","isRTL":"","menuSearchStyle":"drop_down","mobileMenuSearchStyle":"disabled","sidrSource":null,"sidrDisplace":"1","sidrSide":"left","sidrDropdownTarget":"link","verticalHeaderTarget":"link","customScrollOffset":"0","customSelects":".woocommerce-ordering .orderby, #dropdown_product_cat, .widget_categories select, .widget_archive select, .single-product .variations_form .variations select","ajax_url":"\/wp-admin\/admin-ajax.php","oe_mc_wpnonce":"0f85b48aaa"};</script><script src="/wp-content/themes/oceanwp/assets/js/theme.min.js?ver=1.0" id="oceanwp-main-js"></script><script src="/wp-content/themes/oceanwp/assets/js/drop-down-mobile-menu.min.js?ver=1.0" id="oceanwp-drop-down-mobile-menu-js"></script><script src="/wp-content/themes/oceanwp/assets/js/drop-down-search.min.js?ver=1.0" id="oceanwp-drop-down-search-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/magnific-popup.min.js?ver=1.0" id="ow-magnific-popup-js"></script><script src="/wp-content/themes/oceanwp/assets/js/ow-lightbox.min.js?ver=1.0" id="oceanwp-lightbox-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/flickity.pkgd.min.js?ver=1.0" id="ow-flickity-js"></script><script src="/wp-content/themes/oceanwp/assets/js/ow-slider.min.js?ver=1.0" id="oceanwp-slider-js"></script><script src="/wp-content/themes/oceanwp/assets/js/scroll-effect.min.js?ver=1.0" id="oceanwp-scroll-effect-js"></script><script src="/wp-content/themes/oceanwp/assets/js/scroll-top.min.js?ver=1.0" id="oceanwp-scroll-top-js"></script><script src="/wp-content/themes/oceanwp/assets/js/select.min.js?ver=1.0" id="oceanwp-select-js"></script><script id="flickr-widget-script-js-extra">var flickrWidgetParams = {"widgets":[]};</script><script src="/wp-content/plugins/ocean-extra/includes/widgets/js/flickr.min.js?ver=6.5.4" id="flickr-widget-script-js"></script><script src="/wp-content/themes/oceanwp/assets/js/vendors/perfect-scrollbar.min.js?ver=1.0" id="ow-perfect-scrollbar-js"></script><script src="/wp-content/plugins/ocean-modal-window/assets/js/modal-window.min.js?ver=2.2.2" id="omw-js-scripts-js"></script><script src="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism.js?ver=1.0.3" id="code-block-for-elementor-prismjs-js"></script><script src="/wp-content/plugins/code-block-for-elementor/widgets/../assets/prism-toolbar.js?ver=1.0.3" id="code-block-for-elementor-toolbarjs-js"></script><script defer src="/wp-content/plugins/akismet/_inc/akismet-frontend.js?ver=1711132304" id="akismet-frontend-js"></script><script src="/wp-content/plugins/elementor/assets/js/webpack.runtime.min.js?ver=3.21.8" id="elementor-webpack-runtime-js"></script><script src="/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=3.21.8" id="elementor-frontend-modules-js"></script><script src="/wp-content/plugins/elementor/assets/lib/waypoints/waypoints.min.js?ver=4.0.2" id="elementor-waypoints-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/jquery/ui/core.min.js" id="jquery-ui-core-js"></script><script id="elementor-frontend-js-before">var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Share on Facebook","shareOnTwitter":"Share on Twitter","pinIt":"Pin it","download":"Download","downloadImage":"Download image","fullscreen":"Fullscreen","zoom":"Zoom","share":"Share","playVideo":"Play Video","previous":"Previous","next":"Next","close":"Close","a11yCarouselWrapperAriaLabel":"Carousel | Horizontal scrolling: Arrow Left & Right","a11yCarouselPrevSlideMessage":"Previous slide","a11yCarouselNextSlideMessage":"Next slide","a11yCarouselFirstSlideMessage":"This is the first slide","a11yCarouselLastSlideMessage":"This is the last slide","a11yCarouselPaginationBulletMessage":"Go to slide"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Mobile Portrait","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobile Landscape","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet Portrait","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet Landscape","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Laptop","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Widescreen","value":2400,"default_value":2400,"direction":"min","is_enabled":false}}},"version":"3.21.8","is_static":false,"experimentalFeatures":{"e_optimized_assets_loading":true,"e_optimized_css_loading":true,"additional_custom_breakpoints":true,"container":true,"e_swiper_latest":true,"container_grid":true,"home_screen":true,"ai-layout":true,"landing-pages":true},"urls":{"assets":"\/wp-content\/plugins\/elementor\/assets\/"},"swiperClass":"swiper","settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description"},"post":{"id":177,"title":"Download%20file%20concurrently%20in%20Golang%20%E2%80%93%20Part%204%28Resume%29","excerpt":"In this post, We will store the file metadata, read it the next time, and using that data we will resume our download along with verbose logging.","featuredImage":false}};</script><script src="/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.21.8" id="elementor-frontend-js"></script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/underscore.min.js" id="underscore-js"></script><script id="wp-util-js-extra">var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};</script><script src="https://c0.wp.com/c/6.5.4/wp-includes/js/wp-util.min.js" id="wp-util-js"></script><script id="wpforms-elementor-js-extra">var wpformsElementorVars = {"captcha_provider":"recaptcha","recaptcha_type":"v2"};</script><script src="/wp-content/plugins/wpforms-lite/assets/js/integrations/elementor/frontend.min.js?ver=1.8.8.3" id="wpforms-elementor-js"></script><script id="sharing-js-js-extra">var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};</script><script src="https://c0.wp.com/p/jetpack/13.5/_inc/build/sharedaddy/sharing.min.js" id="sharing-js-js"></script><script id="sharing-js-js-after">var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-facebook' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-facebook' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+						return false;
+					}
+				} );
+			} )();</script>
+</body>
+</html>

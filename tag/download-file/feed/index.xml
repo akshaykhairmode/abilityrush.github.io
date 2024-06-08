@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	>
+
+<channel>
+	<title>download file – Ability Rush</title>
+	<atom:link href="/tag/download-file/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>Learn &#38; Improve</description>
+	<lastBuildDate>Sat, 08 Apr 2023 14:19:34 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.5.4</generator>
+
+<image>
+	<url>/wp-content/uploads/2021/10/cropped-android-chrome-512x512-1-32x32.png</url>
+	<title>download file – Ability Rush</title>
+	<link>/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>How to Download a file in Golang with a Single Connection</title>
+		<link>/download-file-in-golang-single-connection/</link>
+					<comments>/download-file-in-golang-single-connection/#respond</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Tue, 26 Oct 2021 18:22:28 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[download]]></category>
+		<category><![CDATA[download file]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[golang]]></category>
+		<category><![CDATA[http]]></category>
+		<guid isPermaLink="false">/?p=529</guid>
+
+					<description><![CDATA[<p>Hey folks, In this post we will see how we can download file in golang. We will see 2 functions, one inefficient way and another which will be efficient.</p>
+<p>The post <a href="/download-file-in-golang-single-connection/">How to Download a file in Golang with a Single Connection</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/download-file-in-golang-single-connection/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">529</post-id>	</item>
+		<item>
+		<title>Download file concurrently in Golang &#8211; Part 4(Resume)</title>
+		<link>/download-file-concurrently-in-golang-part-4-resume/</link>
+					<comments>/download-file-concurrently-in-golang-part-4-resume/#comments</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Sun, 26 Sep 2021 12:51:02 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[concurrency]]></category>
+		<category><![CDATA[download file]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[resume]]></category>
+		<guid isPermaLink="false">/?p=177</guid>
+
+					<description><![CDATA[<p>In this post, We will store the file metadata, read it the next time, and using that data we will resume our download along with verbose logging.</p>
+<p>The post <a href="/download-file-concurrently-in-golang-part-4-resume/">Download file concurrently in Golang – Part 4(Resume)</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/download-file-concurrently-in-golang-part-4-resume/feed/</wfw:commentRss>
+			<slash:comments>3</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">177</post-id>	</item>
+		<item>
+		<title>Download file concurrently in Golang-Part 2(Memory)</title>
+		<link>/download-file-concurrently-in-golang-part-2/</link>
+					<comments>/download-file-concurrently-in-golang-part-2/#comments</comments>
+		
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Thu, 09 Sep 2021 16:52:14 +0000</pubDate>
+				<category><![CDATA[Golang]]></category>
+		<category><![CDATA[Technology]]></category>
+		<category><![CDATA[concurrency]]></category>
+		<category><![CDATA[download file]]></category>
+		<category><![CDATA[go]]></category>
+		<guid isPermaLink="false">/?p=88</guid>
+
+					<description><![CDATA[<p>In Part 1 we saw how we can download the file, but as seen there are some memory issues when loading the data into a []byte. Therefore we have to optimize it.  Check part 2 full code here &#8211; https://github.com/akshaykhairmode/summon/tree/v0.2.0 Optimizations Now for optimization, we will do the below steps, Create temporary files for storing the chunks based [&#8230;]</p>
+<p>The post <a href="/download-file-concurrently-in-golang-part-2/">Download file concurrently in Golang-Part 2(Memory)</a> first appeared on <a href="/">Ability Rush</a>.</p>]]></description>
+		
+					<wfw:commentRss>/download-file-concurrently-in-golang-part-2/feed/</wfw:commentRss>
+			<slash:comments>1</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">88</post-id>	</item>
+	</channel>
+</rss>

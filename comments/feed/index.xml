@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	
+	>
+<channel>
+	<title>
+	Comments for Ability Rush	</title>
+	<atom:link href="/comments/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>Learn &#38; Improve</description>
+	<lastBuildDate>Sat, 08 Apr 2023 14:22:43 +0000</lastBuildDate>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.5.4</generator>
+	<item>
+		<title>
+		Comment on Uploading File to AWS S3 in Golang by Akshay Khairmode		</title>
+		<link>/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1931</link>
+
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Fri, 26 Aug 2022 18:03:06 +0000</pubDate>
+		<guid isPermaLink="false">/?p=1170#comment-1931</guid>
+
+					<description><![CDATA[In reply to &lt;a href=&quot;/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1856&quot;&gt;Nihat&lt;/a&gt;.
+
+S3 does not have real folders but follows a key-value approach. If your need to nest it, you can use the path as &lt;code&gt;parentfolder/childfolder/anotherchild/test.txt&lt;/code&gt; in the key]]></description>
+			<content:encoded><![CDATA[<p>In reply to <a href="/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1856">Nihat</a>.</p>
+<p>S3 does not have real folders but follows a key-value approach. If your need to nest it, you can use the path as <code>parentfolder/childfolder/anotherchild/test.txt</code> in the key</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on Uploading File to AWS S3 in Golang by Nihat		</title>
+		<link>/uploading-file-to-aws-s3-in-golang/comment-page-1/#comment-1856</link>
+
+		<dc:creator><![CDATA[Nihat]]></dc:creator>
+		<pubDate>Mon, 22 Aug 2022 14:42:48 +0000</pubDate>
+		<guid isPermaLink="false">/?p=1170#comment-1856</guid>
+
+					<description><![CDATA[Hi
+How can i upload a files inside to folder s3 with go?]]></description>
+			<content:encoded><![CDATA[<p>Hi<br />
+How can i upload a files inside to folder s3 with go?</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on Working with AWS SQS in Golang by homens mentem		</title>
+		<link>/working-with-aws-simple-queue-service-sqs-in-golang/comment-page-1/#comment-43</link>
+
+		<dc:creator><![CDATA[homens mentem]]></dc:creator>
+		<pubDate>Sun, 10 Apr 2022 02:12:08 +0000</pubDate>
+		<guid isPermaLink="false">/?p=1012#comment-43</guid>
+
+					<description><![CDATA[I really liked your site. Thanks for the information. 34352572]]></description>
+			<content:encoded><![CDATA[<p>I really liked your site. Thanks for the information. 34352572</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on Writing Mocks in Golang with mockery by Сергей		</title>
+		<link>/writing-mocks-in-golang-with-mockery/comment-page-1/#comment-24</link>
+
+		<dc:creator><![CDATA[Сергей]]></dc:creator>
+		<pubDate>Sun, 06 Feb 2022 21:09:55 +0000</pubDate>
+		<guid isPermaLink="false">/?p=827#comment-24</guid>
+
+					<description><![CDATA[Сконцентрированные на этом месте познания, весьма ценны]]></description>
+			<content:encoded><![CDATA[<p>Сконцентрированные на этом месте познания, весьма ценны</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on Download file concurrently in Golang-Part 2(Memory) by JadSaint		</title>
+		<link>/download-file-concurrently-in-golang-part-2/comment-page-1/#comment-14</link>
+
+		<dc:creator><![CDATA[JadSaint]]></dc:creator>
+		<pubDate>Tue, 25 Jan 2022 21:45:39 +0000</pubDate>
+		<guid isPermaLink="false">/?p=88#comment-14</guid>
+
+					<description><![CDATA[fantastic insight grateful the disclosing &lt;a href=&quot;https://github.com/chakal1337&quot; rel=&quot;nofollow ugc&quot;&gt;<img src="https://s.w.org/images/core/emoji/15.0.3/72x72/2764.png" alt="❤" class="wp-smiley" style="height: 1em; max-height: 1em;" />&lt;/a&gt;]]></description>
+			<content:encoded><![CDATA[<p>fantastic insight grateful the disclosing <a href="https://github.com/chakal1337" rel="nofollow ugc">❤️</a></p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on Download file concurrently in Golang &#8211; Part 4(Resume) by Sugeng		</title>
+		<link>/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-5</link>
+
+		<dc:creator><![CDATA[Sugeng]]></dc:creator>
+		<pubDate>Thu, 07 Oct 2021 02:22:26 +0000</pubDate>
+		<guid isPermaLink="false">/?p=177#comment-5</guid>
+
+					<description><![CDATA[In reply to &lt;a href=&quot;/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-4&quot;&gt;Akshay Khairmode&lt;/a&gt;.
+
+Hi Akshay,
+
+Mainly I just want to learn it, I&#039;ll try to code it myself, but it&#039;s good to have some references. Of course, I will reference this article if I publish my code :)]]></description>
+			<content:encoded><![CDATA[<p>In reply to <a href="/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-4">Akshay Khairmode</a>.</p>
+<p>Hi Akshay,</p>
+<p>Mainly I just want to learn it, I&#8217;ll try to code it myself, but it&#8217;s good to have some references. Of course, I will reference this article if I publish my code 🙂</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on Download file concurrently in Golang &#8211; Part 4(Resume) by Akshay Khairmode		</title>
+		<link>/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-4</link>
+
+		<dc:creator><![CDATA[Akshay Khairmode]]></dc:creator>
+		<pubDate>Wed, 06 Oct 2021 17:18:43 +0000</pubDate>
+		<guid isPermaLink="false">/?p=177#comment-4</guid>
+
+					<description><![CDATA[In reply to &lt;a href=&quot;/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-3&quot;&gt;Sugeng&lt;/a&gt;.
+
+Hi Sugeng,
+
+Thanks for the feedback. Let me know if anything can be improved.
+
+If your project is academic I would suggest you code it yourself so you learn better, If you are working on some production applications then please use the code at your own risk. 
+
+If it&#039;s for a personal project feel free to use it.  Anyways a credit would be appreciated.]]></description>
+			<content:encoded><![CDATA[<p>In reply to <a href="/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-3">Sugeng</a>.</p>
+<p>Hi Sugeng,</p>
+<p>Thanks for the feedback. Let me know if anything can be improved.</p>
+<p>If your project is academic I would suggest you code it yourself so you learn better, If you are working on some production applications then please use the code at your own risk. </p>
+<p>If it&#8217;s for a personal project feel free to use it.  Anyways a credit would be appreciated.</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on Download file concurrently in Golang &#8211; Part 4(Resume) by Sugeng		</title>
+		<link>/download-file-concurrently-in-golang-part-4-resume/comment-page-1/#comment-3</link>
+
+		<dc:creator><![CDATA[Sugeng]]></dc:creator>
+		<pubDate>Wed, 06 Oct 2021 09:23:58 +0000</pubDate>
+		<guid isPermaLink="false">/?p=177#comment-3</guid>
+
+					<description><![CDATA[I really enjoy this tutorial series, really help me understand golang. Can I use your code for my project?]]></description>
+			<content:encoded><![CDATA[<p>I really enjoy this tutorial series, really help me understand golang. Can I use your code for my project?</p>
+]]></content:encoded>
+		
+			</item>
+	</channel>
+</rss>
